@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>minimator</title>
+    <style>
+      line,
+      path {
+        stroke: blue;
+        stroke-width: 3;
+        stroke-linecap: round;
+        fill: none;
+      }
+      g line,
+      g path {
+        stroke: black;
+      }
+    </style>
+  </head>
+  <body></body>
+  <script type="module">
+    import { Artwork } from './src/artwork.js';
+    const myArtwork = new Artwork();
+    myArtwork.setSize(50, 50);
+    window.ma = myArtwork;
+    document.body.appendChild(myArtwork.el);
+  </script>
+</html>
