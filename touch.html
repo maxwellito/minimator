@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="tt" style="background: red; width: 100vw; height: 100vw"></div>
+    <pre id="output"></pre>
+    <script type="module">
+      import { TouchController } from './src/touchController.js';
+      const xx = new TouchController(window.tt);
+
+      window.tt.addEventListener('touchstart', dd);
+      window.tt.addEventListener('touchmove', dd);
+      window.tt.addEventListener('touchend', dd);
+      window.tt.addEventListener('touchcancel', dd);
+
+      let counter = 0;
+      function dd(d) {
+        d.stopPropagation();
+        d.preventDefault();
+        counter++;
+        // window.output.innerText = d.touches.length;
+      }
+      setInterval(() => {
+        window.output.innerText += `\n${counter}`;
+        counter = 0;
+      }, 1000);
+    </script>
+  </body>
+</html>

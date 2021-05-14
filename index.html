@@ -22,9 +22,11 @@
   <body></body>
   <script type="module">
     import { Artwork } from './src/artwork.js';
+    import { TouchController } from './src/touchController.js';
     const myArtwork = new Artwork();
     myArtwork.setSize(50, 50);
     window.ma = myArtwork;
     document.body.appendChild(myArtwork.el);
+    new TouchController(myArtwork.el);
   </script>
 </html>
