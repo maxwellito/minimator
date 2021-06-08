@@ -15,9 +15,9 @@ export class Artwork {
     this.content = document.createElementNS(SVG_NAMESPACE, 'g');
     this.el.appendChild(this.content);
 
-    this.el.addEventListener('mousedown', this.startMove.bind(this));
-    this.el.addEventListener('mousemove', this.updatePoint.bind(this));
-    this.el.addEventListener('mouseup', this.cancelMove.bind(this));
+    // this.el.addEventListener('mousedown', this.startMove.bind(this));
+    // this.el.addEventListener('mousemove', this.updatePoint.bind(this));
+    // this.el.addEventListener('mouseup', this.cancelMove.bind(this));
 
     this.updatePointDefer = this.updatePointDefer.bind(this);
   }

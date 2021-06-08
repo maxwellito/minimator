@@ -21,12 +21,14 @@
   </head>
   <body></body>
   <script type="module">
-    import { Artwork } from './src/artwork.js';
+    // import { Artwork } from './src/artwork.js';
+    import { Surface } from './src/surface.js';
     import { TouchController } from './src/touchController.js';
-    const myArtwork = new Artwork();
-    myArtwork.setSize(50, 50);
-    window.ma = myArtwork;
-    document.body.appendChild(myArtwork.el);
-    new TouchController(myArtwork.el);
+    const mySurface = new Surface();
+    mySurface.setSize(50, 50);
+    window.ma = mySurface;
+    document.body.appendChild(mySurface.el);
+    const touchHandler = new TouchController(mySurface.el);
+    touchHandler.on(mySurface.eventInput);
   </script>
 </html>

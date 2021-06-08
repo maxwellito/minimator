@@ -21,13 +21,20 @@
 const gestureTransitionTime = 100;
 
 export const GESTURE = {
-  NONE: 'none',
+  NONE: 'NONE',
   TAP: 'TAP',
-  DRAG: 'drag',
-  UNDO: 'undo',
-  SCALE: 'scale',
-  REDO: 'redo',
-  UNSUPPORTED: 'mordor',
+  DRAG: 'DRAG',
+  UNDO: 'UNDO',
+  SCALE: 'SCALE',
+  REDO: 'REDO',
+  UNSUPPORTED: 'VOID',
+};
+
+export const STATE = {
+  START: 'START',
+  UPDATE: 'UPDATE',
+  END: 'END',
+  NONE: 'NONE',
 };
 
 export class TouchController {
@@ -37,8 +44,10 @@ export class TouchController {
 
     // Internals
     this.pointers = new Map();
+    this.callbacks = [];
 
     this.hasDigestPlanned = null;
+    this.currentEvent = GESTURE.NONE;
 
     // Bind listeners
     this.touchstart = this.touchstart.bind(this);
@@ -51,6 +60,17 @@ export class TouchController {
     this.el.addEventListener('touchmove', this.touchmove);
     this.el.addEventListener('touchend', this.touchend);
     this.el.addEventListener('touchcancel', this.touchend);
+  }
+
+  on(callback) {
+    this.callbacks.push(callback);
+  }
+
+  off(callback) {
+    const cbIndex = this.callbacks.findIndex(callback);
+    if (cbIndex !== -1) {
+      this.callbacks.splice(cbIndex, 1);
+    }
   }
 
   blockEvent(e) {
@@ -106,13 +126,13 @@ export class TouchController {
       this.pointers.set(touch.identifier, touch);
     }
     if (e.touches.length === 0) {
-      if (!this.currentEvent || this.currentEvent === 'none') {
+      if (!this.currentEvent || this.currentEvent === GESTURE.NONE) {
         if (this.gestureMaxTouches === 1) {
-          this.triggerEvent(GESTURE.TAP);
+          this.setEventType(GESTURE.TAP);
         } else if (this.gestureMaxTouches === 2) {
-          this.triggerEvent(GESTURE.UNDO);
+          this.setEventType(GESTURE.UNDO);
         } else {
-          this.triggerEvent(GESTURE.REDO);
+          this.setEventType(GESTURE.REDO);
         }
       }
       this.setEventType(GESTURE.NONE);
@@ -130,8 +150,15 @@ export class TouchController {
     switch (this.currentEvent) {
       case GESTURE.DRAG:
         const b = e.touches.item(0);
+        if (!b) {
+          return;
+        }
         const a = this.pointers.get(b.identifier);
         this.triggerUpdate({
+          origin: {
+            x: a.clientX,
+            y: a.clientY,
+          },
           drag: {
             x: b.clientX - a.clientX,
             y: b.clientY - a.clientY,
@@ -141,9 +168,16 @@ export class TouchController {
       case GESTURE.SCALE:
         const b1 = e.touches.item(0);
         const b2 = e.touches.item(1);
+        if (!b1 || !b2) {
+          return;
+        }
         const a1 = this.pointers.get(b1.identifier);
         const a2 = this.pointers.get(b2.identifier);
         this.triggerUpdate({
+          origin: {
+            x: (a1.clientX + a2.clientX) / 2,
+            y: (a1.clientY + a2.clientY) / 2,
+          },
           drag: {
             x: (b1.clientX + b2.clientX) / 2 - (a1.clientX + a2.clientX) / 2,
             y: (b1.clientY + b2.clientY) / 2 - (a1.clientY + a2.clientY) / 2,
@@ -159,16 +193,24 @@ export class TouchController {
   }
 
   setEventType(eventType) {
+    this.broadcast(STATE.END, this.lastData);
     this.currentEvent = eventType;
-    this.triggerEvent(eventType);
-  }
-
-  triggerEvent(eventName) {
-    console.log(`[Event] ${eventName}`);
+    // console.log(`[Event] ${eventType}`);
+    this.broadcast(STATE.START, null);
   }
 
   triggerUpdate(data) {
-    console.log(`        ${JSON.stringify(data)}`);
+    // console.log(`        ${JSON.stringify(data)}`);
+    this.broadcast(STATE.UPDATE, data);
+  }
+
+  broadcast(eventStatus, eventData) {
+    const type = this.currentEvent;
+    if (type === GESTURE.NONE || type === GESTURE.UNSUPPORTED) {
+      return;
+    }
+    this.lastData = eventData;
+    this.callbacks.forEach((cb) => cb(type, eventStatus, eventData));
   }
 
   cancel() {
