@@ -4,9 +4,20 @@
   "description": "Minimalist graphical editor",
   "main": "index.js",
   "scripts": {
-    "start": "http-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "http-server",
+    "start": "./node_modules/.bin/tsc --project tsconfig.json",
+    "build": "./node_modules/.bin/tsc --project tsconfig.json"
   },
   "author": "maxwellito",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxwellito/minimator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maxwellito/minimator/issues"
+  },
+  "homepage": "https://github.com/maxwellito/minimator#readme",
+  "dependencies": {
+    "typescript": "^4.3.2"
+  }
 }
