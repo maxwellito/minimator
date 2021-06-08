@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "http-server",
-    "start": "./node_modules/.bin/tsc --project tsconfig.json",
+    "start": "./node_modules/.bin/tsc -w --project tsconfig.json",
     "build": "./node_modules/.bin/tsc --project tsconfig.json"
   },
   "author": "maxwellito",

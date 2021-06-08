@@ -37,13 +37,25 @@ export enum STATE {
   'NONE',
 }
 
-type eventCallback = (type: GESTURE, state: STATE, data: any) => {};
+export interface EventData {
+  origin: {
+    x: number;
+    y: number;
+  };
+  drag: {
+    x: number;
+    y: number;
+  };
+  scale?: number;
+}
+
+type eventCallback = (type: GESTURE, state: STATE, data?: EventData) => {};
 
 export class TouchController {
   el: SVGElement;
   pointers: Map<number, any>;
   callbacks: eventCallback[];
-  lastData: any;
+  lastData?: EventData;
   currentEvent: GESTURE;
   gestureMaxTouches = 0;
   currentGestureHasMoved = false; //# This property isn't in use
@@ -213,16 +225,14 @@ export class TouchController {
   setEventType(eventType: GESTURE) {
     this.broadcast(STATE.END, this.lastData);
     this.currentEvent = eventType;
-    // console.log(`[Event] ${eventType}`);
-    this.broadcast(STATE.START, null);
+    this.broadcast(STATE.START);
   }
 
-  triggerUpdate(data: any) {
-    // console.log(`        ${JSON.stringify(data)}`);
+  triggerUpdate(data: EventData) {
     this.broadcast(STATE.UPDATE, data);
   }
 
-  broadcast(eventStatus: STATE, eventData: any) {
+  broadcast(eventStatus: STATE, eventData?: EventData) {
     const type = this.currentEvent;
     if (type === GESTURE.NONE || type === GESTURE.VOID) {
       return;

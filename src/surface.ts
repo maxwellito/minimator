@@ -1,4 +1,4 @@
-import { GESTURE, STATE } from './touchController.js';
+import { GESTURE, STATE, EventData } from './touchController.js';
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
@@ -10,6 +10,8 @@ export class Surface {
   width = 0;
   height = 0;
   scale = 1;
+  moveX = 0;
+  moveY = 0;
 
   constructor() {
     this.gap = 20;
@@ -54,21 +56,28 @@ export class Surface {
     }
   }
 
-  eventInput(type: GESTURE, state: STATE, data: any) {
+  eventInput(type: GESTURE, state: STATE, data?: EventData) {
     console.log(type, state, data);
 
     if (type === GESTURE.SCALE) {
+      if (!data) {
+        return;
+      }
+      const dataScale = data?.scale || 1;
       if (state === STATE.UPDATE) {
-        const scale = this.scale * (1 / data.scale);
+        const scale = this.scale * (1 / dataScale);
         this.el.setAttribute(
           'viewBox',
-          `0 0 ${this.gap * this.width * scale} ${
-            this.gap * this.height * scale
-          }`
+          `${this.moveX - data.drag.x} 
+          ${this.moveY - data.drag.y} 
+          ${this.gap * this.width * scale} 
+          ${this.gap * this.height * scale}`
         );
       }
       if (state === STATE.END) {
-        this.scale *= 1 / data.scale;
+        this.scale *= 1 / dataScale;
+        this.moveX -= data.drag.x;
+        this.moveY -= data.drag.y;
       }
     }
   }
