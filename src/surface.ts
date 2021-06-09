@@ -68,16 +68,16 @@ export class Surface {
         const scale = this.scale * (1 / dataScale);
         this.el.setAttribute(
           'viewBox',
-          `${this.moveX - data.drag.x} 
-          ${this.moveY - data.drag.y} 
+          `${this.moveX - data.drag.x / dataScale} 
+          ${this.moveY - data.drag.y / dataScale} 
           ${this.gap * this.width * scale} 
           ${this.gap * this.height * scale}`
         );
       }
       if (state === STATE.END) {
         this.scale *= 1 / dataScale;
-        this.moveX -= data.drag.x;
-        this.moveY -= data.drag.y;
+        this.moveX -= data.drag.x / dataScale;
+        this.moveY -= data.drag.y / dataScale;
       }
     }
   }
