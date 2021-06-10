@@ -10,8 +10,8 @@ export class Surface {
   width = 0;
   height = 0;
   scale = 1;
-  moveX = 0;
-  moveY = 0;
+  viewBox = [0, 0, 100, 100];
+  rect: any;
 
   constructor() {
     this.gap = 20;
@@ -40,8 +40,6 @@ export class Surface {
       'viewBox',
       `0 0 ${this.gap * width} ${this.gap * height}`
     );
-    this.el.style.width = `${this.gap * width}px`;
-    this.el.style.height = `${this.gap * height}px`;
     const c = this.gap / 2;
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < height; y++) {
@@ -50,14 +48,43 @@ export class Surface {
         dot.setAttribute('cx', `${x * this.gap + c}`);
         dot.setAttribute('cy', `${y * this.gap + c}`);
         dot.setAttribute('r', '1');
-        dot.setAttribute('fill', '#0003');
+        dot.setAttribute('fill', '#000');
         this.dots.appendChild(dot);
       }
     }
   }
 
+  onResize() {
+    const rect = this.el.getBoundingClientRect();
+    const ratio = rect.width / rect.height;
+    const square = this.gap * this.width;
+    const padding = 0.125;
+    const sQ = square * (1 + 2 * padding);
+
+    this.rect = rect;
+
+    if (rect.width > rect.height) {
+      this.viewBox = [
+        -padding * square - ((ratio - 1) / 2) * sQ,
+        -padding * square,
+        ratio * sQ,
+        sQ,
+      ];
+    } else {
+      const ratioR = 1 / ratio;
+      this.viewBox = [
+        -padding * square,
+        -padding * square - ((ratioR - 1) / 2) * sQ,
+        sQ,
+        ratioR * sQ,
+      ];
+    }
+    this.el.setAttribute('viewBox', this.viewBox.join(' '));
+    this.scale = this.viewBox[2] / rect.width;
+  }
+
   eventInput(type: GESTURE, state: STATE, data?: EventData) {
-    console.log(type, state, data);
+    // console.log(type, state, data);
 
     if (type === GESTURE.SCALE) {
       if (!data) {
@@ -65,19 +92,32 @@ export class Surface {
       }
       const dataScale = data?.scale || 1;
       if (state === STATE.UPDATE) {
-        const scale = this.scale * (1 / dataScale);
-        this.el.setAttribute(
-          'viewBox',
-          `${this.moveX - data.drag.x / dataScale} 
-          ${this.moveY - data.drag.y / dataScale} 
-          ${this.gap * this.width * scale} 
-          ${this.gap * this.height * scale}`
-        );
+        const opX = data.origin.x / this.rect.width;
+        const opY = data.origin.y / this.rect.height;
+        const oX = this.viewBox[0] + this.viewBox[2] * opX;
+        const oY = this.viewBox[1] + this.viewBox[3] * opY;
+
+        const dragScale = this.scale * (1 / dataScale);
+
+        const viewBox = [
+          oX -
+            (oX - this.viewBox[0]) * (1 / dataScale) -
+            data.drag.x * dragScale,
+          oY -
+            (oY - this.viewBox[1]) * (1 / dataScale) -
+            data.drag.y * dragScale,
+          this.viewBox[2] * (1 / dataScale),
+          this.viewBox[3] * (1 / dataScale),
+        ];
+        this.el.setAttribute('viewBox', viewBox.join(' '));
       }
       if (state === STATE.END) {
-        this.scale *= 1 / dataScale;
-        this.moveX -= data.drag.x / dataScale;
-        this.moveY -= data.drag.y / dataScale;
+        const viewBox = this.el.getAttribute('viewBox');
+        if (viewBox) {
+          this.viewBox = viewBox.split(' ').map((x) => parseInt(x, 10));
+          this.el.setAttribute('viewBox', this.viewBox.join(' '));
+          this.scale *= 1 / dataScale;
+        }
       }
     }
   }

@@ -115,7 +115,6 @@ export class TouchController {
 
   touchmove(e: TouchEvent) {
     this.blockEvent(e);
-    // console.log(e);
     if (this.isCurrentEventDetected()) {
       this.updateCurrentEvent(e);
       return;
@@ -129,8 +128,7 @@ export class TouchController {
       let pointer = this.pointers.get(touch.identifier);
       let x = Math.abs(touch.clientX - pointer.clientX);
       let y = Math.abs(touch.clientY - pointer.clientY);
-      if (x + y > 40) {
-        // console.log('MOVE TOO BIG', x + y);
+      if (x + y > 20) {
         let { length } = e.touches;
         this.currentGestureHasMoved = true;
         if (length === 1) {
@@ -146,7 +144,6 @@ export class TouchController {
 
   touchend(e: TouchEvent) {
     this.blockEvent(e);
-    // console.log(e);
     for (let i = e.changedTouches.length - 1; i >= 0; i--) {
       let touch = e.changedTouches.item(i);
       if (!touch) {

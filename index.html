@@ -3,9 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"
+    />
     <title>minimator</title>
     <style>
+      body {
+        margin: 0;
+      }
+      html,
+      body,
+      svg {
+        width: 100%;
+        height: 100%;
+      }
       line,
       path {
         stroke: blue;
@@ -25,10 +37,12 @@
     import { Surface } from './dist/surface.js';
     import { TouchController } from './dist/touchController.js';
     const mySurface = new Surface();
-    mySurface.setSize(50, 50);
+    mySurface.setSize(20, 20);
     window.ma = mySurface;
     document.body.appendChild(mySurface.el);
     const touchHandler = new TouchController(mySurface.el);
     touchHandler.on(mySurface.eventInput);
+    window.addEventListener('resize', mySurface.onResize.bind(mySurface));
+    mySurface.onResize();
   </script>
 </html>
