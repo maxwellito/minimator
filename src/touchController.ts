@@ -131,10 +131,27 @@ export class TouchController {
       if (x + y > 20) {
         let { length } = e.touches;
         this.currentGestureHasMoved = true;
+        const defaultData = {
+          origin: {
+            x: 0,
+            y: 0,
+          },
+          drag: {
+            x: 0,
+            y: 0,
+          },
+        };
+        this.pointers.forEach((p) => {
+          defaultData.origin.x += p.clientX;
+          defaultData.origin.y += p.clientY;
+        });
+        defaultData.origin.x /= this.pointers.size;
+        defaultData.origin.y /= this.pointers.size;
+
         if (length === 1) {
-          this.setEventType(GESTURE.DRAG);
+          this.setEventType(GESTURE.DRAG, defaultData);
         } else if (length === 2) {
-          this.setEventType(GESTURE.SCALE);
+          this.setEventType(GESTURE.SCALE, defaultData);
         } else {
           this.setEventType(GESTURE.VOID);
         }
@@ -150,7 +167,7 @@ export class TouchController {
         console.warn('Missed touch');
         continue;
       }
-      this.pointers.set(touch.identifier, touch);
+      this.pointers.delete(touch.identifier);
     }
     if (e.touches.length === 0) {
       if (!this.currentEvent /* || this.currentEvent === GESTURE.NONE */) {
@@ -219,10 +236,11 @@ export class TouchController {
     }
   }
 
-  setEventType(eventType: GESTURE) {
+  setEventType(eventType: GESTURE, eventData?: EventData) {
     this.broadcast(STATE.END, this.lastData);
     this.currentEvent = eventType;
-    this.broadcast(STATE.START);
+    this.lastData = undefined;
+    this.broadcast(STATE.START, eventData);
   }
 
   triggerUpdate(data: EventData) {

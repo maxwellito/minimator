@@ -20,14 +20,25 @@
       }
       line,
       path {
-        stroke: blue;
+        stroke: black;
         stroke-width: 3;
         stroke-linecap: round;
         fill: none;
+        stroke-dasharray: 1 10;
+        animation: progress 2s linear 0s infinite;
       }
       g line,
       g path {
-        stroke: black;
+        stroke-dasharray: none;
+        animation: none;
+      }
+      @keyframes progress {
+        from {
+          stroke-dashoffset: 0;
+        }
+        to {
+          stroke-dashoffset: 110;
+        }
       }
     </style>
   </head>
@@ -36,8 +47,7 @@
     // import { Artwork } from './src/artwork.js';
     import { Surface } from './dist/surface.js';
     import { TouchController } from './dist/touchController.js';
-    const mySurface = new Surface();
-    mySurface.setSize(20, 20);
+    const mySurface = new Surface(50, 50);
     window.ma = mySurface;
     document.body.appendChild(mySurface.el);
     const touchHandler = new TouchController(mySurface.el);
