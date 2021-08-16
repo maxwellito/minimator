@@ -18,19 +18,9 @@
         width: 100%;
         height: 100%;
       }
-      line,
-      path {
-        stroke: black;
-        stroke-width: 3;
-        stroke-linecap: round;
-        fill: none;
+      svg .pending {
         stroke-dasharray: 1 10;
         animation: progress 2s linear 0s infinite;
-      }
-      g line,
-      g path {
-        stroke-dasharray: none;
-        animation: none;
       }
       @keyframes progress {
         from {
@@ -40,6 +30,23 @@
           stroke-dashoffset: 110;
         }
       }
+
+      /* Toolbar */
+      .toolbar {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        background: black;
+        padding: 0 .4em;
+        height: 1.2rem;
+        border-radius: .4rem;
+        color: #fff;
+      }
+      .toolbar button {
+        background: none;
+        border: none;
+        color: inherit;
+      }
     </style>
   </head>
   <body></body>
@@ -47,12 +54,41 @@
     // import { Artwork } from './src/artwork.js';
     import { Surface } from './dist/surface.js';
     import { TouchController } from './dist/touchController.js';
+    import { ToolbarController } from './dist/toolbarController.js';
+    import { downloader, share } from './dist/features.js';
+
     const mySurface = new Surface(50, 50);
     window.ma = mySurface;
     document.body.appendChild(mySurface.el);
+
     const touchHandler = new TouchController(mySurface.el);
     touchHandler.on(mySurface.eventInput);
     window.addEventListener('resize', mySurface.onResize.bind(mySurface));
     mySurface.onResize();
+
+    const toolbar = new ToolbarController();
+    document.body.appendChild(toolbar.el);
+    toolbar.on((eventName) => {
+      let svgOutput;
+      switch(eventName) {
+        case 'minus':
+          mySurface.decreaseThickness();
+          break;
+        case 'plus':
+          mySurface.increaseThickness();
+          break;
+        case 'grid':
+          mySurface.toggleGrid();
+          break;
+        case 'share':
+          svgOutput = mySurface.extractSVG();
+          share('minimator', 'https://maxwellito.github.io/minimator',svgOutput);
+          break;
+        case 'download':
+          svgOutput = mySurface.extractSVG();
+          downloader(svgOutput, 'minimator_demo.svg');
+          break;
+      }
+    })
   </script>
 </html>

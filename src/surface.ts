@@ -16,6 +16,7 @@ export class Surface {
   width = 0;
   height = 0;
   scale = 1;
+  thickness = 3;
   viewBox = [0, 0, 100, 100];
   rect: any;
   drawingStartPoint?: Coordinate;
@@ -59,7 +60,13 @@ export class Surface {
 
     // Add content layer
     this.content = document.createElementNS(SVG_NAMESPACE, 'g');
+    this.content.setAttribute('stroke', 'black');
+    this.content.setAttribute('stroke-linecap', 'round');
+    this.content.setAttribute('fill', 'none');
     this.el.appendChild(this.content);
+
+    // Set defaults
+    this.setThickness(3);
 
     // Bind listener
     this.eventInput = this.eventInput.bind(this);
@@ -177,7 +184,7 @@ export class Surface {
         }
       } else if (state === STATE.END) {
         if (this.currentElement) {
-          this.content.appendChild(this.currentElement);
+          this.currentElement.classList.remove('pending');
         }
         console.log('RESETED');
         this.currentElement = undefined;
@@ -244,7 +251,8 @@ export class Surface {
     line.setAttribute('x2', `${(props.x2 + 0.5) * this.gap}`);
     line.setAttribute('y1', `${(props.y1 + 0.5) * this.gap}`);
     line.setAttribute('y2', `${(props.y2 + 0.5) * this.gap}`);
-    this.el.appendChild(line);
+    line.classList.add('pending');
+    this.content.appendChild(line);
 
     this.currentElement = line;
   }
@@ -306,8 +314,45 @@ export class Surface {
 
     const path = document.createElementNS(SVG_NAMESPACE, 'path');
     path.setAttribute('d', isA ? dA : dB);
-    this.el.appendChild(path);
+    path.classList.add('pending');
+    this.content.appendChild(path);
 
     this.currentElement = path;
+  }
+
+  // Controls
+  increaseThickness() {
+    return this.setThickness(this.thickness + 1);
+  }
+
+  decreaseThickness() {
+    return this.setThickness(this.thickness - 1);
+  }
+
+  setThickness(thickness: number) {
+    this.thickness = Math.min(10, Math.max(1, thickness));
+    this.content.setAttribute('stroke-width', `${this.thickness}`);
+    return this.thickness;
+  }
+
+  toggleGrid() {
+    if (this.dots.style.display === 'none') {
+      this.dots.style.display = 'inherit';
+    } else {
+      this.dots.style.display = 'none';
+    }
+  }
+
+  // Extract SVG
+  extractSVG(margin = 4) {
+    const doubleMargin = margin * 2;
+    const offset = margin * this.gap;
+    const width = (this.width + doubleMargin) * this.gap;
+    const height = (this.height + doubleMargin) * this.gap;
+
+    const svg = this.el.cloneNode(true) as SVGElement;
+    svg.setAttribute('viewBox', `${-offset},${-offset},${width},${height}`);
+
+    return svg.outerHTML;
   }
 }
