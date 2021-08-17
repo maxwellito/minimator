@@ -11,16 +11,26 @@
     <style>
       body {
         margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       }
       html,
       body,
-      svg {
+      svg.surface {
         width: 100%;
         height: 100%;
       }
-      svg .pending {
+      svg.surface .pending {
         stroke-dasharray: 1 10;
         animation: progress 2s linear 0s infinite;
+      }
+      svg.feather {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        width: 1em;
+        height: 1em;
       }
       @keyframes progress {
         from {
@@ -34,24 +44,37 @@
       /* Toolbar */
       .toolbar {
         position: fixed;
+        display: flex;
+        align-items: center;
         top: 1rem;
         right: 1rem;
         background: black;
         padding: 0 .4em;
-        height: 1.2rem;
-        border-radius: .4rem;
+        height: 1.7em;
+        border-radius: .25em;
         color: #fff;
+        font-size: 20px;
       }
-      .toolbar button {
-        background: none;
-        border: none;
-        color: inherit;
+      .toolbar .count {
+        display: inline-block;
+        min-width: 2.5ch;
+        text-align: center;
+      }
+      .toolbar .split {
+        height: 100%;
+        width: 2px;
+        display: inline-block;
+        background: currentColor;
+        opacity: .2;
+        margin: 0 .35em;
+      }
+      .toolbar svg:hover {
+        background-color: #fff2;
       }
     </style>
   </head>
   <body></body>
   <script type="module">
-    // import { Artwork } from './src/artwork.js';
     import { Surface } from './dist/surface.js';
     import { TouchController } from './dist/touchController.js';
     import { ToolbarController } from './dist/toolbarController.js';
@@ -72,10 +95,10 @@
       let svgOutput;
       switch(eventName) {
         case 'minus':
-          mySurface.decreaseThickness();
+          toolbar.setThickness(mySurface.decreaseThickness());
           break;
         case 'plus':
-          mySurface.increaseThickness();
+          toolbar.setThickness(mySurface.increaseThickness());
           break;
         case 'grid':
           mySurface.toggleGrid();

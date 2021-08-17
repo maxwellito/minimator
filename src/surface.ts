@@ -33,6 +33,7 @@ export class Surface {
     // Create the canvas
     this.el = document.createElementNS(SVG_NAMESPACE, 'svg');
     this.el.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    this.el.classList.add('surface');
 
     // Add dots layer
     const dot = document.createElementNS(SVG_NAMESPACE, 'circle');
