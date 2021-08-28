@@ -2,10 +2,12 @@ import { VisualComponent } from './visualComponent.js';
 import { SVG_ICONS } from './toolbarController.icons.js';
 
 const template = `
-  <div class="toolbar">
+  <div class="toolbar unselectable">
     ${SVG_ICONS.minus}
     <span class="count" data-bit="thickness">3</span>
     ${SVG_ICONS.plus}
+    <span class="split"></span>
+    ${SVG_ICONS.eraser}
     <span class="split"></span>
     ${SVG_ICONS.grid}
     <span class="split"></span>
