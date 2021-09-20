@@ -89,6 +89,8 @@
     import { ToolbarController } from './dist/toolbarController.js';
     import { downloader, share } from './dist/features.js';
 
+    import './dist/tests/list.js';
+
     const mySurface = new Surface(50, 50);
     window.ma = mySurface;
     document.body.appendChild(mySurface.el);
@@ -100,7 +102,7 @@
 
     const toolbar = new ToolbarController();
     document.body.appendChild(toolbar.el);
-    toolbar.on((eventName) => {
+    toolbar.on((eventName, eventData) => {
       let svgOutput;
       switch(eventName) {
         case 'minus':
@@ -111,6 +113,10 @@
           break;
         case 'grid':
           mySurface.toggleGrid();
+          break;
+        case 'eraser':
+          const newMode = eventData ? Surface.ERASER_MODE : Surface.PEN_MODE;
+          mySurface.setMode(newMode);
           break;
         case 'share':
           svgOutput = mySurface.extractSVG();
