@@ -16,13 +16,12 @@ export const assert = (a: any, b: any) => {
 }
 
 // Unit test 
-let itLogs:Log[] = [];
 export const it = (label:string, test: any) => {
   assertRes = [];
   try {
     test();
   } catch(e) {
-    itLogs.push({
+    currentLog.children.push({
       level: LogLevel.error, 
       message: `${label} : FAIL\n  > Error thrown during the test : ${e.message}`, 
       children: []
@@ -42,17 +41,16 @@ export const it = (label:string, test: any) => {
   }).join('');
 
   if (pos === 0 && neg === 0) {
-    itLogs.push({level: LogLevel.warn, message: `${label} : NO TESTS`, children: []});
+    currentLog.children.push({level: LogLevel.warn, message: `${label} : NO TESTS`, children: []});
   } else if (neg === 0) {
-    itLogs.push({level: LogLevel.info, message: `${label} : PASS (${pos} asserts)`, children: []});
+    currentLog.children.push({level: LogLevel.info, message: `${label} : PASS (${pos} asserts)`, children: []});
   } else {
-    itLogs.push({level: LogLevel.error, message: `${label} : FAIL (${pos}/${pos+neg} asserts) ${out}`, children: []});
+    currentLog.children.push({level: LogLevel.error, message: `${label} : FAIL (${pos}/${pos+neg} asserts) ${out}`, children: []});
   }
 }
 
 // Describe
 export const describe = (label: string, exec: any) => {
-  itLogs = [];
   const parentLog = currentLog;
   currentLog = {
     level: LogLevel.info,
@@ -63,12 +61,11 @@ export const describe = (label: string, exec: any) => {
 
   exec();
 
-  const hasFailed = itLogs.filter(val => {
+  const stats = logStatsDive(currentLog);
+  currentLog.children.forEach(val => {
     currentLog.level = Math.max(val.level, currentLog.level);
-    return val.level !== LogLevel.info
-  }).length;
-  currentLog.message = `${label} (${itLogs.length - hasFailed}/${itLogs.length})`;
-  itLogs.forEach(i => currentLog.children.push(i))
+  });
+  currentLog.message = `${label} (${stats[0]}/${stats[1]})`;
 
   currentLog = parentLog;
 }
@@ -106,4 +103,20 @@ const printLog = (logEntry: Log) => {
   if (logEntry.children?.length) {
     console.groupEnd();
   }
+}
+
+type logStats = [number, number];
+const logStatsDive = (logEntry: Log, stats: logStats = [0,0]) => {
+  if (!logEntry.children.length) {
+    stats[0] += logEntry.level === LogLevel.info ? 1 : 0;
+    stats[1]++;
+  } else {
+    logEntry.children.reduce((acc, val) => {
+      const childStats = logStatsDive(val);
+      acc[0] += childStats[0];
+      acc[1] += childStats[1];
+      return acc;
+    }, stats)
+  }
+  return stats;
 }
