@@ -22,6 +22,7 @@ type listener = (type: string, data: any)=>void;
 export class ToolbarController extends VisualComponent {
 
   listeners: listener[] = [];
+  isEraserOn = false;
 
   constructor() {
     super(template);
@@ -30,6 +31,7 @@ export class ToolbarController extends VisualComponent {
     this.bits.get('grid')?.addEventListener('click', this.grid.bind(this));
     this.bits.get('share')?.addEventListener('click', this.share.bind(this));
     this.bits.get('download')?.addEventListener('click', this.download.bind(this));
+    this.bits.get('eraser')?.addEventListener('click', this.toggleEraser.bind(this));
   }
 
   on(listener: listener) {
@@ -50,6 +52,11 @@ export class ToolbarController extends VisualComponent {
   }
   download() {
     this.listeners.forEach(l => l('download', null));
+  }
+  toggleEraser() {
+    this.isEraserOn = !this.isEraserOn;
+    this.bits.get('eraser')?.classList.toggle('on');
+    this.listeners.forEach(l => l('eraser', this.isEraserOn));
   }
 
   setThickness(value: number) {

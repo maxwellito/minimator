@@ -1,4 +1,5 @@
 import { GESTURE, STATE, EventData } from './touchController.js';
+import { HistoryStack, HistoryAction, HistoryActionType } from './historyStack.js'
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
@@ -8,6 +9,8 @@ interface Coordinate {
 }
 
 export class Surface {
+  history = new HistoryStack;
+  mode: SurfaceMode = SurfaceMode.PEN_MODE;
   gap = 20;
   el: SVGElement;
   definitions: SVGDefsElement;
@@ -186,6 +189,11 @@ export class Surface {
       } else if (state === STATE.END) {
         if (this.currentElement) {
           this.currentElement.classList.remove('pending');
+          this.history.add({
+            type: HistoryActionType.ADD,
+            element: this.currentElement,
+            position: this.content.children.length
+          })
         }
         console.log('RESETED');
         this.currentElement = undefined;
@@ -193,13 +201,46 @@ export class Surface {
         this.fngPoint = undefined;
       }
     } else if (type === GESTURE.UNDO && state === STATE.END) {
-      if (!this.content.children.length) {
+      this.undo()
+    }
+  }
+
+  undo() {
+    const action = this.history.undo();
+    console.log(':undo:',action);
+    if (!action) {
+      return;
+    }
+    switch(action.type) {
+      case HistoryActionType.ADD:
+        this.content.removeChild(action.element);
+        break;
+      case HistoryActionType.REMOVE:
+        if (action.position >= this.content.children.length) {
+          this.content.appendChild(action.element);
+        } else {
+          this.content.insertBefore(action.element, this.content.children[action.position]);
+        }
+    }
+  }
+
+  redo() {
+    const action = this.history.redo();
+    console.log(':redo:',action);
+      if (!action) {
         return;
       }
-      this.content.removeChild(
-        this.content.children[this.content.children.length - 1]
-      );
-    }
+      switch(action.type) {
+        case HistoryActionType.REMOVE:
+          this.content.removeChild(action.element);
+          break;
+        case HistoryActionType.ADD:
+          if (action.position >= this.content.children.length) {
+            this.content.appendChild(action.element);
+          } else {
+            this.content.insertBefore(action.element, this.content.children[action.position]);
+          }
+      }
   }
 
   coordToPoint(scrOriginPx: EventData['origin']) {
@@ -344,6 +385,10 @@ export class Surface {
     }
   }
 
+  setMode(mode: SurfaceMode) {
+    this.mode = mode;
+  }
+
   // Extract SVG
   extractSVG(margin = 4) {
     const doubleMargin = margin * 2;
@@ -356,4 +401,9 @@ export class Surface {
 
     return svg.outerHTML;
   }
+}
+
+export enum SurfaceMode {
+  PEN_MODE = 1,
+  ERASER_MODE = 2
 }
