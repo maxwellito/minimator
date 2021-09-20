@@ -82,6 +82,4 @@ describe('historyStack', () => {
     myHistory.add(mockActions[1]);
     assert(myHistory.canRedo(), false);
   });
-
-  // it('fait rien', () => {});
 });

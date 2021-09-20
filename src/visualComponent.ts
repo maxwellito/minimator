@@ -22,6 +22,9 @@ export class VisualComponent {
       if (bitName === null) {
         return;
       }
+      if (this.bits.get(bitName)) {
+        throw new Error(`VisualComponent has been created with duplicated key for '${bitName}'`)
+      }
       this.bits.set(bitName, bit);
     });
   }
