@@ -1,4 +1,4 @@
-import { describe, it, assert } from './tests/index.js';
+import { describe, it, assert } from './tests/lib.js';
 import { VisualComponent } from './visualComponent.js';
 
 describe('VisualComponent', () => {
@@ -19,7 +19,7 @@ describe('VisualComponent', () => {
   })
 
   it('should throw an error if built with no HTML', () => {
-    let catchedError: Error | undefined;
+    let catchedError: any;
     try {
       new VisualComponent('');
     } catch (e) {
@@ -30,7 +30,7 @@ describe('VisualComponent', () => {
   });
 
   it('should throw an error if built with comment', () => {
-    let catchedError: Error | undefined;
+    let catchedError: any;
     try {
       new VisualComponent('<!-- Hello -->');
     } catch (e) {
@@ -41,7 +41,7 @@ describe('VisualComponent', () => {
   });
 
   it('should throw an error if built with more than one node', () => {
-    let catchedError: Error | undefined;
+    let catchedError: any;
     try {
       new VisualComponent('<header></header><footer></footer>');
     } catch (e) {
@@ -52,7 +52,7 @@ describe('VisualComponent', () => {
   });
 
   it('should throw an error if built with duplicated key', () => {
-    let catchedError: Error | undefined;
+    let catchedError: any;
     try {
       new VisualComponent(`
         <div>

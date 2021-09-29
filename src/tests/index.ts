@@ -120,3 +120,14 @@ const logStatsDive = (logEntry: Log, stats: logStats = [0,0]) => {
   }
   return stats;
 }
+
+
+export function mock (valueToReturn?: any) {
+  const calls: any[] = [];
+  const m = function () {
+    calls.push(arguments);
+    return valueToReturn;
+  }
+  m.calls = calls;
+  return m;
+}
