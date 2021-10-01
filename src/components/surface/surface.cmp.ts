@@ -204,7 +204,7 @@ export class SurfaceComponent extends BaseComponent {
             x: Math.abs(vector.x),
             y: Math.abs(vector.y),
           };
-          console.log(vector);
+          // console.log(vector);
           // return;
 
           if (abxVector.x < abxVector.y / 2) {
@@ -343,10 +343,32 @@ export class SurfaceComponent extends BaseComponent {
       x: this.fngPoint.x - this.drawingStartPoint.x,
       y: this.fngPoint.y - this.drawingStartPoint.y,
     };
-    const maxAxis = Math.max(Math.abs(vector.x), Math.abs(vector.y));
+    let maxAxis = Math.max(Math.abs(vector.x), Math.abs(vector.y));
     vector.x = (vector.x > 0 ? 1 : -1) * maxAxis;
     vector.y = (vector.y > 0 ? 1 : -1) * maxAxis;
 
+    // Test if the destination is in the map
+    const dest = {
+      x: this.drawingStartPoint.x + vector.x,
+      y: this.drawingStartPoint.y + vector.y
+    };
+    
+    if (dest.x < 0) {
+      maxAxis += dest.x;
+    }
+    if (dest.y < 0) {
+      maxAxis += dest.y;
+    }
+    if (dest.x >= this.width) {
+      maxAxis += (this.width - dest.x - 1);      
+    }
+    if (dest.y >= this.height) {
+      maxAxis += (this.height - dest.y -1);
+    }
+    vector.x = (vector.x > 0 ? 1 : -1) * maxAxis;
+    vector.y = (vector.y > 0 ? 1 : -1) * maxAxis;
+
+    // Define curve points
     const p1 = {
       x: (this.drawingStartPoint.x + 0.5) * this.gap,
       y: (this.drawingStartPoint.y + 0.5) * this.gap,
