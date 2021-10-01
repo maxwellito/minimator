@@ -1,0 +1,29 @@
+:host {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  top: 1rem;
+  right: 1rem;
+  background: black;
+  padding: 0 .4em;
+  height: 1.7em;
+  border-radius: .25em;
+  color: #fff;
+  font-size: 20px;
+}
+:host .count {
+  display: inline-block;
+  min-width: 2.5ch;
+  text-align: center;
+}
+:host .split {
+  height: 100%;
+  width: 2px;
+  display: inline-block;
+  background: currentColor;
+  opacity: .2;
+  margin: 0 .35em;
+}
+:host svg:hover {
+  background-color: #fff2;
+}
