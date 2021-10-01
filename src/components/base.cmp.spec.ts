@@ -10,12 +10,12 @@ describe('BaseComponent', () => {
   it('should get all the keys', () => {
     const cmp = new BaseComponent(`
       <div>
-        <div data-bit="a"></div>
-        <div data-bit="b"></div>
+        <div data-ref="a"></div>
+        <div data-ref="b"></div>
       </div>
     `);
-    assert(cmp.subs.get('a')?.nodeName, 'DIV');
-    assert(cmp.subs.get('b')?.nodeName, 'DIV');
+    assert(cmp.refs.get('a')?.nodeName, 'DIV');
+    assert(cmp.refs.get('b')?.nodeName, 'DIV');
   })
 
   it('should throw an error if built with no HTML', () => {
@@ -50,8 +50,8 @@ describe('BaseComponent', () => {
     try {
       new BaseComponent(`
         <div>
-          <div data-bit="a"></div>
-          <div data-bit="a"></div>
+          <div data-ref="a"></div>
+          <div data-ref="a"></div>
         </div>
       `);
     } catch (e) {

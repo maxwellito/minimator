@@ -1,3 +1,7 @@
+/**
+ * Handle a stack of event to unde/redo.
+ * Behaves like a linear browser navigation.
+ */
 export class HistoryStack {
   stack: HistoryAction[] = [];
   index = -1;

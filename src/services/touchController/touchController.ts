@@ -240,6 +240,7 @@ export class TouchController {
     this.broadcast(STATE.END, this.lastData);
     this.currentEvent = eventType;
     this.lastData = undefined;
+    console.log(eventData)
     this.broadcast(STATE.START, eventData);
   }
 

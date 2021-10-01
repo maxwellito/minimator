@@ -3,7 +3,7 @@ import { SVG_ICONS } from './toolbar.icons.js';
 
 const template = `
   ${SVG_ICONS.minus}
-  <span class="count" data-bit="thickness">3</span>
+  <span class="count" data-ref="thickness">3</span>
   ${SVG_ICONS.plus}
   <span class="split"></span>
   ${SVG_ICONS.eraser}
@@ -25,12 +25,12 @@ export class ToolbarComponent extends BaseComponent {
   constructor() {
     super(template, './src/components/toolbar/toolbar.style.css');
     this.classList.add('unselectable');
-    this.subs.get('minus')?.addEventListener('click', this.minus.bind(this));
-    this.subs.get('plus')?.addEventListener('click', this.plus.bind(this));
-    this.subs.get('grid')?.addEventListener('click', this.grid.bind(this));
-    this.subs.get('share')?.addEventListener('click', this.share.bind(this));
-    this.subs.get('download')?.addEventListener('click', this.download.bind(this));
-    this.subs.get('eraser')?.addEventListener('click', this.toggleEraser.bind(this));
+    this.refs.get('minus')?.addEventListener('click', this.minus.bind(this));
+    this.refs.get('plus')?.addEventListener('click', this.plus.bind(this));
+    this.refs.get('grid')?.addEventListener('click', this.grid.bind(this));
+    this.refs.get('share')?.addEventListener('click', this.share.bind(this));
+    this.refs.get('download')?.addEventListener('click', this.download.bind(this));
+    this.refs.get('eraser')?.addEventListener('click', this.toggleEraser.bind(this));
   }
 
   on(listener: listener) {
@@ -54,12 +54,12 @@ export class ToolbarComponent extends BaseComponent {
   }
   toggleEraser() {
     this.isEraserOn = !this.isEraserOn;
-    this.subs.get('eraser')?.classList.toggle('on');
+    this.refs.get('eraser')?.classList.toggle('on');
     this.listeners.forEach(l => l('eraser', this.isEraserOn));
   }
 
   setThickness(value: number) {
-    const thickness: any = this.subs.get('thickness');
+    const thickness: any = this.refs.get('thickness');
     thickness.innerText = `${value}`;
   }
 }

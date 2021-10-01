@@ -16,7 +16,7 @@ describe('ToolbarComponent', () => {
     const listener: any = mock();
     const tc = new ToolbarComponent();
     tc.on(listener);
-    tc.subs.get('minus')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('minus')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'minus');
   });
 
@@ -24,7 +24,7 @@ describe('ToolbarComponent', () => {
     const listener: any = mock();
     const tc = new ToolbarComponent();
     tc.on(listener);
-    tc.subs.get('plus')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('plus')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'plus');
   });
 
@@ -32,7 +32,7 @@ describe('ToolbarComponent', () => {
     const listener: any = mock();
     const tc = new ToolbarComponent();
     tc.on(listener);
-    tc.subs.get('grid')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('grid')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'grid');
   });
 
@@ -40,7 +40,7 @@ describe('ToolbarComponent', () => {
     const listener: any = mock();
     const tc = new ToolbarComponent();
     tc.on(listener);
-    tc.subs.get('share')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('share')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'share');
   });
 
@@ -48,7 +48,7 @@ describe('ToolbarComponent', () => {
     const listener: any = mock();
     const tc = new ToolbarComponent();
     tc.on(listener);
-    tc.subs.get('download')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('download')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'download');
   });
 
@@ -56,17 +56,17 @@ describe('ToolbarComponent', () => {
     const listener: any = mock();
     const tc = new ToolbarComponent();
     tc.on(listener);
-    tc.subs.get('eraser')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('eraser')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'eraser');
     assert(listener.calls[0][1], true);
-    tc.subs.get('eraser')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('eraser')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[1][0], 'eraser');
     assert(listener.calls[1][1], false);
   });
 
   it('should set the right thickness', () => {
     const tc = new ToolbarComponent();
-    const el = tc.subs.get('thickness') as HTMLDivElement;
+    const el = tc.refs.get('thickness') as HTMLDivElement;
     tc.setThickness(3)
     assert(el?.innerText, '3');
   });

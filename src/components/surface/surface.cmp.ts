@@ -1,5 +1,6 @@
-import { GESTURE, STATE, EventData } from './touchController.js';
-import { HistoryStack, HistoryAction, HistoryActionType } from './historyStack.js'
+import { GESTURE, STATE, EventData } from '../../services/touchController/touchController.js';
+import { HistoryStack, HistoryActionType } from '../../services/historyStack/historyStack.js';
+import { BaseComponent } from '../base.cmp.js';
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
@@ -8,66 +9,95 @@ interface Coordinate {
   y: number;
 }
 
-export class Surface {
+export enum SurfaceMode {
+  PEN_MODE = 1,
+  ERASER_MODE = 2
+}
+
+export class SurfaceComponent extends BaseComponent {
   history = new HistoryStack;
   mode: SurfaceMode = SurfaceMode.PEN_MODE;
-  gap = 20;
   el: SVGElement;
-  definitions: SVGDefsElement;
   dots: SVGGElement;
   content: SVGGElement;
+  
   width = 0;
   height = 0;
   scale = 1;
+  gap = 20;
+
   thickness = 3;
   viewBox = [0, 0, 100, 100];
-  rect: any;
+  rect = new DOMRect();
   drawingStartPoint?: Coordinate;
   fngPoint?: Coordinate;
 
   currentElement?: SVGLineElement | SVGPathElement;
 
   constructor(width: number, height: number) {
+    const gap = 20;
+    const template = `
+      <svg data-ref="svg" xmlns="http://www.w3.org/2000/svg" class="surface">
+        <defs>
+          <pattern width="${100 / width}%" height="${100 / height}%" viewBox="0,0,${gap},${gap}" id="dot">
+            <circle cx="${0.5 * gap}" cy="${0.5 * gap}" r="1" fill="#000"></circle>
+          </pattern>
+        </defs>
+        <rect data-ref="dots" x="0" y="0" width="${width * gap}" height="${height * gap}" style="fill: url('#dot'); display: inherit;"></rect>
+        <g data-ref="content" stroke="black" stroke-linecap="round" fill="none" stroke-width="3"></g>
+      </svg>
+    `;
+    const cssLink = './src/components/surface/surface.style.css';
+
+    super(template, cssLink);
+
     this.width = width;
     this.height = height;
     this.scale = 1;
-    this.gap = 20;
+    this.gap = gap;
 
-    // Create the canvas
-    this.el = document.createElementNS(SVG_NAMESPACE, 'svg');
-    this.el.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    this.el.classList.add('surface');
+    // Save referenced elements
+    this.el = this.refs.get('svg') as SVGElement;
+    this.dots = this.refs.get('dots') as SVGGElement;
+    this.content = this.refs.get('content') as SVGGElement;
 
-    // Add dots layer
-    const dot = document.createElementNS(SVG_NAMESPACE, 'circle');
-    dot.setAttribute('cx', `${0.5 * this.gap}`);
-    dot.setAttribute('cy', `${0.5 * this.gap}`);
-    dot.setAttribute('r', '1');
-    dot.setAttribute('fill', '#000');
-    const dotPattern = document.createElementNS(SVG_NAMESPACE, 'pattern');
-    dotPattern.setAttribute('width', `${100 / width}%`);
-    dotPattern.setAttribute('height', `${100 / height}%`);
-    dotPattern.setAttribute('viewBox', `0,0,${this.gap},${this.gap}`);
-    dotPattern.id = 'dot';
-    dotPattern.appendChild(dot);
-    this.definitions = document.createElementNS(SVG_NAMESPACE, 'defs');
-    this.definitions.appendChild(dotPattern);
-    this.el.appendChild(this.definitions);
+    // this.rect = new DOMRect();
 
-    this.dots = document.createElementNS(SVG_NAMESPACE, 'rect');
-    this.dots.setAttribute('x', '0');
-    this.dots.setAttribute('y', '0');
-    this.dots.setAttribute('width', `${width * this.gap}`);
-    this.dots.setAttribute('height', `${height * this.gap}`);
-    this.dots.style.fill = 'url(#dot)';
-    this.el.appendChild(this.dots);
+    // // Create the canvas
+    // this.el = document.createElementNS(SVG_NAMESPACE, 'svg');
+    // this.el.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    // this.el.classList.add('surface');
 
-    // Add content layer
-    this.content = document.createElementNS(SVG_NAMESPACE, 'g');
-    this.content.setAttribute('stroke', 'black');
-    this.content.setAttribute('stroke-linecap', 'round');
-    this.content.setAttribute('fill', 'none');
-    this.el.appendChild(this.content);
+    // // Add dots layer
+    // const dot = document.createElementNS(SVG_NAMESPACE, 'circle');
+    // dot.setAttribute('cx', `${0.5 * this.gap}`);
+    // dot.setAttribute('cy', `${0.5 * this.gap}`);
+    // dot.setAttribute('r', '1');
+    // dot.setAttribute('fill', '#000');
+    // const dotPattern = document.createElementNS(SVG_NAMESPACE, 'pattern');
+    // dotPattern.setAttribute('width', `${100 / width}%`);
+    // dotPattern.setAttribute('height', `${100 / height}%`);
+    // dotPattern.setAttribute('viewBox', `0,0,${this.gap},${this.gap}`);
+    // dotPattern.id = 'dot';
+    // dotPattern.appendChild(dot);
+    // this.definitions = document.createElementNS(SVG_NAMESPACE, 'defs');
+    // this.definitions.appendChild(dotPattern);
+    // this.el.appendChild(this.definitions);
+
+    // this.dots = document.createElementNS(SVG_NAMESPACE, 'rect');
+    // this.dots.setAttribute('x', '0');
+    // this.dots.setAttribute('y', '0');
+    // this.dots.setAttribute('width', `${width * this.gap}`);
+    // this.dots.setAttribute('height', `${height * this.gap}`);
+    // this.dots.style.fill = 'url(#dot)';
+    // this.el.appendChild(this.dots);
+
+    // // Add content layer
+    // this.content = document.createElementNS(SVG_NAMESPACE, 'g');
+    // this.content.setAttribute('stroke', 'black');
+    // this.content.setAttribute('stroke-linecap', 'round');
+    // this.content.setAttribute('fill', 'none');
+    // this.el.appendChild(this.content);
 
     // Set defaults
     this.setThickness(3);
@@ -84,6 +114,7 @@ export class Surface {
     const sQ = square * (1 + 2 * padding);
 
     this.rect = rect;
+    // debugger;
 
     if (rect.width > rect.height) {
       this.viewBox = [
@@ -403,7 +434,4 @@ export class Surface {
   }
 }
 
-export enum SurfaceMode {
-  PEN_MODE = 1,
-  ERASER_MODE = 2
-}
+customElements.define('surface-cmp', SurfaceComponent);

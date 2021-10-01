@@ -1,6 +1,6 @@
 export class BaseComponent extends HTMLElement {
 
-  subs = new Map<string, Element>();
+  refs = new Map<string, Element>();
 
   constructor (html: string = '', cssLink?: string) {
     // Call parent
@@ -24,17 +24,17 @@ export class BaseComponent extends HTMLElement {
       throw new Error('BaseComponent has been created without HTML')
     }
 
-    // Find subs
-    const subs = container.querySelectorAll('[data-bit]')
-    subs.forEach(bit => {
-      const bitName = bit.getAttribute('data-bit');
+    // Find refs
+    const refs = container.querySelectorAll('[data-ref]')
+    refs.forEach(bit => {
+      const bitName = bit.getAttribute('data-ref');
       if (bitName === null) {
         return;
       }
-      if (this.subs.get(bitName)) {
+      if (this.refs.get(bitName)) {
         throw new Error(`BaseComponent has been created with duplicated key for '${bitName}'`)
       }
-      this.subs.set(bitName, bit);
+      this.refs.set(bitName, bit);
     });
 
     // Append child

@@ -1,4 +1,4 @@
-import { describe, it, assert, before, beforeEach } from './tests/lib.js';
+import { describe, it, assert, before, beforeEach } from '../../tests/lib.js';
 import {HistoryStack, HistoryActionType} from './historyStack.js';
 
 const mockActions = [
