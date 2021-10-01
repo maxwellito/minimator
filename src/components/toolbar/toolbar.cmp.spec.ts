@@ -4,7 +4,7 @@ import { ToolbarComponent } from "./toolbar.cmp.js";
 describe('ToolbarComponent', () => {
   it('should link the styling', () => {
     const cmp = new ToolbarComponent();
-    assert(!cmp.querySelector('link'), true);
+    assert(!!cmp.shadowRoot?.querySelector('link'), true);
   });
 
   it('should build an unselectable element', () => {

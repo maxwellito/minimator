@@ -11,12 +11,12 @@
   color: #fff;
   font-size: 20px;
 }
-:host .count {
+.count {
   display: inline-block;
   min-width: 2.5ch;
   text-align: center;
 }
-:host .split {
+.split {
   height: 100%;
   width: 2px;
   display: inline-block;
@@ -24,6 +24,15 @@
   opacity: .2;
   margin: 0 .35em;
 }
-:host svg:hover {
+svg:hover {
   background-color: #fff2;
+}
+svg.feather {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  width: 1em;
+  height: 1em;
 }

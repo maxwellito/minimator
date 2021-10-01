@@ -38,7 +38,7 @@ export class BaseComponent extends HTMLElement {
     });
 
     // Append child
-    this.append(...container.children);
+    this.shadowRoot?.append(...container.children);
   }
 }
 customElements.define('base-component', BaseComponent);

@@ -4,7 +4,7 @@ import { BaseComponent } from './base.cmp.js';
 describe('BaseComponent', () => {
   it('should build a component', () => {
     const cmp = new BaseComponent('<div>Hi.</div>');
-    assert(cmp.textContent, 'Hi.');
+    assert(cmp.shadowRoot?.textContent, 'Hi.');
   });
 
   it('should get all the keys', () => {
@@ -42,7 +42,7 @@ describe('BaseComponent', () => {
 
   it('should be able to build a component with more than one node', () => {
     const cmp = new BaseComponent('<header></header><footer></footer>');
-    assert(cmp.children.length, 2);
+    assert(cmp.shadowRoot?.children.length, 2);
   });
 
   it('should throw an error if built with duplicated key', () => {

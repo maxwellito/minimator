@@ -23,15 +23,7 @@
         stroke-dasharray: 1 10;
         animation: progress 2s linear 0s infinite;
       }
-      svg.feather {
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        width: 1em;
-        height: 1em;
-      }
+      
       @keyframes progress {
         from {
           stroke-dashoffset: 0;
@@ -39,37 +31,6 @@
         to {
           stroke-dashoffset: 110;
         }
-      }
-
-      /* Toolbar */
-      .toolbar {
-        position: fixed;
-        display: flex;
-        align-items: center;
-        top: 1rem;
-        right: 1rem;
-        background: black;
-        padding: 0 .4em;
-        height: 1.7em;
-        border-radius: .25em;
-        color: #fff;
-        font-size: 20px;
-      }
-      .toolbar .count {
-        display: inline-block;
-        min-width: 2.5ch;
-        text-align: center;
-      }
-      .toolbar .split {
-        height: 100%;
-        width: 2px;
-        display: inline-block;
-        background: currentColor;
-        opacity: .2;
-        margin: 0 .35em;
-      }
-      .toolbar svg:hover {
-        background-color: #fff2;
       }
 
       /* Utils */
@@ -86,7 +47,7 @@
   <script type="module">
     import { Surface } from './dist/surface.js';
     import { TouchController } from './dist/touchController.js';
-    import { ToolbarController } from './dist/toolbarController.js';
+    import { ToolbarComponent } from './dist/components/toolbar/toolbar.cmp.js';
     import { downloader, share } from './dist/features.js';
 
     import './dist/tests/list.js';
@@ -100,8 +61,8 @@
     window.addEventListener('resize', mySurface.onResize.bind(mySurface));
     mySurface.onResize();
 
-    const toolbar = new ToolbarController();
-    document.body.appendChild(toolbar.el);
+    const toolbar = new ToolbarComponent();
+    document.body.appendChild(toolbar);
     toolbar.on((eventName, eventData) => {
       let svgOutput;
       switch(eventName) {
