@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "serve": "http-server",
-    "start": "./node_modules/.bin/tsc -w --project tsconfig.json",
-    "build": "./node_modules/.bin/tsc --project tsconfig.json"
+    "start": "rm -rf dist && ./node_modules/.bin/tsc -w --project tsconfig.json",
+    "build": "rm -rf dist && ./node_modules/.bin/tsc --project tsconfig.json"
   },
   "author": "maxwellito",
   "repository": {
