@@ -1,22 +1,22 @@
 /**
  * Wrapper to trigger the ShareAPI
- * 
+ *
  * @param title Share title
  * @param url Share URL
  * @param svgContent SVG content to share as string
  */
-export function share (title: string, url: string, svgContent: string) {
-  const blob = new Blob([svgContent], {type: 'image/svg+xml'});
+export function share(title: string, url: string, svgContent: string) {
+  const blob = new Blob([svgContent], { type: 'image/svg+xml' });
   const basicShare = {
     url,
-    title
+    title,
   };
   const fullShare = {
     ...basicShare,
     files: [
       new File([blob], `minimator_demo.svg`, {
         type: blob.type,
-      })
+      }),
     ],
   };
   if ((navigator as any).canShare(fullShare)) {
@@ -27,26 +27,54 @@ export function share (title: string, url: string, svgContent: string) {
 }
 
 // Build the downloader anchor
-let downloadAnchor = document.createElement('a')
-downloadAnchor.style.display = 'none'
-document.body.appendChild(downloadAnchor)
+let downloadAnchor = document.createElement('a');
+downloadAnchor.style.display = 'none';
+document.body.appendChild(downloadAnchor);
 
 /**
  * Utility to start a download
- * 
+ *
  * From http://jsfiddle.net/koldev/cw7w5/
  * >> +1 Good Job!
- * 
+ *
  * @param svgContent SVG content for download
  * @param fileName File name for download
  */
-export function downloader (svgContent: BlobPart, fileName: string) {
-  let blob = new Blob([svgContent], {type: 'octet/stream'}),
-      url = window.URL.createObjectURL(blob)
-  downloadAnchor.href = url
-  downloadAnchor.download = fileName
-  downloadAnchor.click()
+export function downloader(svgContent: BlobPart, fileName: string) {
+  let blob = new Blob([svgContent], { type: 'octet/stream' }),
+    url = window.URL.createObjectURL(blob);
+  downloadAnchor.href = url;
+  downloadAnchor.download = fileName;
+  downloadAnchor.click();
   window.setTimeout(function () {
-    window.URL.revokeObjectURL(url)
-  }, 10)
-};
+    window.URL.revokeObjectURL(url);
+  }, 10);
+}
+
+/**
+ * Security check
+ * No need to go further, the cheap DRM is here.
+ */
+export function securityCheck() {
+  // 1st step: Embedding
+  // I hate when my creations are embedded on another website
+  // without my permission and with 20 adverts around.
+  // But instead of blocking it, lets have fun.
+  if (window.top !== window.self) {
+    setInterval(() => {
+      if (window.top?.document?.body) {
+        const rotate = Math.cos(Date.now() / 1000) * 45;
+        window.top.document.body.style.transform = `rotate(${rotate}deg)`;
+        window.document.body.style.transform = `rotate(${-rotate}deg)`;
+      }
+    }, 50);
+    window.document.body.innerHTML = `<iframe
+      src="https://giphy.com/embed/Ju7l5y9osyymQ" 
+      width="100%" 
+      height="100%" 
+      frameBorder="0"
+      style="position:fixed;z-index:9999;"
+      allowFullScreen
+    ></iframe>`;
+  }
+}

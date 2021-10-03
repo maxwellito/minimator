@@ -32,13 +32,22 @@
   </head>
   <body></body>
   <script type="module">
+    // Imports
     import { SurfaceComponent } from './dist/components/surface/surface.cmp.js';
     import { ToolbarComponent } from './dist/components/toolbar/toolbar.cmp.js';
     import { TouchController } from './dist/services/touchController/touchController.js';
-    import { downloader, share } from './dist/services/features.js';
+    import {
+      downloader,
+      share,
+      securityCheck,
+    } from './dist/services/features.js';
     import { Shortcut } from './dist/services/shortcut/shortcut.js';
 
+    // Run tests
     import './dist/tests/list.js';
+
+    // Security 'lol' check
+    securityCheck();
 
     const mySurface = new SurfaceComponent(50, 50);
     window.ma = mySurface;
