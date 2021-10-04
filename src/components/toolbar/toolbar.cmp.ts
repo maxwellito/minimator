@@ -1,5 +1,5 @@
 import { BaseComponent } from '../base.cmp.js';
-import { SVG_ICONS } from './toolbar.icons.js';
+import { SVG_ICONS } from '../../services/feather.icons.js';
 
 const template = `
   ${SVG_ICONS.minus}

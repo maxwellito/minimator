@@ -1,0 +1,88 @@
+:host {
+  position: relative;
+  scroll-snap-align: start;
+  display: inline-block;
+  width: 60vw;
+  max-width: 300px;
+  margin: 10px 24px 12px 0;
+  padding: 20px;
+  border: 1px solid #000;
+  border-radius: 3px;
+
+  top: 0px;
+  left: 0px;
+  box-shadow: 8px 8px 0 black;
+
+  transition: 0.3s top, 0.3s left, 0.3s box-shadow;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :host(:hover) {
+    top: -8px;
+    left: -8px;
+    box-shadow: 16px 16px 0 black;
+  }
+}
+
+:host .img {
+  aspect-ratio: 1;
+}
+.fake-img {
+  background-color: #fff;
+  background-image: radial-gradient(#000 0.5px, #fff 0.5px);
+  background-size: 10px 10px;
+}
+
+:host .label {
+  font-family: 'DM Serif Display';
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 2;
+  overflow: hidden;
+}
+
+:host .icon-xl {
+  width: 2em;
+  height: 2em;
+  display: inline-block;
+  font-size: 40px;
+  text-align: center;
+  line-height: 2em;
+  font-family: 'DM Serif Display';
+  border-radius: 50%;
+  border: 1px solid currentColor;
+}
+
+:host .label-xl {
+  font-size: 40px;
+  line-height: 1;
+}
+
+:host .bottomline {
+  display: flex;
+  justify-content: space-between;
+  line-height: 24px;
+}
+
+.actions button {
+  background: none;
+  border: 1px solid transparent;
+  height: 22px;
+  width: 36px;
+  border-radius: 2px;
+  line-height: 22px;
+}
+
+.actions button:hover {
+  border: 1px solid currentColor;
+}
+
+svg.feather {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  width: 1em;
+  height: 1em;
+}

@@ -16,7 +16,7 @@ describe('BaseComponent', () => {
     `);
     assert(cmp.refs.get('a')?.nodeName, 'DIV');
     assert(cmp.refs.get('b')?.nodeName, 'DIV');
-  })
+  });
 
   it('should throw an error if built with no HTML', () => {
     let catchedError: any;
@@ -26,7 +26,10 @@ describe('BaseComponent', () => {
       catchedError = e;
     }
     assert(!!catchedError, true);
-    assert(catchedError?.message, 'BaseComponent has been created without HTML');
+    assert(
+      catchedError?.message,
+      'BaseComponent has been created without HTML'
+    );
   });
 
   it('should throw an error if built with comment', () => {
@@ -37,7 +40,10 @@ describe('BaseComponent', () => {
       catchedError = e;
     }
     assert(!!catchedError, true);
-    assert(catchedError?.message, 'BaseComponent has been created without HTML');
+    assert(
+      catchedError?.message,
+      'BaseComponent has been created without HTML'
+    );
   });
 
   it('should be able to build a component with more than one node', () => {
@@ -58,11 +64,14 @@ describe('BaseComponent', () => {
       catchedError = e;
     }
     assert(!!catchedError, true);
-    assert(catchedError?.message, 'BaseComponent has been created with duplicated key for \'a\'');
+    assert(
+      catchedError?.message,
+      "BaseComponent has been created with duplicated key for 'a'"
+    );
   });
 
   it('should link a CSS file when provided', () => {
-    const cmp = new BaseComponent('<header></header>', './src/components/toolbarController.spec.ts');
+    const cmp = new BaseComponent('<header></header>', './src/style.css');
     assert(!cmp.querySelector('link'), true);
   });
-})
+});

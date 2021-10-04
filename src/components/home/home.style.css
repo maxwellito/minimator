@@ -1,0 +1,56 @@
+@media (min-width: 768px) {
+  :host {
+    --left-space: 100px;
+  }
+}
+@media (max-width: 768px) {
+  :host {
+    --left-space: 36px;
+  }
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+}
+
+.home-carousel {
+  scrollbar-width: none;
+  overflow-x: scroll;
+  white-space: nowrap;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-padding: var(--left-space);
+  scroll-snap-points-x: repeat(344px);
+}
+
+:host h1,
+:host hr {
+  margin-left: var(--left-space);
+}
+
+:host h1 {
+  font-family: 'DM Serif Display';
+  font-size: 48px;
+  letter-spacing: -1px;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+:host hr {
+  background: #000;
+  border: none;
+  height: 1px;
+  width: 200px;
+  margin-top: 0;
+  margin-bottom: 40px;
+}
+
+.home-carousel-wrap {
+  display: table-cell;
+  vertical-align: top;
+  padding-left: var(--left-space);
+  padding-right: var(--left-space);
+}
