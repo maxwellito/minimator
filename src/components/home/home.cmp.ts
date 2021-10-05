@@ -1,4 +1,4 @@
-import { BaseComponent } from '../base.cmp.js';
+import { PageComponent } from '../page.cmp.js';
 import { HomeCardComponent } from '../home-card/home-card.cmp.js';
 
 const template = `
@@ -11,36 +11,42 @@ const template = `
 
 const mockData = [
   {
+    id: 0,
     title: 'calipso',
     created_at: Date.now() - 2 * 24 * 60 * 60000,
     updated_at: Date.now() - 1 * 24 * 60 * 60000,
     img: '...',
   },
   {
+    id: 1,
     title: 'UI Boxes',
     created_at: Date.now() - 2 * 24 * 60 * 60000,
     updated_at: Date.now() - 0.5 * 24 * 60 * 60000,
     img: '...',
   },
   {
+    id: 3,
     title: 'Klingon',
     created_at: Date.now() - 2 * 24 * 60 * 60000,
     updated_at: Date.now() - 0.25 * 24 * 60 * 60000,
     img: '...',
   },
   {
+    id: 6,
     title: 'Didot',
     created_at: Date.now() - 2 * 24 * 60 * 60000,
     updated_at: Date.now() - 1 * 24 * 60 * 60000,
     img: '...',
   },
   {
+    id: 8,
     title: 'Laventura',
     created_at: Date.now() - 2 * 24 * 60 * 60000,
     updated_at: Date.now() - 0.5 * 24 * 60 * 60000,
     img: '...',
   },
   {
+    id: 9,
     title: 'Roma',
     created_at: Date.now() - 2 * 24 * 60 * 60000,
     updated_at: Date.now() - 0.25 * 24 * 60 * 60000,
@@ -48,12 +54,18 @@ const mockData = [
   },
 ];
 
-export class HomeComponent extends BaseComponent {
+export class HomeComponent extends PageComponent {
   constructor() {
     super(template, './src/components/home/home.style.css');
-    this.refs.get('carousel')?.append(new HomeCardComponent());
+
+    const createCard = new HomeCardComponent();
+    this.refs.get('carousel')?.append(createCard);
+    createCard.onclick = () => (location.hash = '#create');
+
     mockData.forEach((d) => {
-      this.refs.get('carousel')?.append(new HomeCardComponent(d));
+      const card = new HomeCardComponent(d);
+      this.refs.get('carousel')?.append(card);
+      card.onclick = () => (location.hash = `#project/${d.id}`);
     });
   }
 }
