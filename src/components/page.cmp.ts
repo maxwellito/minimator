@@ -10,7 +10,7 @@ export class PageComponent extends BaseComponent {
     });
     return this.currentTransition;
   }
-  exit() {
+  exit(): Promise<void> {
     this.currentTransition = this.currentTransition.then(() => {
       return new Promise((res, rej) => {
         setTimeout(res, 500);
