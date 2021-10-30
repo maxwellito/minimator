@@ -1,13 +1,4 @@
-@media (min-width: 768px) {
-  :host {
-    --left-space: 100px;
-  }
-}
-@media (max-width: 768px) {
-  :host {
-    --left-space: 36px;
-  }
-}
+@import '../../style.css';
 
 :host {
   display: flex;

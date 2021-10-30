@@ -50,4 +50,14 @@ export const SVG_ICONS = {
     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
     <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
   </svg>`,
+  scaleX: `<svg data-ref="scaleX" class="feather" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <line x1="5" y1="12" x2="19" y2="12"/>
+    <polyline points="16 9 19 12 16 15"/>
+    <polyline points="8 9 5 12 8 15"/>
+  </svg>`,
+  scaleY: `<svg data-ref="scaleY" class="feather" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <line x1="12" y1="5" x2="12" y2="19"/>
+    <polyline points=" 9 16 12 19 15 16"/>
+    <polyline points=" 9 8 12 5 15 8"/>
+  </svg>`,
 };

@@ -47,9 +47,10 @@ export interface EventData {
     y: number;
   };
   scale?: number;
+  angle?: number;
 }
 
-type eventCallback = (type: GESTURE, state: STATE, data?: EventData) => {};
+type eventCallback = (type: GESTURE, state: STATE, data?: EventData) => void;
 
 export class TouchController {
   el: SVGElement;
@@ -60,7 +61,7 @@ export class TouchController {
   gestureMaxTouches = 0;
   currentGestureHasMoved = false; //# This property isn't in use
 
-  constructor(element: SVGElement) {
+  constructor(element: SVGElement, touchOnly = false) {
     // Save the element
     this.el = element;
 
@@ -82,6 +83,10 @@ export class TouchController {
     this.el.addEventListener('touchmove', this.touchmove);
     this.el.addEventListener('touchend', this.touchend);
     this.el.addEventListener('touchcancel', this.touchend);
+
+    if (!touchOnly) {
+      // Listen to click and scrolls
+    }
   }
 
   on(callback: eventCallback) {
@@ -217,7 +222,7 @@ export class TouchController {
         }
         const a1 = this.pointers.get(b1.identifier);
         const a2 = this.pointers.get(b2.identifier);
-        this.triggerUpdate({
+        const output = {
           origin: {
             x: (a1.clientX + a2.clientX) / 2,
             y: (a1.clientY + a2.clientY) / 2,
@@ -231,7 +236,13 @@ export class TouchController {
               Math.abs(b1.clientY - b2.clientY)) /
             (Math.abs(a1.clientX - a2.clientX) +
               Math.abs(a1.clientY - a2.clientY)),
-        });
+          angle: 0,
+        };
+        output.angle = Math.atan2(
+          b2.clientY - b1.clientY,
+          b2.clientX - b1.clientX
+        );
+        this.triggerUpdate(output);
         break;
     }
   }
@@ -240,7 +251,7 @@ export class TouchController {
     this.broadcast(STATE.END, this.lastData);
     this.currentEvent = eventType;
     this.lastData = undefined;
-    console.log(eventData)
+    console.log(eventData);
     this.broadcast(STATE.START, eventData);
   }
 

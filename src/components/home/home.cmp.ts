@@ -16,12 +16,12 @@ export class HomeComponent extends PageComponent {
 
     const createCard = new HomeCardComponent();
     this.refs.get('carousel')?.append(createCard);
-    createCard.onclick = () => (location.hash = '#create');
+    createCard.onclick = () => (location.hash = '#/create');
 
     store.loadIndexes().forEach((d) => {
       const card = new HomeCardComponent(d);
       this.refs.get('carousel')?.append(card);
-      card.onclick = () => (location.hash = `#project/${d.id}`);
+      card.onclick = () => (location.hash = `#/project/${d.id}`);
     });
   }
 

@@ -1,0 +1,134 @@
+@import '../../style.css';
+
+:host {
+  margin: 0 var(--left-space);
+  animation: fad .4s 1;
+}
+:host(.exit) {
+  animation: daf 0.4s 1;
+  animation-fill-mode: forward;
+}
+
+/* Dimensions */
+input {
+  background: none;
+  border: none;
+  border-bottom: 1px solid currentColor;
+  font-family: inherit;
+}
+input[type='number'] {
+  width: 4ch;
+  font-size: 32px;
+}
+input[type='text'] {
+  font-size: 24px;
+}
+input:focus {
+  outline: dotted 1px currentColor;
+  outline-offset: 3px;
+}
+svg.feather {
+  font-size: 2em;
+  vertical-align: bottom;
+}
+
+button {
+  font-size: 24px;
+  border: 1px solid currentColor;
+  padding: .5em 1em;
+  border-radius: 3px;
+  background: none;
+  cursor: pointer;
+}
+
+h1 {
+  margin-top: 0;
+}
+a {
+  font-family: var(--font-family-title);
+  color: inherit;
+}
+
+.create-container {
+  position: relative;
+}
+
+.create-column {
+  display: flex;
+  flex-direction: column;
+}
+.create-column > * + * {
+  margin-top: 16px;
+}
+
+.input-dimension {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pad {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  padding: 1em;
+}
+
+.form-actions {
+  text-align: center;
+}
+
+.fake-img {
+  background-color: transparent;
+  background-image: radial-gradient(currentColor 0.6px, transparent 0.8px);
+  background-size: 10px 10px;
+  background-position: center center;
+}
+
+/* Small screen */
+@media (max-width: 480px) {
+  :host {
+    display: block;
+    margin: 32px 16px;
+  }
+  .pad {
+    height: 220px;
+  }
+}
+
+/* Large screen */
+@media (min-width: 481px) {
+  :host {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+  }
+  .create-column {
+    width: 300px;
+
+    border: 1px solid currentColor;
+    margin-right: 24px;
+    padding: 20px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    box-shadow: 8px 8px 0 currentColor;
+  }
+  
+  hr {
+    border: 1px solid currentColor;
+    margin-right: -20px;
+    margin-left: -20px;
+  }
+
+  .pad {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 320px;
+    right: 0;
+    height: auto;
+
+    margin: 0;
+  }
+}
