@@ -2,6 +2,7 @@ import { Router } from './services/router/router.js';
 import { PageComponent } from './components/page.cmp.js';
 import { HomeComponent } from './components/home/home.cmp.js';
 import { CreateComponent } from './components/create/create.cmp.js';
+import { IntroComponent } from './components/intro/intro.cmp.js';
 
 let currentPage: PageComponent;
 
@@ -15,6 +16,11 @@ appRouter.addRoute({
   name: 'create',
   path: /^\/create$/gi,
   buildView: () => new CreateComponent(),
+});
+appRouter.addRoute({
+  name: 'intro',
+  path: /^\/intro$/gi,
+  buildView: () => new IntroComponent(),
 });
 appRouter.addRoute({
   name: 'project',

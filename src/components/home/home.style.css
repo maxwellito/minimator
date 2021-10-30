@@ -91,23 +91,7 @@ home-card-cmp:nth-child(9 + n) {
   animation-delay: calc(var(--card-intro-delay) * 10);
 }
 
-@keyframes fad {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
 
-@keyframes daf {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
 
 @keyframes grow {
   from {

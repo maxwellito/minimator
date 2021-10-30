@@ -1,5 +1,4 @@
 import { PageComponent } from '../page.cmp.js';
-import { HomeCardComponent } from '../home-card/home-card.cmp.js';
 import { store } from '../../store.js';
 import { SVG_ICONS } from '../../services/feather.icons.js';
 import {
@@ -10,7 +9,7 @@ import {
 } from '../../services/touchController/touchController.js';
 
 const template = `
-  <a href="#/home">☜ homepage</a>
+  <a class="breadcrumb" href="#/home">☜ homepage</a>
   <h1>Create a new canvas</h1>
   <form class="create-container" data-ref="form">
     <div class="create-column">

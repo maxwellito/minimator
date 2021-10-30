@@ -41,14 +41,6 @@ button {
   cursor: pointer;
 }
 
-h1 {
-  margin-top: 0;
-}
-a {
-  font-family: var(--font-family-title);
-  color: inherit;
-}
-
 .create-container {
   position: relative;
 }

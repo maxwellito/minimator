@@ -25,9 +25,20 @@
   }
 }
 
+@keyframes fad {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes daf {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
 body {
   margin: 0;
   font-family: var(--font-family-content);
+  font-weight: 300;
 }
 html,
 body {
@@ -44,6 +55,7 @@ h6,
 .title {
   font-family: var(--font-family-title);
   font-weight: bold;
+  line-height: 1;
 }
 
 svg.feather {
@@ -54,4 +66,12 @@ svg.feather {
   stroke-linejoin: round;
   width: 1em;
   height: 1em;
+}
+
+.breadcrumb {
+  font-family: var(--font-family-title);
+  color: inherit;
+}
+.breadcrumb + * {
+  margin-top: 0;
 }
