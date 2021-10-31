@@ -25,16 +25,5 @@ export class IntroComponent extends PageComponent {
   constructor() {
     super(template, './src/components/intro/intro.style.css');
   }
-
-  exit(): Promise<void> {
-    return new Promise((res) => {
-      const listener = () => {
-        res();
-        this.removeEventListener('animationend', listener);
-      };
-      this.addEventListener('animationend', listener);
-      this.classList.add('exit');
-    });
-  }
 }
 customElements.define('intro-cmp', IntroComponent);

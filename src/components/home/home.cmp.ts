@@ -24,16 +24,5 @@ export class HomeComponent extends PageComponent {
       card.onclick = () => (location.hash = `#/project/${d.id}`);
     });
   }
-
-  exit(): Promise<void> {
-    return new Promise((res) => {
-      const listener = () => {
-        res();
-        this.removeEventListener('animationend', listener);
-      };
-      this.addEventListener('animationend', listener);
-      this.classList.add('exit');
-    });
-  }
 }
 customElements.define('home-cmp', HomeComponent);

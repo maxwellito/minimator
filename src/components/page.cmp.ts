@@ -11,12 +11,14 @@ export class PageComponent extends BaseComponent {
     return this.currentTransition;
   }
   exit(): Promise<void> {
-    this.currentTransition = this.currentTransition.then(() => {
-      return new Promise((res, rej) => {
-        setTimeout(res, 500);
-      });
+    return new Promise((res) => {
+      const listener = () => {
+        res();
+        this.removeEventListener('animationend', listener);
+      };
+      this.addEventListener('animationend', listener);
+      this.classList.add('exit');
     });
-    return this.currentTransition;
   }
 }
 customElements.define('page-component', PageComponent);

@@ -100,16 +100,5 @@ export class CreateComponent extends PageComponent {
     })
 
   }
-
-  exit(): Promise<void> {
-    return new Promise((res) => {
-      const listener = () => {
-        res();
-        this.removeEventListener('animationend', listener);
-      };
-      this.addEventListener('animationend', listener);
-      this.classList.add('exit');
-    });
-  }
 }
 customElements.define('create-cmp', CreateComponent);
