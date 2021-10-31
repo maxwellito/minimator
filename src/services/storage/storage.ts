@@ -19,6 +19,7 @@ export class Storage {
     if (!this.indexes.length) {
       this.indexes = JSON.parse(localStorage.getItem(this.indexKey) || '[]');
     }
+    this.indexes.sort((a,b) => a.updated_at > b.updated_at ? -1 : 1);
     return this.indexes;
   }
 
