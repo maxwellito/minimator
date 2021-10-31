@@ -96,7 +96,7 @@ export class CreateComponent extends PageComponent {
       }));
 
       // Redirect
-      window.location.hash = `/project/${storeItem.id}`;
+      (window.location as any) = `#/project/${storeItem.id}`;
     })
 
   }

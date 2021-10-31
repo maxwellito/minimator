@@ -5,6 +5,9 @@
   width: 100%;
   height: 100%;
 }
+:host(.exit) {
+  animation: daf 0.4s 1;
+}
 
 /* Utils */
 .unselectable {
