@@ -22,10 +22,9 @@ export class HomeCardComponent extends BaseComponent {
       `;
     } else {
       template = `
-        <div class="img">
-          <div class="icon-xl">+</div>
-          <h2 class="label label-xl">Create<br/>a new<br/>canvas</h2>
-        </div>
+        <div class="icon-xl">+</div>
+        <h2 class="label label-xl">Create<br/>a new<br/>canvas</h2>
+        <div class="img"></div>
         <div class="label">&nbsp;</div>
         <div class="bottomline">&nbsp;</div>
       `;

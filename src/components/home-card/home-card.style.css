@@ -66,6 +66,14 @@
   line-height: 24px;
 }
 
+.icon-xl, .label-xl {
+  position: absolute;
+}
+
+.label-xl {
+  top: 2.25em;
+}
+
 .actions button {
   background: none;
   border: 1px solid transparent;
