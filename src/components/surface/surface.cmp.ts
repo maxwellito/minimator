@@ -34,7 +34,7 @@ export class SurfaceComponent extends BaseComponent {
 
   currentElement?: SVGLineElement | SVGPathElement;
 
-  constructor(width: number, height: number) {
+  constructor(width: number, height: number, content = '') {
     const gap = 20;
     const template = `
       <svg data-ref="svg" xmlns="http://www.w3.org/2000/svg" class="surface">
@@ -60,6 +60,8 @@ export class SurfaceComponent extends BaseComponent {
     this.el = this.refs.get('svg') as SVGElement;
     this.dots = this.refs.get('dots') as SVGGElement;
     this.content = this.refs.get('content') as SVGGElement;
+
+    this.content.innerHTML = content;
 
     // this.rect = new DOMRect();
 

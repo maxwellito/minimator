@@ -30,13 +30,14 @@ appRouter.addRoute({
 appRouter.addRoute({
   name: 'project',
   path: /^\/project\/([0-9]+)$/gi,
-  buildView: (args) => {
-    if (!args || !args[0]) {
+  buildView: (args: string[]) => {
+    const id = parseInt(args[0])
+    if (isNaN(id) || id < 0) {
       alert("Couldn't retrieve project data");
       window.location.hash = '';
       return;
     }
-    return new ProjectComponent(args[0]);
+    return new ProjectComponent(id);
   },
 });
 appRouter.onChange = (newPage) => {

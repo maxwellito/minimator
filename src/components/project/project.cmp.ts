@@ -5,28 +5,47 @@ import { ToolbarComponent } from '../toolbar/toolbar.cmp.js';
 import { TouchController } from '../../services/touchController/touchController.js';
 import { downloader, share } from '../../services/features.js';
 import { Shortcut } from '../../services/shortcut/shortcut.js';
-
+import { store } from '../../store.js';
 
 export class ProjectComponent extends PageComponent {
-  constructor(id: string) {
+  
+  surface: SurfaceComponent;
+  touchHandler: TouchController;
+  shortcutBindings: Shortcut;
+
+  constructor(id: number) {
     super('', './src/components/project/project.style.css');
 
-    console.log('Project constructor', id);
+    const item = store.getIndex(id);
+    const content = store.getItem(id) || '{}';
+    const contentData = JSON.parse(content);
 
-    const mySurface = new SurfaceComponent(50, 50);
-    (window as any).ma = mySurface; //# Debug purposes
-    this.shadowRoot?.appendChild(mySurface);
+    //# Clean dat dirty thing
+    document.title = `${item?.title} project`;
 
-    const touchHandler = new TouchController(mySurface.el);
-    touchHandler.on(mySurface.eventInput);
-    window.addEventListener('resize', mySurface.onResize.bind(mySurface));
+    console.log('Project constructor', id, contentData);
+
+    const surface = new SurfaceComponent(
+      contentData.width, 
+      contentData.height, 
+      contentData.content
+    );
+    (window as any).ma = surface; //# Debug purposes
+    this.shadowRoot?.appendChild(surface);
+    this.surface = surface;
+
+    const touchHandler = new TouchController(surface.el);
+    touchHandler.on(surface.eventInput);
+    window.addEventListener('resize', surface.onResize.bind(surface));
     setTimeout(() => {
-      mySurface.onResize();
+      surface.onResize();
     }, 10);
+    this.touchHandler = touchHandler;
 
     const shortcutBindings = new Shortcut();
-    shortcutBindings.on('undo', () => mySurface.undo());
-    shortcutBindings.on('redo', () => mySurface.redo());
+    shortcutBindings.on('undo', () => surface.undo());
+    shortcutBindings.on('redo', () => surface.redo());
+    this.shortcutBindings = shortcutBindings;
 
     const toolbar = new ToolbarComponent();
     this.shadowRoot?.appendChild(toolbar);
@@ -34,20 +53,20 @@ export class ProjectComponent extends PageComponent {
       let svgOutput;
       switch (eventName) {
         case 'minus':
-          toolbar.setThickness(mySurface.decreaseThickness());
+          toolbar.setThickness(surface.decreaseThickness());
           break;
         case 'plus':
-          toolbar.setThickness(mySurface.increaseThickness());
+          toolbar.setThickness(surface.increaseThickness());
           break;
         case 'grid':
-          mySurface.toggleGrid();
+          surface.toggleGrid();
           break;
         case 'eraser':
           const newMode = eventData ? SurfaceMode.ERASER_MODE : SurfaceMode.PEN_MODE;
-          mySurface.setMode(newMode);
+          surface.setMode(newMode);
           break;
         case 'share':
-          svgOutput = mySurface.extractSVG();
+          svgOutput = surface.extractSVG();
           share(
             'minimator',
             'https://maxwellito.github.io/minimator',
@@ -55,11 +74,16 @@ export class ProjectComponent extends PageComponent {
           );
           break;
         case 'download':
-          svgOutput = mySurface.extractSVG();
+          svgOutput = surface.extractSVG();
           downloader(svgOutput, 'minimator_demo.svg');
           break;
       }
     });
+  }
+
+  exit() {
+    this.shortcutBindings.destroy();
+    return super.exit();
   }
 }
 customElements.define('project-cmp', ProjectComponent);

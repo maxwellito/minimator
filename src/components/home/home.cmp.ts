@@ -2,6 +2,7 @@ import { PageComponent } from '../page.cmp.js';
 import { HomeCardComponent } from '../home-card/home-card.cmp.js';
 import { store } from '../../store.js';
 
+//# Add a link to the intro page
 const template = `
   <h1>minimator.</h1>
   <hr/>
@@ -13,6 +14,9 @@ const template = `
 export class HomeComponent extends PageComponent {
   constructor() {
     super(template, './src/components/home/home.style.css');
+
+    //# Clean dat dirty thing
+    document.title = `minimator`;
 
     const createCard = new HomeCardComponent();
     this.refs.get('carousel')?.append(createCard);

@@ -4,6 +4,8 @@ export class Storage {
   indexNextId: string;
   indexBaseKey: string;
 
+  //# Do the JSON strigify here
+  //# Use casting : const st: Storage<MyType> = new Storage();
   constructor(prefixKey: string) {
     if (!prefixKey || prefixKey.length < 5) {
       throw new Error('Storage: prefixKey too short');

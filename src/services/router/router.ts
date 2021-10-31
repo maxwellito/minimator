@@ -5,7 +5,7 @@ export interface Route {
   path: RegExp;
   buildView: RouteCallback;
 }
-type RouteCallback = (args?: string[]) => PageComponent | undefined;
+type RouteCallback = (args: string[]) => PageComponent | undefined;
 
 export class Router {
   configs: Route[] = [];
