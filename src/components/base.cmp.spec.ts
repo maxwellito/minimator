@@ -18,32 +18,24 @@ describe('BaseComponent', () => {
     assert(cmp.refs.get('b')?.nodeName, 'DIV');
   });
 
-  it('should throw an error if built with no HTML', () => {
+  it('should not throw an error if built with no HTML', () => {
     let catchedError: any;
     try {
       new BaseComponent('');
     } catch (e) {
       catchedError = e;
     }
-    assert(!!catchedError, true);
-    assert(
-      catchedError?.message,
-      'BaseComponent has been created without HTML'
-    );
+    assert(!!catchedError, false);
   });
 
-  it('should throw an error if built with comment', () => {
+  it('should not throw an error if built with comment', () => {
     let catchedError: any;
     try {
       new BaseComponent('<!-- Hello -->');
     } catch (e) {
       catchedError = e;
     }
-    assert(!!catchedError, true);
-    assert(
-      catchedError?.message,
-      'BaseComponent has been created without HTML'
-    );
+    assert(!!catchedError, false);
   });
 
   it('should be able to build a component with more than one node', () => {

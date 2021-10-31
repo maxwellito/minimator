@@ -23,9 +23,6 @@ export class BaseComponent extends HTMLElement {
     // Build the node
     const container = document.createElement('div');
     container.innerHTML = html;
-    if (container.children.length === 0) {
-      throw new Error('BaseComponent has been created without HTML');
-    }
 
     // Find refs
     const refs = container.querySelectorAll('[data-ref]');

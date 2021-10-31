@@ -3,6 +3,11 @@ import { PageComponent } from './components/page.cmp.js';
 import { HomeComponent } from './components/home/home.cmp.js';
 import { CreateComponent } from './components/create/create.cmp.js';
 import { IntroComponent } from './components/intro/intro.cmp.js';
+import { ProjectComponent } from './components/project/project.cmp.js';
+import { securityCheck } from './services/features.js';
+
+// Security 'lol' check
+securityCheck();
 
 let currentPage: PageComponent;
 
@@ -31,7 +36,7 @@ appRouter.addRoute({
       window.location.hash = '';
       return;
     }
-    return new PageComponent(`<h1>project : ${args[0]}</h1>`);
+    return new ProjectComponent(args[0]);
   },
 });
 appRouter.onChange = (newPage) => {
