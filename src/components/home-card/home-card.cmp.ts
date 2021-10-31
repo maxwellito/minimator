@@ -3,14 +3,15 @@ import { timeago } from '../../services/utils.js';
 import { SVG_ICONS } from '../../services/feather.icons.js';
 import { StorageIndex } from '../../services/storage/storage.js';
 import { store } from '../../store.js';
+import { SurfaceComponent } from '../surface/surface.cmp.js';
 
 export class HomeCardComponent extends BaseComponent {
   constructor(data?: StorageIndex) {
     let template: string;
     if (data) {
       template = `
-        <div class="img fake-img"></div>
-        <div class="label" data-ref="label">${data.title}</div>
+        <div class="img" data-ref="imageContainer"></div>
+        <div class="label" data-ref="titleLabel">${data.title}</div>
         <div class="bottomline">
           <div class="date">${timeago(data.updated_at)}</div>
           <div class="actions">
@@ -37,7 +38,8 @@ export class HomeCardComponent extends BaseComponent {
 
     const editButton = this.refs.get('editButton');
     const deleteButton = this.refs.get('deleteButton');
-    const labelText = this.refs.get('label') as HTMLDivElement;
+    const titleLabel = this.refs.get('titleLabel') as HTMLDivElement;
+    const imageContainer = this.refs.get('imageContainer') as HTMLDivElement;
 
     editButton?.addEventListener('click', (e: Event) => {
       e.preventDefault();
@@ -45,7 +47,7 @@ export class HomeCardComponent extends BaseComponent {
 
       const newName = prompt(`Rename "${data.title}"`, data.title) || '';
       store.renameItem(data.id, newName);
-      labelText.innerText = newName;
+      titleLabel.innerText = newName;
     });
 
     deleteButton?.addEventListener('click', (e: Event) => {
@@ -57,6 +59,16 @@ export class HomeCardComponent extends BaseComponent {
         this.remove();
       }
     });
+
+    const content = store.getItem(data.id) || '{}';
+    const contentData = JSON.parse(content);
+    const surface = new SurfaceComponent(
+      contentData.width, 
+      contentData.height, 
+      contentData.content
+    );
+    surface.setDefaultViewBox();
+    imageContainer.appendChild(surface)
   }
 }
 customElements.define('home-card-cmp', HomeCardComponent);

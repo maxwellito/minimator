@@ -53,8 +53,6 @@ export class SurfaceComponent extends BaseComponent {
 
     this.width = width;
     this.height = height;
-    this.scale = 1;
-    this.gap = gap;
 
     // Save referenced elements
     this.el = this.refs.get('svg') as SVGElement;
@@ -63,49 +61,21 @@ export class SurfaceComponent extends BaseComponent {
 
     this.content.innerHTML = content;
 
-    // this.rect = new DOMRect();
-
-    // // Create the canvas
-    // this.el = document.createElementNS(SVG_NAMESPACE, 'svg');
-    // this.el.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    // this.el.classList.add('surface');
-
-    // // Add dots layer
-    // const dot = document.createElementNS(SVG_NAMESPACE, 'circle');
-    // dot.setAttribute('cx', `${0.5 * this.gap}`);
-    // dot.setAttribute('cy', `${0.5 * this.gap}`);
-    // dot.setAttribute('r', '1');
-    // dot.setAttribute('fill', '#000');
-    // const dotPattern = document.createElementNS(SVG_NAMESPACE, 'pattern');
-    // dotPattern.setAttribute('width', `${100 / width}%`);
-    // dotPattern.setAttribute('height', `${100 / height}%`);
-    // dotPattern.setAttribute('viewBox', `0,0,${this.gap},${this.gap}`);
-    // dotPattern.id = 'dot';
-    // dotPattern.appendChild(dot);
-    // this.definitions = document.createElementNS(SVG_NAMESPACE, 'defs');
-    // this.definitions.appendChild(dotPattern);
-    // this.el.appendChild(this.definitions);
-
-    // this.dots = document.createElementNS(SVG_NAMESPACE, 'rect');
-    // this.dots.setAttribute('x', '0');
-    // this.dots.setAttribute('y', '0');
-    // this.dots.setAttribute('width', `${width * this.gap}`);
-    // this.dots.setAttribute('height', `${height * this.gap}`);
-    // this.dots.style.fill = 'url(#dot)';
-    // this.el.appendChild(this.dots);
-
-    // // Add content layer
-    // this.content = document.createElementNS(SVG_NAMESPACE, 'g');
-    // this.content.setAttribute('stroke', 'black');
-    // this.content.setAttribute('stroke-linecap', 'round');
-    // this.content.setAttribute('fill', 'none');
-    // this.el.appendChild(this.content);
-
     // Set defaults
     this.setThickness(3);
 
     // Bind listener
     this.eventInput = this.eventInput.bind(this);
+  }
+
+  setDefaultViewBox() {
+    const viewBox = [
+      0,
+      0,
+      this.gap * this.width,
+      this.gap * this.height
+    ];
+    this.el.setAttribute('viewBox', viewBox.join(' '));
   }
 
   onResize() {
@@ -116,7 +86,6 @@ export class SurfaceComponent extends BaseComponent {
     const sQ = square * (1 + 2 * padding);
 
     this.rect = rect;
-    // debugger;
 
     if (rect.width > rect.height) {
       this.viewBox = [
