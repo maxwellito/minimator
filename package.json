@@ -6,7 +6,8 @@
   "scripts": {
     "serve": "http-server",
     "start": "rm -rf dist && ./node_modules/.bin/tsc -w --project tsconfig.json",
-    "build": "rm -rf dist && ./node_modules/.bin/tsc --project tsconfig.json"
+    "build": "rm -rf dist && ./node_modules/.bin/tsc --project tsconfig.json",
+    "todo": "grep -Hrn '//#' src/"
   },
   "author": "maxwellito",
   "repository": {
