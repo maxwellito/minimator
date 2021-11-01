@@ -79,37 +79,43 @@ export class SurfaceComponent extends BaseComponent {
   }
 
   onResize() {
-    const rect = this.el.getBoundingClientRect();
-    const ratio = rect.width / rect.height;
-    const square = this.gap * this.width;
-    const padding = 0.125;
-    const sQ = square * (1 + 2 * padding);
+    // const rect = this.getBoundingClientRect();
+    this.rect = {
+      width: window.innerWidth,
+      height: window.innerHeight
+    } as DOMRect;
 
-    this.rect = rect;
+    const pad = 3;
 
-    if (rect.width > rect.height) {
+    const cWidth = this.gap * (this.width + 2 * pad);
+    const cHeight = this.gap * (this.height + 2 * pad);
+    const cRatio = cWidth / cHeight;
+
+    const wWidth = this.rect.width;
+    const wHeight = this.rect.height;
+    const wRatio = wWidth / wHeight;
+
+    if (cRatio > wRatio) {
       this.viewBox = [
-        -padding * square - ((ratio - 1) / 2) * sQ,
-        -padding * square,
-        ratio * sQ,
-        sQ,
+        -pad * this.gap,
+        -pad * this.gap - (((wRatio / cRatio) - 1) /2 * cHeight)  ,
+        cWidth,
+        (wRatio / cRatio) * cHeight,
       ];
     } else {
-      const ratioR = 1 / ratio;
       this.viewBox = [
-        -padding * square,
-        -padding * square - ((ratioR - 1) / 2) * sQ,
-        sQ,
-        ratioR * sQ,
+        -pad * this.gap - (((cRatio / wRatio) - 1) /2 * cWidth)  ,
+        -pad * this.gap,
+        (cRatio / wRatio) * cWidth,
+        cHeight,
       ];
     }
+
     this.el.setAttribute('viewBox', this.viewBox.join(' '));
-    this.scale = this.viewBox[2] / rect.width;
+    this.scale = this.viewBox[2] / this.rect.width;
   }
 
   eventInput(type: GESTURE, state: STATE, data?: EventData) {
-    // console.log(type, state, data);
-
     if (type === GESTURE.SCALE) {
       if (!data) {
         return;

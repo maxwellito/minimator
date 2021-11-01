@@ -32,14 +32,12 @@ export class ProjectComponent extends PageComponent {
     );
     (window as any).ma = surface; //# Debug purposes
     this.shadowRoot?.appendChild(surface);
+    surface.onResize();
     this.surface = surface;
 
     const touchHandler = new TouchController(surface.el);
     touchHandler.on(surface.eventInput);
     window.addEventListener('resize', surface.onResize.bind(surface));
-    setTimeout(() => {
-      surface.onResize();
-    }, 10);
     this.touchHandler = touchHandler;
 
     const shortcutBindings = new Shortcut();
