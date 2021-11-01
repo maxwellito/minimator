@@ -2,7 +2,7 @@ import { Router } from './services/router/router.js';
 import { PageComponent } from './components/page.cmp.js';
 import { HomeComponent } from './components/home/home.cmp.js';
 import { CreateComponent } from './components/create/create.cmp.js';
-import { IntroComponent } from './components/intro/intro.cmp.js';
+import { AboutComponent } from './components/about/about.cmp.js';
 import { ProjectComponent } from './components/project/project.cmp.js';
 import { securityCheck } from './services/features.js';
 
@@ -23,9 +23,9 @@ appRouter.addRoute({
   buildView: () => new CreateComponent(),
 });
 appRouter.addRoute({
-  name: 'intro',
-  path: /^\/intro$/gi,
-  buildView: () => new IntroComponent(),
+  name: 'about',
+  path: /^\/about$/gi,
+  buildView: () => new AboutComponent(),
 });
 appRouter.addRoute({
   name: 'project',

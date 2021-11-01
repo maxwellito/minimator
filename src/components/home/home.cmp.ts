@@ -4,6 +4,7 @@ import { store } from '../../store.js';
 
 //# Add a link to the intro page
 const template = `
+  <a class="about-link title" href="#/about">i</a>
   <h1>minimator.</h1>
   <hr/>
   <div class="home-carousel">

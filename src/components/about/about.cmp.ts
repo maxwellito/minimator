@@ -21,9 +21,9 @@ const template = `
   <p>The source code is open source and available on github.</p>
 `;
 
-export class IntroComponent extends PageComponent {
+export class AboutComponent extends PageComponent {
   constructor() {
-    super(template, './src/components/intro/intro.style.css');
+    super(template, './src/components/about/about.style.css');
   }
 }
-customElements.define('intro-cmp', IntroComponent);
+customElements.define('about-cmp', AboutComponent);

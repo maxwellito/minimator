@@ -14,6 +14,27 @@
   animation-fill-mode: forward;
 }
 
+.about-link {
+  display: inline-block;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  height: 1.25em;
+  width: 1.25em;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  color: inherit;
+  text-align: center;
+  line-height: 1.25;
+  text-decoration: none;
+  font-size: 24px;
+  animation: about-drop 1s 1;
+}
+
+@keyframes about-drop {
+  from {top: -2em;}
+}
+
 .home-carousel {
   scrollbar-width: none;
   overflow-x: scroll;
