@@ -1,3 +1,4 @@
+import { Component } from '../base.cmp.js';
 import { PageComponent } from '../page.cmp.js';
 import { store } from '../../store.js';
 import { SVG_ICONS } from '../../services/feather.icons.js';
@@ -38,9 +39,10 @@ const template = `
   </form>
 `;
 
+@Component('create-page', './src/components/create/create.style.css')
 export class CreateComponent extends PageComponent {
   constructor() {
-    super(template, './src/components/create/create.style.css');
+    super(template);
 
     const inputWidth = this.refs.get('inputWidth') as HTMLInputElement;
     const inputHeight = this.refs.get('inputHeight') as HTMLInputElement;
@@ -101,4 +103,3 @@ export class CreateComponent extends PageComponent {
 
   }
 }
-customElements.define('create-cmp', CreateComponent);

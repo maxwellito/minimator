@@ -1,10 +1,11 @@
-import { BaseComponent } from '../base.cmp.js';
+import { BaseComponent, Component } from '../base.cmp.js';
 import { timeago } from '../../services/utils.js';
 import { SVG_ICONS } from '../../services/feather.icons.js';
 import { StorageIndex } from '../../services/storage/storage.js';
 import { store } from '../../store.js';
 import { SurfaceComponent } from '../surface/surface.cmp.js';
 
+@Component('home-card-cmp', './src/components/home-card/home-card.style.css')
 export class HomeCardComponent extends BaseComponent {
   constructor(data?: StorageIndex) {
     let template: string;
@@ -29,7 +30,7 @@ export class HomeCardComponent extends BaseComponent {
         <div class="bottomline">&nbsp;</div>
       `;
     }
-    super(template, './src/components/home-card/home-card.style.css');
+    super(template);
 
     if (!data) {
       return;
@@ -70,4 +71,3 @@ export class HomeCardComponent extends BaseComponent {
     imageContainer.appendChild(surface)
   }
 }
-customElements.define('home-card-cmp', HomeCardComponent);

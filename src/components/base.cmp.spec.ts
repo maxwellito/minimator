@@ -63,7 +63,7 @@ describe('BaseComponent', () => {
   });
 
   it('should link a CSS file when provided', () => {
-    const cmp = new BaseComponent('<header></header>', './src/style.css');
+    const cmp = new BaseComponent('<header></header>');
     assert(!cmp.querySelector('link'), true);
   });
 });

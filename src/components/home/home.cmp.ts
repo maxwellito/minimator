@@ -1,3 +1,4 @@
+import { Component } from '../base.cmp.js';
 import { PageComponent } from '../page.cmp.js';
 import { HomeCardComponent } from '../home-card/home-card.cmp.js';
 import { store } from '../../store.js';
@@ -12,9 +13,10 @@ const template = `
   </div>
 `;
 
+@Component('home-page', './src/components/home/home.style.css')
 export class HomeComponent extends PageComponent {
   constructor() {
-    super(template, './src/components/home/home.style.css');
+    super(template);
 
     //# Clean dat dirty thing
     document.title = `minimator`;
@@ -30,4 +32,3 @@ export class HomeComponent extends PageComponent {
     });
   }
 }
-customElements.define('home-cmp', HomeComponent);

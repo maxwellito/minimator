@@ -1,4 +1,4 @@
-import { BaseComponent } from '../base.cmp.js';
+import { BaseComponent, Component } from '../base.cmp.js';
 import { SVG_ICONS } from '../../services/feather.icons.js';
 
 const template = `
@@ -17,13 +17,14 @@ const template = `
 
 type listener = (type: string, data: any)=>void;
 
+@Component('toolbar-cmp', './src/components/toolbar/toolbar.style.css')
 export class ToolbarComponent extends BaseComponent {
 
   listeners: listener[] = [];
   isEraserOn = false;
 
   constructor() {
-    super(template, './src/components/toolbar/toolbar.style.css');
+    super(template);
     this.classList.add('unselectable');
     this.refs.get('minus')?.addEventListener('click', this.minus.bind(this));
     this.refs.get('plus')?.addEventListener('click', this.plus.bind(this));
@@ -63,4 +64,3 @@ export class ToolbarComponent extends BaseComponent {
     thickness.innerText = `${value}`;
   }
 }
-customElements.define('toolbar-cmp', ToolbarComponent);

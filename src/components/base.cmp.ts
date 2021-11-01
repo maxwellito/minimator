@@ -1,7 +1,37 @@
+/**
+ * Decorator for components
+ * - Register the element in the custom element registry
+ * - Prefetch CSS style for later use
+ * @param name Component name for element registry
+ * @param cssLink Link to the CSS style sheet
+ */
+export function Component(name: string, cssLink?: string) { 
+  return function (constructor: any) { 
+    constructor.prototype.cssLink = cssLink;
+
+    // Register component
+    customElements.define(name, constructor);
+
+    // Prefetch Style
+    if (cssLink) {
+      const link = document.createElement('link');
+      link.setAttribute('rel', 'prefetch');
+      link.setAttribute('href', cssLink);
+      document.head.append(link);
+    }
+  }
+}
+
+/**
+ * Root class for components
+ */
+@Component('base-cmp')
 export class BaseComponent extends HTMLElement {
+  
+  cssLink?: string;
   refs = new Map<string, Element>();
 
-  constructor(html: string = '', cssLink?: string) {
+  constructor(html: string = '') {
     // Call parent
     super();
 
@@ -9,6 +39,7 @@ export class BaseComponent extends HTMLElement {
     this.attachShadow({ mode: 'open' });
 
     // Create some CSS to apply to the shadow dom
+    const {cssLink} = this.constructor.prototype;
     if (cssLink) {
       const link = document.createElement('link');
       link.setAttribute('rel', 'stylesheet');
@@ -43,4 +74,3 @@ export class BaseComponent extends HTMLElement {
     this.shadowRoot?.append(...container.children);
   }
 }
-customElements.define('base-component', BaseComponent);

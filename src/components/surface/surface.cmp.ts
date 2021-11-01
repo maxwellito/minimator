@@ -1,6 +1,6 @@
 import { GESTURE, STATE, EventData } from '../../services/touchController/touchController.js';
 import { HistoryStack, HistoryActionType } from '../../services/historyStack/historyStack.js';
-import { BaseComponent } from '../base.cmp.js';
+import { BaseComponent, Component } from '../base.cmp.js';
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
@@ -14,6 +14,7 @@ export enum SurfaceMode {
   ERASER_MODE = 2
 }
 
+@Component('surface-cmp', './src/components/surface/surface.style.css')
 export class SurfaceComponent extends BaseComponent {
   history = new HistoryStack;
   mode: SurfaceMode = SurfaceMode.PEN_MODE;
@@ -47,9 +48,8 @@ export class SurfaceComponent extends BaseComponent {
         <g data-ref="content" stroke="black" stroke-linecap="round" fill="none" stroke-width="3"></g>
       </svg>
     `;
-    const cssLink = './src/components/surface/surface.style.css';
 
-    super(template, cssLink);
+    super(template);
 
     this.width = width;
     this.height = height;
@@ -432,5 +432,3 @@ export class SurfaceComponent extends BaseComponent {
     return svg.outerHTML;
   }
 }
-
-customElements.define('surface-cmp', SurfaceComponent);

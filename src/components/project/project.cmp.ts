@@ -1,3 +1,4 @@
+import { Component } from '../base.cmp.js';
 import { PageComponent } from '../page.cmp.js';
 
 import { SurfaceComponent, SurfaceMode } from '../surface/surface.cmp.js';
@@ -7,6 +8,7 @@ import { downloader, share } from '../../services/features.js';
 import { Shortcut } from '../../services/shortcut/shortcut.js';
 import { store } from '../../store.js';
 
+@Component('project-page', './src/components/project/project.style.css')
 export class ProjectComponent extends PageComponent {
   
   surface: SurfaceComponent;
@@ -14,7 +16,7 @@ export class ProjectComponent extends PageComponent {
   shortcutBindings: Shortcut;
 
   constructor(id: number) {
-    super('', './src/components/project/project.style.css');
+    super('');
 
     const item = store.getIndex(id);
     const content = store.getItem(id) || '{}';
@@ -84,4 +86,3 @@ export class ProjectComponent extends PageComponent {
     return super.exit();
   }
 }
-customElements.define('project-cmp', ProjectComponent);

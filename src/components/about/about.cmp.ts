@@ -1,3 +1,4 @@
+import { Component } from '../base.cmp.js';
 import { PageComponent } from '../page.cmp.js';
 
 const template = `
@@ -21,9 +22,9 @@ const template = `
   <p>The source code is open source and available on github.</p>
 `;
 
+@Component('about-page', './src/components/about/about.style.css')
 export class AboutComponent extends PageComponent {
   constructor() {
-    super(template, './src/components/about/about.style.css');
+    super(template);
   }
 }
-customElements.define('about-cmp', AboutComponent);
