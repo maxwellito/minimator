@@ -85,10 +85,10 @@ export class SurfaceComponent extends BaseComponent {
       height: window.innerHeight
     } as DOMRect;
 
-    const pad = 3;
+    const padding = 3;
 
-    const cWidth = this.gap * (this.width + 2 * pad);
-    const cHeight = this.gap * (this.height + 2 * pad);
+    const cWidth = this.gap * (this.width + 2 * padding);
+    const cHeight = this.gap * (this.height + 2 * padding);
     const cRatio = cWidth / cHeight;
 
     const wWidth = this.rect.width;
@@ -97,16 +97,16 @@ export class SurfaceComponent extends BaseComponent {
 
     if (cRatio > wRatio) {
       this.viewBox = [
-        -pad * this.gap,
-        -pad * this.gap - (((wRatio / cRatio) - 1) /2 * cHeight)  ,
+        -padding * this.gap,
+        -padding * this.gap -cHeight * ((1/wRatio)/(1/cRatio)-1) / 2,
         cWidth,
-        (wRatio / cRatio) * cHeight,
+        cHeight * ((1/wRatio)/(1/cRatio)),
       ];
     } else {
       this.viewBox = [
-        -pad * this.gap - (((cRatio / wRatio) - 1) /2 * cWidth)  ,
-        -pad * this.gap,
-        (cRatio / wRatio) * cWidth,
+        -padding * this.gap -cWidth * (wRatio/cRatio - 1) / 2,
+        -padding * this.gap,
+        cWidth * (wRatio/cRatio ),
         cHeight,
       ];
     }
