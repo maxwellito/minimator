@@ -75,7 +75,6 @@ export class CreateComponent extends PageComponent {
         const xOn = directionBy8 < 3 || directionBy8 > 5;
         const yOn = directionBy8 > 1 && directionBy8 < 7;
         const scale = data?.scale || 1;
-        console.log('::::::', directionBy8, data?.angle || 0, data?.drag);
         inputWidth.value = `${(vals.x * (xOn ? scale : 1)).toFixed()}`;
         inputHeight.value = `${(vals.y * (yOn ? scale : 1)).toFixed()}`;
       }

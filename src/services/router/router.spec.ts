@@ -48,7 +48,7 @@ describe('Router', () => {
     removeEventListenerBkp = window.removeEventListener;
     relMock = window.removeEventListener = mock();
 
-    router = new Router();
+    router = new Router(false);
     onChange = mock();
     router.onChange = onChange;
 

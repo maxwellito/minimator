@@ -11,7 +11,7 @@ export class Router {
   configs: Route[] = [];
   onChange = (newPage?: PageComponent) => {};
 
-  constructor() {
+  constructor(public isDebugMode = true) {
     this.hashChange = this.hashChange.bind(this);
     window.addEventListener('hashchange', this.hashChange, false);
   }
@@ -32,13 +32,17 @@ export class Router {
       const exec = pathConfig.exec(path);
       pathConfig.lastIndex = 0;
       if (exec) {
-        console.info(`New Route: ${config.name}`, exec.slice(1));
+        if (this.isDebugMode) {
+          console.info(`New Route: ${config.name}`, exec.slice(1));
+        }
         const newPage = config.buildView(exec.slice(1));
         this.onChange(newPage);
         return;
       }
     }
-    console.info(`No Route found for "${path}"`);
+    if (this.isDebugMode) {
+      console.info(`No Route found for "${path}"`);
+    }
     this.onChange();
   }
 

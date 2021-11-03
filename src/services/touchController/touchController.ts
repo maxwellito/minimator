@@ -107,7 +107,6 @@ export class TouchController {
 
   touchstart(e: TouchEvent) {
     this.blockEvent(e);
-    // console.log(e);
     if (this.isCurrentEventDetected()) {
       return;
     }
@@ -127,7 +126,6 @@ export class TouchController {
     for (let i = e.changedTouches.length - 1; i >= 0; i--) {
       let touch = e.changedTouches.item(i);
       if (!touch) {
-        console.warn('Missed touch');
         continue;
       }
       let pointer = this.pointers.get(touch.identifier);
@@ -169,7 +167,6 @@ export class TouchController {
     for (let i = e.changedTouches.length - 1; i >= 0; i--) {
       let touch = e.changedTouches.item(i);
       if (!touch) {
-        console.warn('Missed touch');
         continue;
       }
       this.pointers.delete(touch.identifier);
@@ -251,7 +248,6 @@ export class TouchController {
     this.broadcast(STATE.END, this.lastData);
     this.currentEvent = eventType;
     this.lastData = undefined;
-    console.log(eventData);
     this.broadcast(STATE.START, eventData);
   }
 

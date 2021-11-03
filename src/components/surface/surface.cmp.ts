@@ -156,9 +156,7 @@ export class SurfaceComponent extends BaseComponent {
       if (state === STATE.START) {
         this.drawingStartPoint = this.coordToDot(data.origin);
         this.fngPoint = this.drawingStartPoint;
-        console.log('SET', this.fngPoint);
       } else if (!this.drawingStartPoint) {
-        console.log('ABORTED');
         return;
       } else if (state === STATE.UPDATE) {
         // Find the closest dot to where the finger is
@@ -181,7 +179,6 @@ export class SurfaceComponent extends BaseComponent {
             x: Math.abs(vector.x),
             y: Math.abs(vector.y),
           };
-          // console.log(vector);
           // return;
 
           if (abxVector.x < abxVector.y / 2) {
@@ -203,7 +200,6 @@ export class SurfaceComponent extends BaseComponent {
             position: this.content.children.length
           })
         }
-        console.log('RESETED');
         this.currentElement = undefined;
         this.drawingStartPoint = undefined;
         this.fngPoint = undefined;
@@ -215,7 +211,6 @@ export class SurfaceComponent extends BaseComponent {
 
   undo() {
     const action = this.history.undo();
-    console.log(':undo:',action);
     if (!action) {
       return;
     }
@@ -234,7 +229,6 @@ export class SurfaceComponent extends BaseComponent {
 
   redo() {
     const action = this.history.redo();
-    console.log(':redo:',action);
       if (!action) {
         return;
       }
@@ -363,7 +357,6 @@ export class SurfaceComponent extends BaseComponent {
       x: drag.x - this.drawingStartPoint.x / this.width,
       y: drag.y - this.drawingStartPoint.y / this.height,
     };
-    console.log(derivate);
     // debugger;
     const isA = Math.abs(derivate.x) < Math.abs(derivate.y);
     // M0,10C0,4.478,4.478,0,10,0
@@ -381,8 +374,6 @@ export class SurfaceComponent extends BaseComponent {
       `${p2.x},${p1.y + v.y / 2},`,
       `${p2.x},${p2.y}`,
     ].join('');
-
-    console.log(isA ? 'dA' : 'dB');
 
     const path = document.createElementNS(SVG_NAMESPACE, 'path');
     path.setAttribute('d', isA ? dA : dB);
