@@ -53,17 +53,15 @@ export interface EventData {
 type eventCallback = (type: GESTURE, state: STATE, data?: EventData) => void;
 
 export class TouchController {
-  el: SVGElement;
   pointers: Map<number, any>;
   callbacks: eventCallback[];
   lastData?: EventData;
   currentEvent: GESTURE;
   gestureMaxTouches = 0;
   currentGestureHasMoved = false; //# This property isn't in use
+  deltaY = 0;
 
-  constructor(element: SVGElement, touchOnly = false) {
-    // Save the element
-    this.el = element;
+  constructor(public el: SVGElement, public touchOnly = false) {
 
     // Internals
     this.pointers = new Map();
@@ -78,6 +76,11 @@ export class TouchController {
     this.touchend = this.touchend.bind(this);
     // this.eventRouterDigest = this.eventRouterDigest.bind(this);
 
+    this.mousemove = this.mousemove.bind(this);
+    this.mousedown = this.mousedown.bind(this);
+    this.mouseup = this.mouseup.bind(this);
+    this.wheel = this.wheel.bind(this);
+
     // Start listening
     this.el.addEventListener('touchstart', this.touchstart);
     this.el.addEventListener('touchmove', this.touchmove);
@@ -86,6 +89,10 @@ export class TouchController {
 
     if (!touchOnly) {
       // Listen to click and scrolls
+      this.el.addEventListener('mousedown', this.mousedown);
+      this.el.addEventListener('mousemove', this.mousemove);
+      this.el.addEventListener('mouseup', this.mouseup);
+      this.el.addEventListener('wheel', this.wheel);
     }
   }
 
@@ -100,11 +107,12 @@ export class TouchController {
     }
   }
 
-  blockEvent(e: TouchEvent) {
+  blockEvent(e: Event) {
     e.stopPropagation();
     e.preventDefault();
   }
 
+  // Touch listeners
   touchstart(e: TouchEvent) {
     this.blockEvent(e);
     if (this.isCurrentEventDetected()) {
@@ -188,6 +196,74 @@ export class TouchController {
     }
   }
 
+  // Mouse Listeners
+  mousedown(e: MouseEvent) {
+    this.blockEvent(e);
+    const defaultData = {
+      origin: {
+        x: e.pageX,
+        y: e.pageY,
+      },
+      drag: {
+        x: 0,
+        y: 0,
+      }
+    };
+    this.setEventType(GESTURE.DRAG, defaultData);
+    this.el.addEventListener('mousemove', this.mousemove);
+  }
+
+  mousemove(e: MouseEvent) {
+    this.blockEvent(e);
+
+    if (this.currentEvent === GESTURE.SCALE) {
+      this.setEventType(GESTURE.NONE);
+    }
+    else if (this.currentEvent === GESTURE.DRAG) {   
+      const data = this.lastData;
+      if (!data) {
+        return;
+      }
+      data.drag = {
+        x: e.pageX - (data?.origin.x || 0),
+        y: e.pageY - (data?.origin.y || 0)
+      };
+      this.triggerUpdate(data);
+    }
+  }
+
+  mouseup(e: MouseEvent) {
+    this.blockEvent(e);
+    this.setEventType(GESTURE.NONE);
+  }
+
+  wheel(e: WheelEvent) {
+    e.preventDefault();
+
+    const defaultData = {
+      origin: {
+        x: e.pageX,
+        y: e.pageY,
+      },
+      drag: {
+        x: 0,
+        y: 0,
+      },
+      scale: 1,
+    };
+
+    // Init gesture
+    if (this.currentEvent !== GESTURE.SCALE) {
+      this.deltaY = 0;
+      this.setEventType(GESTURE.SCALE, defaultData);
+    }
+
+    // Update event
+    this.deltaY += e.deltaY;
+    defaultData.scale = Math.pow(1.01, -this.deltaY);
+    this.triggerUpdate(defaultData);
+  }
+
   isCurrentEventDetected() {
     return this.currentEvent !== GESTURE.NONE;
   }
@@ -265,11 +341,18 @@ export class TouchController {
   }
 
   destroy() {
-    // Stop listening
+    // Stop listening mouse/touch events
     this.el.removeEventListener('touchstart', this.touchstart);
     this.el.removeEventListener('touchmove', this.touchmove);
     this.el.removeEventListener('touchend', this.touchend);
     this.el.removeEventListener('touchcancel', this.touchend);
+
+    if (!this.touchOnly) {
+      this.el.removeEventListener('mousemove', this.mousemove);
+      this.el.removeEventListener('mousedown', this.mousedown);
+      this.el.removeEventListener('mouseup', this.mouseup);
+      this.el.removeEventListener('wheel', this.wheel);
+    }
 
     // Clear listeners
     this.callbacks = [];

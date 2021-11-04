@@ -146,7 +146,7 @@ export class SurfaceComponent extends BaseComponent {
       } else if (state === STATE.END) {
         const viewBox = this.el.getAttribute('viewBox');
         if (viewBox) {
-          this.viewBox = viewBox.split(' ').map((x) => parseInt(x, 10));
+          this.viewBox = viewBox.split(' ').map((x) => parseFloat(x));
           this.el.setAttribute('viewBox', this.viewBox.join(' '));
           this.scale *= 1 / dataScale;
         }
