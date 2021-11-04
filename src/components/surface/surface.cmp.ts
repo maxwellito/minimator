@@ -34,6 +34,8 @@ export class SurfaceComponent extends BaseComponent {
   fngPoint?: Coordinate;
 
   currentElement?: SVGLineElement | SVGPathElement;
+  changeThrottle: number = 0;
+  onChange = () => {};
 
   constructor(width: number, height: number, content = '') {
     const gap = 20;
@@ -66,6 +68,7 @@ export class SurfaceComponent extends BaseComponent {
 
     // Bind listener
     this.eventInput = this.eventInput.bind(this);
+    this.onResize = this.onResize.bind(this);
   }
 
   setDefaultViewBox() {
@@ -199,6 +202,7 @@ export class SurfaceComponent extends BaseComponent {
             element: this.currentElement,
             position: this.content.children.length
           })
+          this.callToChange();
         }
         this.currentElement = undefined;
         this.drawingStartPoint = undefined;
@@ -214,6 +218,7 @@ export class SurfaceComponent extends BaseComponent {
     if (!action) {
       return;
     }
+    this.callToChange();
     switch(action.type) {
       case HistoryActionType.ADD:
         this.content.removeChild(action.element);
@@ -229,20 +234,28 @@ export class SurfaceComponent extends BaseComponent {
 
   redo() {
     const action = this.history.redo();
-      if (!action) {
-        return;
-      }
-      switch(action.type) {
-        case HistoryActionType.REMOVE:
-          this.content.removeChild(action.element);
-          break;
-        case HistoryActionType.ADD:
-          if (action.position >= this.content.children.length) {
-            this.content.appendChild(action.element);
-          } else {
-            this.content.insertBefore(action.element, this.content.children[action.position]);
-          }
-      }
+    if (!action) {
+      return;
+    }
+    this.callToChange();
+    switch(action.type) {
+      case HistoryActionType.REMOVE:
+        this.content.removeChild(action.element);
+        break;
+      case HistoryActionType.ADD:
+        if (action.position >= this.content.children.length) {
+          this.content.appendChild(action.element);
+        } else {
+          this.content.insertBefore(action.element, this.content.children[action.position]);
+        }
+    }
+  }
+
+  callToChange () {
+    if (this.changeThrottle) {
+      clearTimeout(this.changeThrottle)
+    }
+    this.changeThrottle = window.setTimeout(this.onChange, 2000);
   }
 
   coordToPoint(scrOriginPx: EventData['origin']) {
@@ -421,5 +434,12 @@ export class SurfaceComponent extends BaseComponent {
     svg.setAttribute('viewBox', `${-offset},${-offset},${width},${height}`);
 
     return svg.outerHTML;
+  }
+
+  destroy() {
+    if (this.changeThrottle) {
+      clearTimeout(this.changeThrottle)
+      this.onChange();
+    }
   }
 }

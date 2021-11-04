@@ -27,6 +27,7 @@ export class ProjectComponent extends PageComponent {
 
     console.log('Project constructor', id, contentData);
 
+    //# Define a type for content data
     const surface = new SurfaceComponent(
       contentData.width, 
       contentData.height, 
@@ -35,11 +36,15 @@ export class ProjectComponent extends PageComponent {
     (window as any).ma = surface; //# Debug purposes
     this.shadowRoot?.appendChild(surface);
     surface.onResize();
+    surface.onChange = () => {
+      contentData.content = surface.content.innerHTML;
+      store.updateItem(id, JSON.stringify(contentData))
+    }
     this.surface = surface;
 
     const touchHandler = new TouchController(surface.el);
     touchHandler.on(surface.eventInput);
-    window.addEventListener('resize', surface.onResize.bind(surface));
+    window.addEventListener('resize', surface.onResize);
     this.touchHandler = touchHandler;
 
     const shortcutBindings = new Shortcut();
@@ -82,7 +87,10 @@ export class ProjectComponent extends PageComponent {
   }
 
   exit() {
+    window.removeEventListener('resize', this.surface.onResize);
     this.shortcutBindings.destroy();
+    this.touchHandler.destroy();
+    this.surface.destroy();
     return super.exit();
   }
 }

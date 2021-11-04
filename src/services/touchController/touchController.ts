@@ -264,11 +264,14 @@ export class TouchController {
     this.callbacks.forEach((cb) => cb(type, eventStatus, eventData));
   }
 
-  cancel() {
+  destroy() {
     // Stop listening
     this.el.removeEventListener('touchstart', this.touchstart);
     this.el.removeEventListener('touchmove', this.touchmove);
     this.el.removeEventListener('touchend', this.touchend);
     this.el.removeEventListener('touchcancel', this.touchend);
+
+    // Clear listeners
+    this.callbacks = [];
   }
 }
