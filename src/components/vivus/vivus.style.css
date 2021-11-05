@@ -1,0 +1,53 @@
+@import '../../style.css';
+
+:host {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  z-index: 1000;
+  animation: fad .4s 1;
+}
+:host(.exit) {
+  animation: daf 0.4s 1;
+}
+
+svg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+button {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  height: 1em;
+  width: 1em;
+
+  font-size: 2em;
+  line-height: 0;
+  text-align: center;
+  
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: transparent;
+  
+  padding-bottom: .2em;
+  display: inline-block;
+  cursor: pointer;
+}
+
+p {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 2%;
+  text-align: center;
+}
+
+a {
+  color: inherit;
+}

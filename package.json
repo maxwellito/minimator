@@ -20,5 +20,8 @@
   "homepage": "https://github.com/maxwellito/minimator#readme",
   "dependencies": {
     "typescript": "^4.3.2"
+  },
+  "devDependencies": {
+    "@types/vivus": "^0.4.4"
   }
 }

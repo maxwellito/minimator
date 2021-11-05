@@ -10,6 +10,8 @@ const template = `
   <span class="split"></span>
   ${SVG_ICONS.grid}
   <span class="split"></span>
+  ${SVG_ICONS.playButton}
+  <span class="split"></span>
   ${SVG_ICONS.share}
   <span class="split"></span>
   ${SVG_ICONS.download}
@@ -29,6 +31,7 @@ export class ToolbarComponent extends BaseComponent {
     this.refs.get('minus')?.addEventListener('click', this.minus.bind(this));
     this.refs.get('plus')?.addEventListener('click', this.plus.bind(this));
     this.refs.get('grid')?.addEventListener('click', this.grid.bind(this));
+    this.refs.get('playButton')?.addEventListener('click', this.vivus.bind(this));
     this.refs.get('share')?.addEventListener('click', this.share.bind(this));
     this.refs.get('download')?.addEventListener('click', this.download.bind(this));
     this.refs.get('eraser')?.addEventListener('click', this.toggleEraser.bind(this));
@@ -38,6 +41,7 @@ export class ToolbarComponent extends BaseComponent {
     this.listeners.push(listener);
   }
 
+  //# Clean these dirty methods
   minus() {
     this.listeners.forEach(l => l('minus', null));
   }
@@ -46,6 +50,9 @@ export class ToolbarComponent extends BaseComponent {
   }
   grid() {
     this.listeners.forEach(l => l('grid', null));
+  }
+  vivus() {
+    this.listeners.forEach(l => l('vivus', null));
   }
   share() {
     this.listeners.forEach(l => l('share', null));

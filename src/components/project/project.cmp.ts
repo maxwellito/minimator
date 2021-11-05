@@ -4,6 +4,7 @@ import { PageComponent } from '../page.cmp.js';
 import { SurfaceComponent, SurfaceMode } from '../surface/surface.cmp.js';
 import { ToolbarComponent } from '../toolbar/toolbar.cmp.js';
 import { TouchController } from '../../services/touchController/touchController.js';
+import { VivusComponent } from '../vivus/vivus.cmp.js';
 import { downloader, share } from '../../services/features.js';
 import { Shortcut } from '../../services/shortcut/shortcut.js';
 import { store } from '../../store.js';
@@ -65,6 +66,16 @@ export class ProjectComponent extends PageComponent {
           break;
         case 'grid':
           surface.toggleGrid();
+          break;
+        case 'vivus':
+          // Do the vivus
+          svgOutput = surface.extractSVG();
+          const vivus = new VivusComponent(svgOutput, () => {
+            vivus.exit().then(() => {
+              this.shadowRoot?.removeChild(vivus);
+            });
+          });
+          this.shadowRoot?.appendChild(vivus);
           break;
         case 'eraser':
           const newMode = eventData ? SurfaceMode.ERASER_MODE : SurfaceMode.PEN_MODE;

@@ -107,6 +107,7 @@ export class TouchController {
     }
   }
 
+  //# Create a decorator for this method
   blockEvent(e: Event) {
     e.stopPropagation();
     e.preventDefault();
