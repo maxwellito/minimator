@@ -15,6 +15,7 @@ export class ProjectComponent extends PageComponent {
   surface: SurfaceComponent;
   touchHandler: TouchController;
   shortcutBindings: Shortcut;
+  vivusScreen?: VivusComponent;
 
   constructor(id: number) {
     super('');
@@ -68,14 +69,16 @@ export class ProjectComponent extends PageComponent {
           surface.toggleGrid();
           break;
         case 'vivus':
-          // Do the vivus
           svgOutput = surface.extractSVG();
-          const vivus = new VivusComponent(svgOutput, () => {
-            vivus.exit().then(() => {
-              this.shadowRoot?.removeChild(vivus);
+          this.vivusScreen = new VivusComponent(svgOutput, () => {
+            this.vivusScreen?.exit().then(() => {
+              if (this.vivusScreen) {
+                this.shadowRoot?.removeChild(this.vivusScreen);
+                this.vivusScreen = undefined;
+              }
             });
           });
-          this.shadowRoot?.appendChild(vivus);
+          this.shadowRoot?.appendChild(this.vivusScreen);
           break;
         case 'eraser':
           const newMode = eventData ? SurfaceMode.ERASER_MODE : SurfaceMode.PEN_MODE;
@@ -102,6 +105,12 @@ export class ProjectComponent extends PageComponent {
     this.shortcutBindings.destroy();
     this.touchHandler.destroy();
     this.surface.destroy();
-    return super.exit();
+    
+    return super.exit().then(() => {
+      if (this.vivusScreen) {
+        this.shadowRoot?.removeChild(this.vivusScreen);
+        this.vivusScreen = undefined;
+      }
+    });
   }
 }
