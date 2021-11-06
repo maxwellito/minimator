@@ -58,7 +58,6 @@ export class TouchController {
   lastData?: EventData;
   currentEvent: GESTURE;
   gestureMaxTouches = 0;
-  currentGestureHasMoved = false; //# This property isn't in use
   deltaY = 0;
 
   constructor(public el: SVGElement, public touchOnly = false) {
@@ -142,7 +141,6 @@ export class TouchController {
       let y = Math.abs(touch.clientY - pointer.clientY);
       if (x + y > 20) {
         let { length } = e.touches;
-        this.currentGestureHasMoved = true;
         const defaultData = {
           origin: {
             x: 0,
@@ -191,7 +189,6 @@ export class TouchController {
         }
       }
       this.setEventType(GESTURE.NONE);
-      this.currentGestureHasMoved = true;
       this.gestureMaxTouches = 0;
       // TODO clear everything
     }
