@@ -1,6 +1,7 @@
 import { GESTURE, STATE, EventData } from '../../services/touchController/touchController.js';
 import { HistoryStack, HistoryActionType } from '../../services/historyStack/historyStack.js';
 import { BaseComponent, Component } from '../base.cmp.js';
+import { ProjectItem } from '../../store.js';
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
@@ -37,7 +38,7 @@ export class SurfaceComponent extends BaseComponent {
   changeThrottle: number = 0;
   onChange = () => {};
 
-  constructor(width: number, height: number, content = '') {
+  constructor({width, height, content}:ProjectItem) {
     const gap = 20;
     const template = `
       <svg data-ref="svg" xmlns="http://www.w3.org/2000/svg" class="surface">

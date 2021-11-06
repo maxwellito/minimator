@@ -90,11 +90,11 @@ export class CreateComponent extends PageComponent {
 
       // Create a new item in store
       const storeItem = store.createItem(canvasName);
-      store.updateItem(storeItem.id, JSON.stringify({
+      store.updateItem(storeItem.id, {
         width: canvasWidth,
         height: canvasHeight,
         content: ''
-      }));
+      });
 
       // Redirect
       (window.location as any) = `#/project/${storeItem.id}`;

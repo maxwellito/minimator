@@ -1,11 +1,9 @@
-export class Storage {
+export class Storage<T> {
   indexes: StorageIndex[] = [];
   indexKey: string;
   indexNextId: string;
   indexBaseKey: string;
 
-  //# Do the JSON strigify here
-  //# Use casting : const st: Storage<MyType> = new Storage();
   constructor(prefixKey: string) {
     if (!prefixKey || prefixKey.length < 5) {
       throw new Error('Storage: prefixKey too short');
@@ -34,8 +32,12 @@ export class Storage {
     return this.loadIndexes().find((x) => x.id === id);
   }
 
-  getItem(id: number) {
-    return localStorage.getItem(this.indexBaseKey + id);
+  getItem(id: number):T {
+    const contentJSON = localStorage.getItem(this.indexBaseKey + id);
+    if (!contentJSON) {
+      throw new Error(`Couldn't retrieve the item ${id} from LocalStorage.`);
+    }
+    return JSON.parse(contentJSON);
   }
 
   renameItem(id: number, title: string) {
@@ -47,13 +49,14 @@ export class Storage {
     this.saveIndexes();
   }
 
-  updateItem(id: number, content: string) {
+  updateItem(id: number, content: T) {
     var item = this.getIndex(id);
     if (!item) {
       throw new Error(`Storage: item ${id} not found.`);
     }
     item.updated_at = +new Date();
-    localStorage.setItem(this.indexBaseKey + id, content);
+    const contentJSON = JSON.stringify(content);
+    localStorage.setItem(this.indexBaseKey + id, contentJSON);
     this.saveIndexes();
   }
 
@@ -88,7 +91,4 @@ export interface StorageIndex {
   title: string;
   created_at: number;
   updated_at: number;
-}
-export interface StorageItem extends StorageIndex {
-  content: string;
 }

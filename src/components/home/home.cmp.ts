@@ -3,7 +3,6 @@ import { PageComponent } from '../page.cmp.js';
 import { HomeCardComponent } from '../home-card/home-card.cmp.js';
 import { store } from '../../store.js';
 
-//# Add a link to the intro page
 const template = `
   <a class="about-link title" href="#/about">i</a>
   <h1>minimator.</h1>

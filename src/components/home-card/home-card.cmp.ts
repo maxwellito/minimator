@@ -60,13 +60,8 @@ export class HomeCardComponent extends BaseComponent {
       }
     });
 
-    const content = store.getItem(data.id) || '{}';
-    const contentData = JSON.parse(content);
-    const surface = new SurfaceComponent(
-      contentData.width, 
-      contentData.height, 
-      contentData.content
-    );
+    const projectData = store.getItem(data.id) || '{}';
+    const surface = new SurfaceComponent(projectData);
     surface.setDefaultViewBox();
     imageContainer.appendChild(surface)
   }

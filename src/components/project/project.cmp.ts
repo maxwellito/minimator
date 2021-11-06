@@ -21,26 +21,20 @@ export class ProjectComponent extends PageComponent {
     super('');
 
     const item = store.getIndex(id);
-    const content = store.getItem(id) || '{}';
-    const contentData = JSON.parse(content);
+    const projectData = store.getItem(id) || '{}';
 
     //# Clean dat dirty thing
     document.title = `${item?.title} project`;
 
-    console.log('Project constructor', id, contentData);
+    console.log('Project constructor', id, projectData);
 
-    //# Define a type for content data
-    const surface = new SurfaceComponent(
-      contentData.width, 
-      contentData.height, 
-      contentData.content
-    );
+    const surface = new SurfaceComponent(projectData);
     (window as any).ma = surface; //# Debug purposes
     this.shadowRoot?.appendChild(surface);
     surface.onResize();
     surface.onChange = () => {
-      contentData.content = surface.content.innerHTML;
-      store.updateItem(id, JSON.stringify(contentData))
+      projectData.content = surface.content.innerHTML;
+      store.updateItem(id, projectData)
     }
     this.surface = surface;
 
