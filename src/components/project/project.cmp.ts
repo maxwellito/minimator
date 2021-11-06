@@ -23,8 +23,7 @@ export class ProjectComponent extends PageComponent {
     const item = store.getIndex(id);
     const projectData = store.getItem(id) || '{}';
 
-    //# Clean dat dirty thing
-    document.title = `${item?.title} project`;
+    this.title = `${item?.title} - minimator`;
 
     console.log('Project constructor', id, projectData);
 

@@ -14,11 +14,9 @@ const template = `
 
 @Component('home-page', './src/components/home/home.style.css')
 export class HomeComponent extends PageComponent {
+  title = 'minimator';
   constructor() {
     super(template);
-
-    //# Clean dat dirty thing
-    document.title = `minimator`;
 
     const createCard = new HomeCardComponent();
     this.refs.get('carousel')?.append(createCard);

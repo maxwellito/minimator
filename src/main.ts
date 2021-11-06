@@ -51,6 +51,7 @@ appRouter.onChange = (newPage) => {
     currentPage?.remove();
     currentPage = newPage;
     document.body.append(newPage);
+    document.title = newPage.title;
     return newPage.enter();
   });
 };

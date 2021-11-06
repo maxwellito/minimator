@@ -41,6 +41,7 @@ const template = `
 
 @Component('create-page', './src/components/create/create.style.css')
 export class CreateComponent extends PageComponent {
+  title = 'Create a project - minimator';
   constructor() {
     super(template);
 
@@ -99,6 +100,5 @@ export class CreateComponent extends PageComponent {
       // Redirect
       (window.location as any) = `#/project/${storeItem.id}`;
     })
-
   }
 }

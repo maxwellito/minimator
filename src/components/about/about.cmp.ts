@@ -24,6 +24,7 @@ const template = `
 
 @Component('about-page', './src/components/about/about.style.css')
 export class AboutComponent extends PageComponent {
+  title = 'About minimator';
   constructor() {
     super(template);
   }
