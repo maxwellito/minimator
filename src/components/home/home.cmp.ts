@@ -4,7 +4,7 @@ import { HomeCardComponent } from '../home-card/home-card.cmp.js';
 import { store } from '../../store.js';
 
 const template = `
-  <a class="about-link title" href="#/about">i</a>
+  <a class="action-button title" href="#/about">i</a>
   <h1>minimator.</h1>
   <hr/>
   <div class="home-carousel">

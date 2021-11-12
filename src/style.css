@@ -54,8 +54,9 @@ h5,
 h6,
 .title {
   font-family: var(--font-family-title);
-  font-weight: bold;
+  font-weight: normal;
   line-height: 1;
+  text-shadow: 0.5px 0 currentColor, 1px 0 currentColor;
 }
 
 svg.feather {
@@ -74,4 +75,25 @@ svg.feather {
 }
 .breadcrumb + * {
   margin-top: 0;
+}
+
+.action-button {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  height: 1.6em;
+  width: 1.6em;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  color: inherit;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 2em;
+  text-decoration: none;
+  cursor: pointer;
 }

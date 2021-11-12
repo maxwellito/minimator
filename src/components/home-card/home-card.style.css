@@ -36,9 +36,7 @@
 }
 
 :host .label {
-  font-family: 'DM Serif Display';
   font-size: 28px;
-  font-weight: bold;
   line-height: 2;
   overflow: hidden;
 }
@@ -81,6 +79,7 @@
   width: 36px;
   border-radius: 2px;
   line-height: 22px;
+  color: inherit;
 }
 
 .actions button:hover {

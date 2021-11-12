@@ -63,5 +63,9 @@ export const SVG_ICONS = {
   playButton: `<svg data-ref="playButton" class="feather" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <circle cx="12" cy="12" r="10"></circle>
     <polygon points="10 8 16 12 10 16 10 8"></polygon>
+  </svg>`,
+  times: `<svg data-ref="times" class="feather" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <line x1="5" y1="5" x2="19" y2="19"/>
+    <line x1="5" y1="19" x2="19" y2="5"/>
   </svg>`
 };

@@ -14,7 +14,9 @@ input {
   background: none;
   border: none;
   border-bottom: 1px solid currentColor;
+  padding: 2px;
   font-family: inherit;
+  border-radius: 0;
 }
 input[type='number'] {
   width: 4ch;
@@ -38,6 +40,7 @@ button {
   padding: .5em 1em;
   border-radius: 3px;
   background: none;
+  color: inherit;
   cursor: pointer;
 }
 
@@ -56,6 +59,11 @@ button {
 .input-dimension {
   display: flex;
   justify-content: space-between;
+}
+
+.input-dimension div {
+  display: flex;
+  align-items: center;
 }
 
 .pad {
@@ -108,7 +116,8 @@ button {
   }
   
   hr {
-    border: 1px solid currentColor;
+    border: none;
+    border-top: 1px solid currentColor;
     margin-right: -20px;
     margin-left: -20px;
   }

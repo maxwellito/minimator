@@ -12,7 +12,7 @@ export class HomeCardComponent extends BaseComponent {
     if (data) {
       template = `
         <div class="img" data-ref="imageContainer"></div>
-        <div class="label" data-ref="titleLabel">${data.title}</div>
+        <div class="label title" data-ref="titleLabel">${data.title}</div>
         <div class="bottomline">
           <div class="date">${timeago(data.updated_at)}</div>
           <div class="actions">
@@ -46,6 +46,9 @@ export class HomeCardComponent extends BaseComponent {
       e.stopPropagation();
 
       const newName = prompt(`Rename "${data.title}"`, data.title) || '';
+      if (!newName) {
+        return;
+      } 
       store.renameItem(data.id, newName);
       titleLabel.innerText = newName;
     });

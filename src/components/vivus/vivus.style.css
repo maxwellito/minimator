@@ -14,30 +14,15 @@
   animation: daf 0.4s 1;
 }
 
-svg {
+:host > svg {
   position: absolute;
   height: 100%;
   width: 100%;
 }
 
-button {
-  position: absolute;
-  top: 1em;
-  right: 1em;
-  height: 1em;
-  width: 1em;
-
-  font-size: 2em;
-  line-height: 0;
-  text-align: center;
-  
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  background: transparent;
-  
-  padding-bottom: .2em;
-  display: inline-block;
-  cursor: pointer;
+.action-button svg {
+  width: .75em;
+  height: .75em;
 }
 
 p {
