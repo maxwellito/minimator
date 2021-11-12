@@ -69,6 +69,10 @@ svg.feather {
   height: 1em;
 }
 
+a {
+  color: inherit;
+}
+
 .breadcrumb {
   font-family: var(--font-family-title);
   color: inherit;

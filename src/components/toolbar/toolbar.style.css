@@ -1,3 +1,5 @@
+@import '../../style.css';
+
 :host {
   position: fixed;
   display: flex;
@@ -34,5 +36,8 @@ svg.feather {
   stroke-linecap: round;
   stroke-linejoin: round;
   width: 1em;
+  height: 1em;
+}
+a {
   height: 1em;
 }

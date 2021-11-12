@@ -2,6 +2,8 @@ import { BaseComponent, Component } from '../base.cmp.js';
 import { SVG_ICONS } from '../../services/feather.icons.js';
 
 const template = `
+  <a href="#/home">${SVG_ICONS.home}</a>
+  <span class="split"></span>
   ${SVG_ICONS.minus}
   <span class="count" data-ref="thickness">3</span>
   ${SVG_ICONS.plus}
