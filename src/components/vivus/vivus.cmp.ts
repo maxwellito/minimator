@@ -23,10 +23,12 @@ export class VivusComponent extends PageComponent {
     script.onload = () => {
       const svg = this.shadowRoot?.querySelector('svg') as SVGElement;
       const content = this.refs.get('content') as SVGGElement;
-      svg.insertBefore(content, svg.children[0]);
+      const path = this.refs.get('dots') as SVGPathElement;
+      const speed = 200 / parseInt(path.getAttribute('width') || '200', 10);
 
+      svg.insertBefore(content, svg.children[0]);
       this.vivus = new (window as any).Vivus(svg, {
-        duration: content.children.length * 20,
+        duration: content.children.length * speed * 20,
         start: 'manual',
         type: 'oneByOne'
       });
