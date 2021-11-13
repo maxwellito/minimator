@@ -94,6 +94,7 @@ export class CreateComponent extends PageComponent {
       store.updateItem(storeItem.id, {
         width: canvasWidth,
         height: canvasHeight,
+        thickness: 3,
         content: ''
       });
 

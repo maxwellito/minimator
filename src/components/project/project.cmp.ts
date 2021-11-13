@@ -33,7 +33,7 @@ export class ProjectComponent extends PageComponent {
     surface.onResize();
     surface.onChange = () => {
       projectData.content = surface.content.innerHTML;
-      store.updateItem(id, projectData)
+      store.updateItem(id, projectData);
     }
     this.surface = surface;
 
@@ -47,16 +47,20 @@ export class ProjectComponent extends PageComponent {
     shortcutBindings.on('redo', () => surface.redo());
     this.shortcutBindings = shortcutBindings;
 
-    const toolbar = new ToolbarComponent();
+    const toolbar = new ToolbarComponent(projectData.thickness);
     this.shadowRoot?.appendChild(toolbar);
     toolbar.on((eventName, eventData) => {
       let svgOutput;
       switch (eventName) {
         case 'minus':
           toolbar.setThickness(surface.decreaseThickness());
+          projectData.thickness = surface.thickness;
+          store.updateItem(id, projectData)
           break;
         case 'plus':
           toolbar.setThickness(surface.increaseThickness());
+          projectData.thickness = surface.thickness;
+          store.updateItem(id, projectData);
           break;
         case 'grid':
           surface.toggleGrid();

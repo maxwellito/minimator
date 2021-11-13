@@ -27,7 +27,7 @@ export class ToolbarComponent extends BaseComponent {
   listeners: listener[] = [];
   isEraserOn = false;
 
-  constructor() {
+  constructor(thickness: number) {
     super(template);
     this.classList.add('unselectable');
     this.refs.get('minus')?.addEventListener('click', this.minus.bind(this));
@@ -37,6 +37,8 @@ export class ToolbarComponent extends BaseComponent {
     this.refs.get('share')?.addEventListener('click', this.share.bind(this));
     this.refs.get('download')?.addEventListener('click', this.download.bind(this));
     this.refs.get('eraser')?.addEventListener('click', this.toggleEraser.bind(this));
+
+    this.setThickness(thickness);
   }
 
   on(listener: listener) {

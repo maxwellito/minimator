@@ -3,18 +3,18 @@ import { ToolbarComponent } from "./toolbar.cmp.js";
 
 describe('ToolbarComponent', () => {
   it('should link the styling', () => {
-    const cmp = new ToolbarComponent();
+    const cmp = new ToolbarComponent(3);
     assert(!!cmp.shadowRoot?.querySelector('link'), true);
   });
 
   it('should build an unselectable element', () => {
-    const tc = new ToolbarComponent();
+    const tc = new ToolbarComponent(3);
     assert(tc.classList.contains('unselectable'), true);
   });
 
   it('should call listener after a click on minus', () => {
     const listener: any = mock();
-    const tc = new ToolbarComponent();
+    const tc = new ToolbarComponent(3);
     tc.on(listener);
     tc.refs.get('minus')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'minus');
@@ -22,7 +22,7 @@ describe('ToolbarComponent', () => {
 
   it('should call listener after a click on plus', () => {
     const listener: any = mock();
-    const tc = new ToolbarComponent();
+    const tc = new ToolbarComponent(3);
     tc.on(listener);
     tc.refs.get('plus')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'plus');
@@ -30,7 +30,7 @@ describe('ToolbarComponent', () => {
 
   it('should call listener after a click on grid', () => {
     const listener: any = mock();
-    const tc = new ToolbarComponent();
+    const tc = new ToolbarComponent(3);
     tc.on(listener);
     tc.refs.get('grid')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'grid');
@@ -38,7 +38,7 @@ describe('ToolbarComponent', () => {
 
   it('should call listener after a click on share', () => {
     const listener: any = mock();
-    const tc = new ToolbarComponent();
+    const tc = new ToolbarComponent(3);
     tc.on(listener);
     tc.refs.get('share')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'share');
@@ -46,7 +46,7 @@ describe('ToolbarComponent', () => {
 
   it('should call listener after a click on download', () => {
     const listener: any = mock();
-    const tc = new ToolbarComponent();
+    const tc = new ToolbarComponent(3);
     tc.on(listener);
     tc.refs.get('download')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'download');
@@ -54,7 +54,7 @@ describe('ToolbarComponent', () => {
 
   it('should toggle eraser after clicks on erase', () => {
     const listener: any = mock();
-    const tc = new ToolbarComponent();
+    const tc = new ToolbarComponent(3);
     tc.on(listener);
     tc.refs.get('eraser')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'eraser');
@@ -65,7 +65,7 @@ describe('ToolbarComponent', () => {
   });
 
   it('should set the right thickness', () => {
-    const tc = new ToolbarComponent();
+    const tc = new ToolbarComponent(3);
     const el = tc.refs.get('thickness') as HTMLDivElement;
     tc.setThickness(3)
     assert(el?.innerText, '3');

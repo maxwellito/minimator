@@ -39,7 +39,7 @@ export class SurfaceComponent extends BaseComponent {
   changeThrottle: number = 0;
   onChange = () => {};
 
-  constructor({width, height, content}:ProjectItem) {
+  constructor({width, height, thickness, content}:ProjectItem) {
     const gap = 20;
     const id = generateDotId();
     const template = `
@@ -56,19 +56,19 @@ export class SurfaceComponent extends BaseComponent {
 
     super(template);
 
-    this.width = width;
-    this.height = height;
-    this.dotId = id;
-
+    
     // Save referenced elements
     this.el = this.refs.get('svg') as SVGElement;
     this.dots = this.refs.get('dots') as SVGGElement;
     this.content = this.refs.get('content') as SVGGElement;
-
+    
     this.content.innerHTML = content;
-
-    // Set defaults
-    this.setThickness(3);
+    
+    // Set params
+    this.width = width;
+    this.height = height;
+    this.setThickness(thickness);
+    this.dotId = id;
 
     // Bind listener
     this.eventInput = this.eventInput.bind(this);
@@ -409,7 +409,7 @@ export class SurfaceComponent extends BaseComponent {
     return this.setThickness(this.thickness - 1);
   }
 
-  setThickness(thickness: number) {
+  setThickness(thickness = 3) {
     this.thickness = Math.min(10, Math.max(1, thickness));
     this.content.setAttribute('stroke-width', `${this.thickness}`);
     return this.thickness;
