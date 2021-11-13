@@ -19,6 +19,7 @@ export enum SurfaceMode {
 export class SurfaceComponent extends BaseComponent {
   history = new HistoryStack;
   mode: SurfaceMode = SurfaceMode.PEN_MODE;
+  dotId: string;
   el: SVGElement;
   dots: SVGGElement;
   content: SVGGElement;
@@ -40,14 +41,15 @@ export class SurfaceComponent extends BaseComponent {
 
   constructor({width, height, content}:ProjectItem) {
     const gap = 20;
+    const id = generateDotId();
     const template = `
       <svg data-ref="svg" xmlns="http://www.w3.org/2000/svg" class="surface">
         <defs>
-          <pattern width="${100 / width}%" height="${100 / height}%" viewBox="0,0,${gap},${gap}" id="dot">
+          <pattern width="${100 / width}%" height="${100 / height}%" viewBox="0,0,${gap},${gap}" id="${id}">
             <circle cx="${0.5 * gap}" cy="${0.5 * gap}" r="1" fill="#000"></circle>
           </pattern>
         </defs>
-        <rect data-ref="dots" x="0" y="0" width="${width * gap}" height="${height * gap}" style="fill: url('#dot'); display: inherit;"></rect>
+        <rect data-ref="dots" x="0" y="0" width="${width * gap}" height="${height * gap}" fill="url('#${id}')"></rect>
         <g data-ref="content" stroke="black" stroke-linecap="round" fill="none" stroke-width="3"></g>
       </svg>
     `;
@@ -56,6 +58,7 @@ export class SurfaceComponent extends BaseComponent {
 
     this.width = width;
     this.height = height;
+    this.dotId = id;
 
     // Save referenced elements
     this.el = this.refs.get('svg') as SVGElement;
@@ -430,9 +433,12 @@ export class SurfaceComponent extends BaseComponent {
     const offset = margin * this.gap;
     const width = (this.width + doubleMargin) * this.gap;
     const height = (this.height + doubleMargin) * this.gap;
+    const newDotId = generateDotId();
 
     const svg = this.el.cloneNode(true) as SVGElement;
     svg.setAttribute('viewBox', `${-offset},${-offset},${width},${height}`);
+    svg.querySelector(`pattern`)?.setAttribute('id', newDotId);
+    svg.querySelector(`[data-ref="dots"]`)?.setAttribute('fill',`url('#${newDotId}')`);
 
     return svg.outerHTML;
   }
@@ -443,4 +449,8 @@ export class SurfaceComponent extends BaseComponent {
       this.onChange();
     }
   }
+}
+
+function generateDotId() {
+  return 'dot-'+btoa(`${Math.random()*(2**53)}`);
 }
