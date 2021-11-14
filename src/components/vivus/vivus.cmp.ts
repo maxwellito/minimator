@@ -1,6 +1,6 @@
 import { Component } from '../base.cmp.js';
 import { PageComponent } from '../page.cmp.js';
-import { SVG_ICONS } from '../../services/feather.icons.js';
+import { icon } from '../../services/feather.icons.js';
 
 @Component('vivus-cmp', './src/components/vivus/vivus.style.css')
 export class VivusComponent extends PageComponent {
@@ -10,7 +10,7 @@ export class VivusComponent extends PageComponent {
   constructor(rawSVG: string, onExit: () => void) {
     const template = `
       ${rawSVG}
-      <button class="action-button" data-ref="closeButton">${SVG_ICONS.times}</button>
+      <button class="action-button" data-ref="closeButton">${icon('times')}</button>
       <p>Powered by <a href="https://maxwellito.github.io/vivus/" target="_blank" rel="noopener">vivus</a></p>
     `;
 

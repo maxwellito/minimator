@@ -16,7 +16,7 @@ describe('ToolbarComponent', () => {
     const listener: any = mock();
     const tc = new ToolbarComponent(3);
     tc.on(listener);
-    tc.refs.get('minus')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('minusEvent')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'minus');
   });
 
@@ -24,7 +24,7 @@ describe('ToolbarComponent', () => {
     const listener: any = mock();
     const tc = new ToolbarComponent(3);
     tc.on(listener);
-    tc.refs.get('plus')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('plusEvent')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'plus');
   });
 
@@ -32,7 +32,7 @@ describe('ToolbarComponent', () => {
     const listener: any = mock();
     const tc = new ToolbarComponent(3);
     tc.on(listener);
-    tc.refs.get('grid')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('gridEvent')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'grid');
   });
 
@@ -40,7 +40,7 @@ describe('ToolbarComponent', () => {
     const listener: any = mock();
     const tc = new ToolbarComponent(3);
     tc.on(listener);
-    tc.refs.get('share')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('shareEvent')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'share');
   });
 
@@ -48,7 +48,7 @@ describe('ToolbarComponent', () => {
     const listener: any = mock();
     const tc = new ToolbarComponent(3);
     tc.on(listener);
-    tc.refs.get('download')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('downloadEvent')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'download');
   });
 
@@ -56,10 +56,10 @@ describe('ToolbarComponent', () => {
     const listener: any = mock();
     const tc = new ToolbarComponent(3);
     tc.on(listener);
-    tc.refs.get('eraser')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('toggleEraser')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[0][0], 'eraser');
     assert(listener.calls[0][1], true);
-    tc.refs.get('eraser')?.dispatchEvent(new MouseEvent('click'));
+    tc.refs.get('toggleEraser')?.dispatchEvent(new MouseEvent('click'));
     assert(listener.calls[1][0], 'eraser');
     assert(listener.calls[1][1], false);
   });

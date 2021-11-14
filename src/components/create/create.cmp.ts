@@ -1,7 +1,7 @@
 import { Component } from '../base.cmp.js';
 import { PageComponent } from '../page.cmp.js';
 import { store } from '../../store.js';
-import { SVG_ICONS } from '../../services/feather.icons.js';
+import { icon } from '../../services/feather.icons.js';
 import {
   TouchController,
   GESTURE,
@@ -17,11 +17,11 @@ const template = `
       <label>Dimensions</label>
       <div class="input-dimension">
         <div>
-          ${SVG_ICONS.scaleX}
+          ${icon('scaleX')}
           <input data-ref="inputWidth" type="number" value="30" min="8" max="200"/>
         </div>
         <div>
-          ${SVG_ICONS.scaleY}
+          ${icon('scaleY')}
           <input data-ref="inputHeight" type="number" value="30" min="8" max="200"/>
         </div>
       </div>

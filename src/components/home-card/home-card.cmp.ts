@@ -1,6 +1,6 @@
 import { BaseComponent, Component } from '../base.cmp.js';
 import { timeago } from '../../services/utils.js';
-import { SVG_ICONS } from '../../services/feather.icons.js';
+import { icon } from '../../services/feather.icons.js';
 import { StorageIndex } from '../../services/storage/storage.js';
 import { store } from '../../store.js';
 import { SurfaceComponent } from '../surface/surface.cmp.js';
@@ -16,8 +16,8 @@ export class HomeCardComponent extends BaseComponent {
         <div class="bottomline">
           <div class="date">${timeago(data.updated_at)}</div>
           <div class="actions">
-            <button data-ref="editButton">${SVG_ICONS.edit}</button>
-            <button data-ref="deleteButton">${SVG_ICONS.trash}</button>
+            <button data-ref="editButton" alt="Rename artwork">${icon('edit')}</button>
+            <button data-ref="deleteButton" alt="Delete artwork">${icon('trash')}</button>
           </div>
         </div>
       `;

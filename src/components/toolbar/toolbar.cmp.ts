@@ -1,22 +1,22 @@
 import { BaseComponent, Component } from '../base.cmp.js';
-import { SVG_ICONS } from '../../services/feather.icons.js';
+import { icon } from '../../services/feather.icons.js';
 
 const template = `
-  <a href="#/home">${SVG_ICONS.home}</a>
+  <a href="#/home">${icon('home', 'homeLink', 'Return to minimator homesceen')}</a>
   <span class="split"></span>
-  ${SVG_ICONS.minus}
+  ${icon('minus', 'minusEvent', 'Decrease line thickness')}
   <span class="count" data-ref="thickness">3</span>
-  ${SVG_ICONS.plus}
+  ${icon('plus', 'plusEvent', 'Increase line thickness')}
   <span class="split"></span>
-  ${SVG_ICONS.eraser}
+  ${icon('eraser', 'toggleEraser', 'Toggle eraser mode')}
   <span class="split"></span>
-  ${SVG_ICONS.grid}
+  ${icon('grid', 'gridEvent', 'Show/hide the canvas grid')}
   <span class="split"></span>
-  ${SVG_ICONS.playButton}
+  ${icon('playCircle', 'vivusEvent', 'Play')}
   <span class="split"></span>
-  ${SVG_ICONS.share}
+  ${icon('share', 'shareEvent', 'Share your actwork')}
   <span class="split"></span>
-  ${SVG_ICONS.download}
+  ${icon('download', 'downloadEvent', 'Download your artwork')}
 `;
 
 type listener = (type: string, data: any)=>void;
@@ -29,15 +29,21 @@ export class ToolbarComponent extends BaseComponent {
 
   constructor(thickness: number) {
     super(template);
-    this.classList.add('unselectable');
-    this.refs.get('minus')?.addEventListener('click', this.minus.bind(this));
-    this.refs.get('plus')?.addEventListener('click', this.plus.bind(this));
-    this.refs.get('grid')?.addEventListener('click', this.grid.bind(this));
-    this.refs.get('playButton')?.addEventListener('click', this.vivus.bind(this));
-    this.refs.get('share')?.addEventListener('click', this.share.bind(this));
-    this.refs.get('download')?.addEventListener('click', this.download.bind(this));
-    this.refs.get('eraser')?.addEventListener('click', this.toggleEraser.bind(this));
 
+    // Find 'Event' ref elements to dispatch 
+    const refKeys = Array.from(this.refs.keys());
+    refKeys.forEach(key => {
+      if (!key.endsWith('Event')) {
+        return;
+      }
+      const eventName = key.substr(0, key.length - 5)
+      this.refs.get(key)?.addEventListener('click', () => {
+        this.listeners.forEach(l => l(eventName, null));
+      });
+    })
+
+    this.refs.get('toggleEraser')?.addEventListener('click', this.toggleEraser.bind(this));
+    this.classList.add('unselectable');
     this.setThickness(thickness);
   }
 
@@ -45,25 +51,6 @@ export class ToolbarComponent extends BaseComponent {
     this.listeners.push(listener);
   }
 
-  //# Clean these dirty methods
-  minus() {
-    this.listeners.forEach(l => l('minus', null));
-  }
-  plus() {
-    this.listeners.forEach(l => l('plus', null));
-  }
-  grid() {
-    this.listeners.forEach(l => l('grid', null));
-  }
-  vivus() {
-    this.listeners.forEach(l => l('vivus', null));
-  }
-  share() {
-    this.listeners.forEach(l => l('share', null));
-  }
-  download() {
-    this.listeners.forEach(l => l('download', null));
-  }
   toggleEraser() {
     this.isEraserOn = !this.isEraserOn;
     this.refs.get('eraser')?.classList.toggle('on');
@@ -73,5 +60,9 @@ export class ToolbarComponent extends BaseComponent {
   setThickness(value: number) {
     const thickness: any = this.refs.get('thickness');
     thickness.innerText = `${value}`;
+  }
+
+  destroy() {
+    this.listeners = [];
   }
 }

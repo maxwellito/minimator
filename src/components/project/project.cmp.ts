@@ -14,6 +14,7 @@ export class ProjectComponent extends PageComponent {
   
   surface: SurfaceComponent;
   touchHandler: TouchController;
+  toolbar: ToolbarComponent;
   shortcutBindings: Shortcut;
   vivusScreen?: VivusComponent;
 
@@ -22,6 +23,7 @@ export class ProjectComponent extends PageComponent {
 
     const item = store.getIndex(id);
     const projectData = store.getItem(id) || '{}';
+    projectData.thickness = projectData.thickness || 3;
 
     this.title = `${item?.title} - minimator`;
 
@@ -95,11 +97,13 @@ export class ProjectComponent extends PageComponent {
           break;
       }
     });
+    this.toolbar = toolbar;
   }
 
   exit() {
     window.removeEventListener('resize', this.surface.onResize);
     this.shortcutBindings.destroy();
+    this.toolbar.destroy();
     this.touchHandler.destroy();
     this.surface.destroy();
     
