@@ -27,8 +27,6 @@ export class ProjectComponent extends PageComponent {
 
     this.title = `${item?.title} - minimator`;
 
-    console.log('Project constructor', id, projectData);
-
     const surface = new SurfaceComponent(projectData);
     (window as any).ma = surface; //# Debug purposes
     this.shadowRoot?.appendChild(surface);

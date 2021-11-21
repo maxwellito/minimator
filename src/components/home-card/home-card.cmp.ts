@@ -11,7 +11,9 @@ export class HomeCardComponent extends BaseComponent {
     let template: string;
     if (data) {
       template = `
-        <div class="img" data-ref="imageContainer"></div>
+        <div class="img">
+          <div class="content" data-ref="imageContainer"></div>
+        </div>
         <div class="label title" data-ref="titleLabel">${data.title}</div>
         <div class="bottomline">
           <div class="date">${timeago(data.updated_at)}</div>

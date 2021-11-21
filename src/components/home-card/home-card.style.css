@@ -27,8 +27,22 @@
 }
 
 :host .img {
-  aspect-ratio: 1;
+  position: relative;
 }
+:host .img:before {
+  display: block;
+  content: "";
+  width: 100%;
+  padding-top: 100%;
+}
+:host .img > .content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .fake-img {
   background-color: #fff;
   background-image: radial-gradient(#000 0.5px, #fff 0.5px);

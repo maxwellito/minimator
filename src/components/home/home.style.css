@@ -73,8 +73,7 @@
 .home-carousel-wrap {
   display: table-cell;
   vertical-align: top;
-  padding-left: var(--left-space);
-  padding-right: var(--left-space);
+  padding: 0 var(--left-space) 1em;
 }
 
 home-card-cmp {

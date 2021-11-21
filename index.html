@@ -8,93 +8,10 @@
       content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"
     />
     <title>minimator</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-          Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      }
-      html,
-      body {
-        width: 100%;
-        height: 100%;
-      }
-
-      /* Utils */
-      .unselectable {
-        user-select: none;
-        -moz-user-select: none;
-        -khtml-user-select: none;
-        -webkit-user-select: none;
-        -o-user-select: none;
-      }
-    </style>
+    <link rel="stylesheet" href="./src/style.css" />
   </head>
   <body></body>
   <script type="module">
-    // Imports
-    import { SurfaceComponent } from './dist/components/surface/surface.cmp.js';
-    import { ToolbarComponent } from './dist/components/toolbar/toolbar.cmp.js';
-    import { TouchController } from './dist/services/touchController/touchController.js';
-    import {
-      downloader,
-      share,
-      securityCheck,
-    } from './dist/services/features.js';
-    import { Shortcut } from './dist/services/shortcut/shortcut.js';
-
-    // Run tests
-    import './dist/tests/list.js';
-
-    // Security 'lol' check
-    securityCheck();
-
-    const mySurface = new SurfaceComponent(50, 50);
-    window.ma = mySurface;
-    document.body.appendChild(mySurface);
-
-    const touchHandler = new TouchController(mySurface.el);
-    touchHandler.on(mySurface.eventInput);
-    window.addEventListener('resize', mySurface.onResize.bind(mySurface));
-    setTimeout(() => {
-      mySurface.onResize();
-    }, 10);
-
-    const shortcutBindings = new Shortcut();
-    shortcutBindings.on('undo', () => mySurface.undo());
-    shortcutBindings.on('redo', () => mySurface.redo());
-
-    const toolbar = new ToolbarComponent();
-    document.body.appendChild(toolbar);
-    toolbar.on((eventName, eventData) => {
-      let svgOutput;
-      switch (eventName) {
-        case 'minus':
-          toolbar.setThickness(mySurface.decreaseThickness());
-          break;
-        case 'plus':
-          toolbar.setThickness(mySurface.increaseThickness());
-          break;
-        case 'grid':
-          mySurface.toggleGrid();
-          break;
-        case 'eraser':
-          const newMode = eventData ? Surface.ERASER_MODE : Surface.PEN_MODE;
-          mySurface.setMode(newMode);
-          break;
-        case 'share':
-          svgOutput = mySurface.extractSVG();
-          share(
-            'minimator',
-            'https://maxwellito.github.io/minimator',
-            svgOutput
-          );
-          break;
-        case 'download':
-          svgOutput = mySurface.extractSVG();
-          downloader(svgOutput, 'minimator_demo.svg');
-          break;
-      }
-    });
+    import './dist/main.js';
   </script>
 </html>
