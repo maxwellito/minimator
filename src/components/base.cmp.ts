@@ -44,6 +44,9 @@ export class BaseComponent extends HTMLElement {
       const link = document.createElement('link');
       link.setAttribute('rel', 'stylesheet');
       link.setAttribute('href', cssLink);
+      link.onload = () => {
+        this.style.visibility = 'visible';
+      }
       link.onerror = () => {
         throw new Error(`Fail to load stylesheet for ${this.constructor.name}. 
         CSS Link : ${cssLink}`);
@@ -72,5 +75,6 @@ export class BaseComponent extends HTMLElement {
 
     // Append child
     this.shadowRoot?.append(...container.children);
+    this.style.visibility = 'hidden';;
   }
 }

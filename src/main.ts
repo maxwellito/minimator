@@ -50,7 +50,7 @@ appRouter.onChange = (newPage) => {
     // The current page is now ready to be removed
     currentPage?.remove();
     currentPage = newPage;
-    document.body.append(newPage);
+    document.body.querySelector('.app')?.append(newPage);
     document.title = newPage.title;
     return newPage.enter();
   });

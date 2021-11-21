@@ -1,7 +1,7 @@
 @import '../../style.css';
 
 :host {
-  margin: 0 var(--left-space);
+  padding: 0 var(--left-space);
   animation: fad .4s 1;
 }
 :host(.exit) {
@@ -88,10 +88,13 @@ button {
 @media (max-width: 480px) {
   :host {
     display: block;
-    margin: 32px 16px;
+    padding: 32px 16px;
   }
   .pad {
     height: 220px;
+  }
+  hr {
+    display: none;
   }
 }
 
