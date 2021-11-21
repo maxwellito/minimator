@@ -160,6 +160,27 @@ export class SurfaceComponent extends BaseComponent {
         return;
       }
 
+      // Eraser mode
+      if (this.mode === SurfaceMode.ERASER_MODE) {
+        
+        var target = this.shadowRoot?.elementFromPoint(
+          data.origin.x + data.drag.x, 
+          data.origin.y + data.drag.y
+        );
+        if (target?.parentNode !== this.content) {
+          return
+        }
+        this.history.add({
+          type: HistoryActionType.REMOVE,
+          element: target,
+          position: Array.from(this.content.childNodes.values()).indexOf(target)
+        })
+        this.content.removeChild(target);
+        this.callToChange();
+        return;
+
+      }
+
       if (state === STATE.START) {
         this.drawingStartPoint = this.coordToDot(data.origin);
         this.fngPoint = this.drawingStartPoint;

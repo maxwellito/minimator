@@ -8,7 +8,10 @@ const template = `
   <span class="count" data-ref="thickness">3</span>
   ${icon('plus', 'plusEvent', 'Increase line thickness')}
   <span class="split"></span>
-  ${icon('eraser', 'toggleEraser', 'Toggle eraser mode')}
+  <span data-ref="toggleEraser">
+    ${icon('eraser', 'eraserIcon', 'Toggle eraser mode')}
+    ${icon('pen', 'penIcon', 'Toggle eraser mode')}
+  </span>
   <span class="split"></span>
   ${icon('grid', 'gridEvent', 'Show/hide the canvas grid')}
   <span class="split"></span>
@@ -26,6 +29,8 @@ export class ToolbarComponent extends BaseComponent {
 
   listeners: listener[] = [];
   isEraserOn = false;
+  penIcon = SVGElement.prototype;
+  eraserIcon = SVGElement.prototype;
 
   constructor(thickness: number) {
     super(template);
@@ -42,7 +47,13 @@ export class ToolbarComponent extends BaseComponent {
       });
     })
 
+    // Set surface mode
+    this.penIcon = this.refs.get('penIcon') as SVGElement;
+    this.eraserIcon = this.refs.get('eraserIcon') as SVGElement;
+    this.penIcon.style.display = 'none';
+    this.eraserIcon.style.display = 'inherit';
     this.refs.get('toggleEraser')?.addEventListener('click', this.toggleEraser.bind(this));
+
     this.classList.add('unselectable');
     this.setThickness(thickness);
   }
@@ -55,6 +66,8 @@ export class ToolbarComponent extends BaseComponent {
     this.isEraserOn = !this.isEraserOn;
     this.refs.get('eraser')?.classList.toggle('on');
     this.listeners.forEach(l => l('eraser', this.isEraserOn));
+    this.penIcon.style.display = this.isEraserOn ? 'inherit' : 'none';
+    this.eraserIcon.style.display = this.isEraserOn ? 'none' : 'inherit';
   }
 
   setThickness(value: number) {
