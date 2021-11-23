@@ -1,13 +1,18 @@
+import { theme } from './services/theme.js';
+import { securityCheck } from './services/features.js';
+
 import { Router } from './services/router/router.js';
 import { PageComponent } from './components/page.cmp.js';
 import { HomeComponent } from './components/home/home.cmp.js';
 import { CreateComponent } from './components/create/create.cmp.js';
 import { AboutComponent } from './components/about/about.cmp.js';
 import { ProjectComponent } from './components/project/project.cmp.js';
-import { securityCheck } from './services/features.js';
 
 // Security 'lol' check
 securityCheck();
+
+// Init things
+theme.initialisation();
 
 let currentPage: PageComponent;
 

@@ -3,6 +3,7 @@ export class Storage<T> {
   indexKey: string;
   indexNextId: string;
   indexBaseKey: string;
+  mapBaseKey: string;
 
   constructor(prefixKey: string) {
     if (!prefixKey || prefixKey.length < 5) {
@@ -11,6 +12,7 @@ export class Storage<T> {
     this.indexKey = `${prefixKey}_index`;
     this.indexNextId = `${prefixKey}_nextid`;
     this.indexBaseKey = `${prefixKey}_`;
+    this.mapBaseKey = `${prefixKey}_map_`;
   }
 
   loadIndexes() {
@@ -83,6 +85,15 @@ export class Storage<T> {
     this.indexes.splice(itemIndex, 1);
     localStorage.removeItem(this.indexBaseKey + id);
     this.saveIndexes();
+  }
+
+
+  getKey(key: string) {
+    return localStorage.getItem(`${this.mapBaseKey}_${key}`);
+  }
+
+  setKey(key: string, value: string) {
+    localStorage.setItem(`${this.mapBaseKey}_${key}`, value);
   }
 }
 

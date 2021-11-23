@@ -10,7 +10,7 @@ export class VivusComponent extends PageComponent {
   constructor(rawSVG: string, onExit: () => void) {
     const template = `
       ${rawSVG}
-      <button class="action-button" data-ref="closeButton">${icon('times')}</button>
+      <button class="action-button action-position" data-ref="closeButton">${icon('times')}</button>
       <p>Powered by <a href="https://maxwellito.github.io/vivus/" target="_blank" rel="noopener">vivus</a></p>
     `;
 

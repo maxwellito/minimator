@@ -2,7 +2,8 @@
 
 :host {
   display: block;
-  margin: 5% auto 5% var(--left-space);
+  margin: 0 auto 0 var(--left-space);
+  padding: 5% 0;
   max-width: 480px;
   animation: fad .4s 1;
 }

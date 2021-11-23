@@ -9,10 +9,11 @@
 }
 
 :root {
-  --is-night-mode: 1;
+  --is-dark-mode: 0;
   --font-family-title: 'DM Serif Display', serif;
   --font-family-content: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --action-button-size: 1.6em;
 }
 
 @media (min-width: 768px) {
@@ -40,7 +41,7 @@ body {
   margin: 0;
   font-family: var(--font-family-content);
   font-weight: 300;
-  filter: invert(var(--is-night-mode));
+  filter: invert(var(--is-dark-mode));
   transition: .5s filter;
 }
 .app {
@@ -88,21 +89,26 @@ a {
   margin-top: 0;
 }
 
-.action-button {
+.action-position {
   position: absolute;
   top: 1em;
   right: 1em;
-  height: 1.6em;
-  width: 1.6em;
   padding: 0;
+}
 
+.action-button {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.action-button, .action-style {
+  height: var(--action-button-size);
+  width: var(--action-button-size);
   
   color: inherit;
   border: 1px solid currentColor;
-  border-radius: 50%;
+  border-radius: calc(var(--action-button-size)/2);
   background: transparent;
   font-size: 2em;
   text-decoration: none;
