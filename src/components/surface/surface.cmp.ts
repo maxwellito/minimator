@@ -235,6 +235,8 @@ export class SurfaceComponent extends BaseComponent {
       }
     } else if (type === GESTURE.UNDO && state === STATE.END) {
       this.undo()
+    } else if (type === GESTURE.REDO && state === STATE.END) {
+      this.redo()
     }
   }
 
