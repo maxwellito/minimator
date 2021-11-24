@@ -14,13 +14,24 @@
   animation-fill-mode: forward;
 }
 
-
-.action-position {
+.top {
   display: flex;
+  flex-wrap: wrap;
+  margin: 16px var(--left-space);
+}
+
+.header {
+  flex-grow: 1;
+  margin: 8px 30px 8px 0;
+}
+
+.actions {
+  display: flex;
+  margin: 8px 0;
   animation: fad 1s 1;
 }
 
-.action-position > * + * {
+.actions > * + * {
   margin-left: .25em;
 }
 
@@ -39,11 +50,6 @@
   scroll-snap-points-x: repeat(344px);
 }
 
-:host h1,
-:host hr {
-  margin-left: var(--left-space);
-}
-
 :host h1 {
   font-size: 48px;
   letter-spacing: -1px;
@@ -56,8 +62,7 @@
   border: none;
   height: 1px;
   width: 221px;
-  margin-top: 0;
-  margin-bottom: 40px;
+  margin: 0 auto 0 0;
   animation: grow 0.8s 1 ease 0.2s;
   animation-fill-mode: both;
 }

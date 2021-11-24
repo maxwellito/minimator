@@ -5,12 +5,16 @@ import { ThemeSwitchComponent } from '../theme-switch/theme-switch.cmp.js';
 import { store } from '../../store.js';
 
 const template = `
-  <div class="action-position">
-    <theme-switch-cmp></theme-switch-cmp>
-    <a class="action-button title" href="#/about">i</a>
+  <div class="top">
+    <div class="header">
+      <h1>minimator.</h1>
+      <hr/>
+    </div>
+    <div class="actions">
+      <theme-switch-cmp></theme-switch-cmp>
+      <a class="action-button title" href="#/about">i</a>
+    </div>
   </div>
-  <h1>minimator.</h1>
-  <hr/>
   <div class="home-carousel">
     <div data-ref="carousel" class="home-carousel-wrap"></div>
   </div>
@@ -31,7 +35,7 @@ export class HomeComponent extends PageComponent {
 
     store.loadIndexes().forEach((d) => {
       const card = new HomeCardComponent(d);
-      this.refs.get('carousel')?.append(card);
+      this.refs.get('carousel')?.appendChild(card);
       card.onclick = () => (location.hash = `#/project/${d.id}`);
     });
   }

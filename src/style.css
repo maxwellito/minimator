@@ -42,6 +42,7 @@ body {
   font-family: var(--font-family-content);
   font-weight: 300;
   filter: invert(var(--is-dark-mode));
+  -webkit-tap-highlight-color: #f6c40822;
   transition: .5s filter;
 }
 .app {
@@ -113,4 +114,13 @@ a {
   font-size: 2em;
   text-decoration: none;
   cursor: pointer;
+}
+
+/* Utils */
+.unselectable {
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }
