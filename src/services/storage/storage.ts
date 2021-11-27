@@ -62,8 +62,12 @@ export class Storage<T> {
     this.saveIndexes();
   }
 
+  getNextIndex() {
+    return parseInt(localStorage.getItem(this.indexNextId) || '0', 10);
+  }
+
   createItem(title: string, content?: T) {
-    let id = parseInt(localStorage.getItem(this.indexNextId) || '0', 10);
+    let id = this.getNextIndex();
     localStorage.setItem(this.indexNextId, `${id + 1}`);
 
     var item: StorageIndex = {

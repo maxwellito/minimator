@@ -1,7 +1,7 @@
 import { GESTURE, STATE, EventData } from '../../services/touchController/touchController.js';
 import { HistoryStack, HistoryActionType } from '../../services/historyStack/historyStack.js';
 import { BaseComponent, Component } from '../base.cmp.js';
-import { ProjectItem } from '../../store.js';
+import { ProjectItem } from '../../models/projectItem.js';
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
@@ -239,7 +239,7 @@ export class SurfaceComponent extends BaseComponent {
         }
       } else if (state === STATE.END) {
         if (this.currentElement) {
-          this.currentElement.classList.remove('pending');
+          this.currentElement.removeAttribute('class');
           this.history.add({
             type: HistoryActionType.ADD,
             element: this.currentElement,
