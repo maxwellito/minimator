@@ -90,8 +90,7 @@ export class CreateComponent extends PageComponent {
       const canvasName = inputName.value;
 
       // Create a new item in store
-      const storeItem = store.createItem(canvasName);
-      store.updateItem(storeItem.id, {
+      const storeItem = store.createItem(canvasName, {
         width: canvasWidth,
         height: canvasHeight,
         thickness: 3,

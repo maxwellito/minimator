@@ -31,7 +31,7 @@ describe('Storage', () => {
   });
 
   it('should create and store new index', () => {
-    const item = store.createItem('foo');
+    const item = store.createItem('foo', {});
     const storeTwo = new Storage(prefixKey);
     const indexesA = store.loadIndexes();
     const indexesB = storeTwo.loadIndexes();
@@ -41,28 +41,34 @@ describe('Storage', () => {
   });
 
   it('should update the content of an index', () => {
-    const index = store.createItem('foo');
+    const index = store.createItem('foo', {});
     store.updateItem(index.id, 'foobar');
     assert(store.getItem(index.id), 'foobar');
   });
 
   it('should rename an index', () => {
-    const index = store.createItem('foo');
+    const index = store.createItem('foo', {});
     store.renameItem(index.id, 'bar');
     assert(index.title, 'bar');
   });
 
   it('should delete an index', () => {
-    const index = store.createItem('foo');
+    const index = store.createItem('foo', {});
     const sizePre = store.loadIndexes().length;
     store.deleteItem(index.id);
     const sizePost = store.loadIndexes().length;
-    assert(store.getItem(index.id), null);
+    let errorMsg;
+    try {
+      store.getItem(index.id);
+    } catch (e) {
+      errorMsg = e.message;
+    }
+    assert(errorMsg, "Couldn't retrieve the item 3 from LocalStorage.");
     assert(sizePre, sizePost + 1);
   });
 
   it('should content must persist between instances', () => {
-    const index = store.createItem('foo');
+    const index = store.createItem('foo', {});
     store.updateItem(index.id, 'foobar');
     const storeTwo = new Storage(prefixKey);
     assert(storeTwo.getItem(index.id), 'foobar');

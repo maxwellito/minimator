@@ -62,7 +62,7 @@ export class Storage<T> {
     this.saveIndexes();
   }
 
-  createItem(title: string) {
+  createItem(title: string, content?: T) {
     let id = parseInt(localStorage.getItem(this.indexNextId) || '0', 10);
     localStorage.setItem(this.indexNextId, `${id + 1}`);
 
@@ -74,17 +74,21 @@ export class Storage<T> {
     };
     this.loadIndexes().push(item);
     this.saveIndexes();
+    if (content) {
+      this.updateItem(id, content);
+    }
     return item;
   }
 
   deleteItem(id: number) {
     var itemIndex = this.loadIndexes().findIndex((x) => x.id === id);
     if (!~itemIndex) {
-      throw new Error(`Storage: item ${id} not found.`);
+      return null;
     }
-    this.indexes.splice(itemIndex, 1);
+    const removedItems = this.indexes.splice(itemIndex, 1);
     localStorage.removeItem(this.indexBaseKey + id);
     this.saveIndexes();
+    return removedItems;
   }
 
 

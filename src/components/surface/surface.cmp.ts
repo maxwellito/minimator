@@ -34,6 +34,7 @@ export class SurfaceComponent extends BaseComponent {
   rect = new DOMRect();
   drawingStartPoint?: Coordinate;
   fngPoint?: Coordinate;
+  firstDeleted?: SVGElement;
 
   currentElement?: SVGLineElement | SVGPathElement;
   changeThrottle: number = 0;
@@ -166,16 +167,33 @@ export class SurfaceComponent extends BaseComponent {
         var target = this.shadowRoot?.elementFromPoint(
           data.origin.x + data.drag.x, 
           data.origin.y + data.drag.y
-        );
-        if (target?.parentNode !== this.content) {
-          return
+        ) as SVGElement;
+        if (!target || target?.parentNode !== this.content) {
+          if (state === STATE.END && this.firstDeleted) {
+            this.firstDeleted.removeAttribute('stroke')
+            this.content.removeChild(this.firstDeleted);
+            this.firstDeleted = undefined;
+          }
+          return;
         }
+        if (state === STATE.START) {
+          this.firstDeleted = target;
+          target.setAttribute('stroke', 'rgba(0,0,0,0)')
+        } else if (state === STATE.UPDATE) {
+          if (this.firstDeleted === target) {
+            return;
+          } else {
+            this.content.removeChild(target);
+          }
+        } else if (state === STATE.END) {
+          this.content.removeChild(target);
+        } 
         this.history.add({
           type: HistoryActionType.REMOVE,
           element: target,
           position: Array.from(this.content.childNodes.values()).indexOf(target)
         })
-        this.content.removeChild(target);
+        
         this.callToChange();
         return;
 
