@@ -42,6 +42,7 @@ body {
   font-family: var(--font-family-content);
   font-weight: 300;
   filter: invert(var(--is-dark-mode));
+  touch-action: none;
   -webkit-tap-highlight-color: #f6c40822;
   transition: .5s filter;
 }

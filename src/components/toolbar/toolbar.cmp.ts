@@ -54,6 +54,12 @@ export class ToolbarComponent extends BaseComponent {
     this.eraserIcon.style.display = 'inherit';
     this.refs.get('toggleEraser')?.addEventListener('click', this.toggleEraser.bind(this));
 
+    // Block double tap zoom
+    this.shadowRoot?.addEventListener('dblclick', e => {
+      e.stopPropagation();
+      e.preventDefault();
+    })
+
     this.classList.add('unselectable');
     this.setThickness(thickness);
   }
