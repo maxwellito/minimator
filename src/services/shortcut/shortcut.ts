@@ -100,10 +100,16 @@ export class Shortcut {
 export const OPTION_KEYCODE = 91;
 export const EVENTS: { [shortcutName: string]: EventDef } = {
   redo: {
-    keyCode: 90,
+    keyCode: 89,
     ctrlKey: true,
-    shiftKey: true,
   },
+  // Shift + CMD + Z is cancelled because
+  // Firefox Mac doesn't detect the Shift key.
+  // redo: {
+  //   keyCode: 90,
+  //   ctrlKey: true,
+  //   shiftKey: true,
+  // },
   undo: {
     keyCode: 90,
     ctrlKey: true,
