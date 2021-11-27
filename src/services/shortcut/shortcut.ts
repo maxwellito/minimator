@@ -21,7 +21,7 @@ export class Shortcut {
    * @return function Executable to remove the listener
    */
   on(eventName: string, listener: listener) {
-    if (!EVENTS[eventName]) {
+    if (!EVENTS.find(x => x.name===eventName)) {
       throw new Error('Ask to listen for a non existing shortcut');
     }
     let listeners = this.listeners.get(eventName);
@@ -58,11 +58,11 @@ export class Shortcut {
       this.isOptionPressed = true;
     }
     let eventSpecs: any, areSpecsPassing;
-    for (let eventName in EVENTS) {
-      eventSpecs = EVENTS[eventName];
+    for (eventSpecs of EVENTS) {
       areSpecsPassing = true;
       for (let prop in eventSpecs) {
         if (
+          prop !== 'name' &&
           (event as any)[prop] !== eventSpecs[prop] &&
           !(prop === 'ctrlKey' && eventSpecs[prop] && this.isOptionPressed)
         ) {
@@ -70,14 +70,14 @@ export class Shortcut {
         }
       }
       if (areSpecsPassing) {
-        let listeners = this.listeners.get(eventName) || [];
+        let listeners = this.listeners.get(eventSpecs.name) || [];
         for (let listenerIndex in listeners) {
           listeners[listenerIndex]();
         }
         // Prevent default event behavior.
         // Except for the 'delete' on inputs/textareas
         if (
-          eventName !== 'delete' ||
+          eventSpecs.name !== 'delete' ||
           !~['INPUT', 'TEXTAREA'].indexOf((event.target as any)?.nodeName)
         ) {
           event.preventDefault();
@@ -98,41 +98,47 @@ export class Shortcut {
 }
 
 export const OPTION_KEYCODE = 91;
-export const EVENTS: { [shortcutName: string]: EventDef } = {
-  redo: {
+export const EVENTS: EventDef[] = [
+  {
+    name: 'redo',
     keyCode: 89,
     ctrlKey: true,
   },
-  // Shift + CMD + Z is cancelled because
-  // Firefox Mac doesn't detect the Shift key.
-  // redo: {
-  //   keyCode: 90,
-  //   ctrlKey: true,
-  //   shiftKey: true,
-  // },
-  undo: {
+  {
+    name: 'redo',
+    keyCode: 90,
+    ctrlKey: true,
+    shiftKey: true,
+  },
+  {
+    name: 'undo',
     keyCode: 90,
     ctrlKey: true,
   },
-  delete: {
+  {
+    name: 'delete',
     keyCode: 8,
   },
-  cut: {
+  {
+    name: 'cut',
     keyCode: 88,
     ctrlKey: true,
   },
-  copy: {
+  {
+    name: 'copy',
     keyCode: 67,
     ctrlKey: true,
   },
-  paste: {
+  {
+    name: 'paste',
     keyCode: 86,
     ctrlKey: true,
   },
-};
+];
 
 type listener = () => void;
 interface EventDef {
+  name: string;
   keyCode: number;
   ctrlKey?: boolean;
   shiftKey?: boolean;
