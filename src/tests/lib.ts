@@ -151,7 +151,19 @@ export function mock (valueToReturn?: any) {
     return valueToReturn;
   }
   m.calls = calls;
+  m.andReturn = (newValueToReturn?: any) => valueToReturn = newValueToReturn;
   return m;
+}
+
+const mocks = new Set<() => void>();
+export function spyOn(object: {[prop: string]: any}, methodName: string, valueToReturn?: any) {
+  const originalValue = object[methodName];
+  mocks.add(() => object[methodName] = originalValue);
+  object[methodName] = mock(valueToReturn);
+}
+export function resetAllMocks() {
+  mocks.forEach(x => x());
+  mocks.clear();
 }
 
 export function build () {

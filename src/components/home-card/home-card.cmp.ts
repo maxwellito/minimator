@@ -47,7 +47,7 @@ export class HomeCardComponent extends BaseComponent {
       e.preventDefault();
       e.stopPropagation();
 
-      const newName = prompt(`Rename "${data.title}"`, data.title) || '';
+      const newName = window.prompt(`Rename "${data.title}"`, data.title) || '';
       if (!newName) {
         return;
       } 
@@ -59,13 +59,13 @@ export class HomeCardComponent extends BaseComponent {
       e.preventDefault();
       e.stopPropagation();
 
-      if(confirm(`Are you sure to delete "${data.title}"? There's no going back.`)) {
+      if(window.confirm(`Are you sure to delete "${data.title}"? There's no going back.`)) {
         store.deleteItem(data.id);
         this.remove();
       }
     });
 
-    const projectData = store.getItem(data.id) || '{}';
+    const projectData = store.getItem(data.id) || {};
     const surface = new SurfaceComponent(projectData);
     surface.setDefaultViewBox();
     imageContainer.appendChild(surface)

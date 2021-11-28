@@ -20,7 +20,7 @@ export class ThemeSwitchComponent extends BaseComponent {
 
     // Listen for click on the switch
     this.button = this.refs.get('button') as HTMLButtonElement;
-    this.button.addEventListener('mousedown', this.switchListener.bind(this));
+    this.button.addEventListener('click', this.switchListener.bind(this));
 
     // Set toggle state
     this.setState();
