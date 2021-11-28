@@ -13,7 +13,7 @@ describe('ToolbarComponent', () => {
   });
 
   it('should call listener after a click on minus', () => {
-    const listener: any = mock();
+    const listener = mock();
     const tc = new ToolbarComponent(3);
     tc.on(listener);
     tc.refs.get('minusEvent')?.dispatchEvent(new MouseEvent('click'));
@@ -21,7 +21,7 @@ describe('ToolbarComponent', () => {
   });
 
   it('should call listener after a click on plus', () => {
-    const listener: any = mock();
+    const listener = mock();
     const tc = new ToolbarComponent(3);
     tc.on(listener);
     tc.refs.get('plusEvent')?.dispatchEvent(new MouseEvent('click'));
@@ -29,7 +29,7 @@ describe('ToolbarComponent', () => {
   });
 
   it('should call listener after a click on grid', () => {
-    const listener: any = mock();
+    const listener = mock();
     const tc = new ToolbarComponent(3);
     tc.on(listener);
     tc.refs.get('gridEvent')?.dispatchEvent(new MouseEvent('click'));
@@ -37,7 +37,7 @@ describe('ToolbarComponent', () => {
   });
 
   it('should call listener after a click on share', () => {
-    const listener: any = mock();
+    const listener = mock();
     const tc = new ToolbarComponent(3);
     tc.on(listener);
     tc.refs.get('shareEvent')?.dispatchEvent(new MouseEvent('click'));
@@ -45,7 +45,7 @@ describe('ToolbarComponent', () => {
   });
 
   it('should call listener after a click on download', () => {
-    const listener: any = mock();
+    const listener = mock();
     const tc = new ToolbarComponent(3);
     tc.on(listener);
     tc.refs.get('downloadEvent')?.dispatchEvent(new MouseEvent('click'));
@@ -53,7 +53,7 @@ describe('ToolbarComponent', () => {
   });
 
   it('should toggle eraser after clicks on erase', () => {
-    const listener: any = mock();
+    const listener = mock();
     const tc = new ToolbarComponent(3);
     tc.on(listener);
     tc.refs.get('toggleEraser')?.dispatchEvent(new MouseEvent('click'));

@@ -5,25 +5,24 @@ import {
   afterEach,
   beforeEach,
   mock,
+  Mock,
+  spyOn,
+  resetAllMocks
 } from '../../tests/lib.js';
 import { Shortcut, OPTION_KEYCODE } from './shortcut.js';
 
 describe('Shortcut', () => {
-  let addEventListenerBkp: any;
-  let aelMock: any;
-  let removeEventListenerBkp: any;
-  let relMock: any;
+  let aelMock: Mock;
+  let relMock: Mock;
   let shrct: Shortcut;
   beforeEach(() => {
-    addEventListenerBkp = window.addEventListener;
-    aelMock = window.addEventListener = mock();
-    removeEventListenerBkp = window.removeEventListener;
-    relMock = window.removeEventListener = mock();
+    aelMock = spyOn(window, 'addEventListener');
+    relMock = spyOn(window, 'removeEventListener');
     shrct = new Shortcut();
   });
+  
   afterEach(() => {
-    window.addEventListener = addEventListenerBkp;
-    window.removeEventListener = removeEventListenerBkp;
+    resetAllMocks();
     shrct.destroy();
   });
 

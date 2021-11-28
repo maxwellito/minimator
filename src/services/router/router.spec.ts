@@ -5,18 +5,19 @@ import {
   beforeEach,
   afterEach,
   mock,
+  spyOn,
+  resetAllMocks,
+  Mock,
 } from '../../tests/lib.js';
 import { Router, Route } from './router.js';
 import { PageComponent } from '../../components/page.cmp.js';
 
 describe('Router', () => {
-  let addEventListenerBkp: any;
-  let aelMock: any;
-  let removeEventListenerBkp: any;
-  let relMock: any;
+  let aelMock: Mock;
+  let relMock: Mock;
 
   let router: Router;
-  let onChange = mock();
+  let onChange: Mock;
 
   let pageA = new PageComponent('<hr/>');
   let buildViewA = mock(pageA);
@@ -43,22 +44,18 @@ describe('Router', () => {
   };
 
   beforeEach(() => {
-    addEventListenerBkp = window.addEventListener;
-    aelMock = window.addEventListener = mock();
-    removeEventListenerBkp = window.removeEventListener;
-    relMock = window.removeEventListener = mock();
+    aelMock = spyOn(window, 'addEventListener');
+    relMock = spyOn(window, 'removeEventListener');
 
     router = new Router(false);
-    onChange = mock();
-    router.onChange = onChange;
+    router.onChange = onChange = mock();
 
     routeA.buildView = buildViewA = mock(pageA);
     routeAbis.buildView = buildViewABis = mock(pageABis);
     routeB.buildView = buildViewB = mock(pageB);
   });
   afterEach(() => {
-    window.addEventListener = addEventListenerBkp;
-    window.removeEventListener = removeEventListenerBkp;
+    resetAllMocks();
     router.destroy();
   });
 

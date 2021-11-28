@@ -144,7 +144,7 @@ export const after = (fn:CB) => currentDescribe.afters.push(fn);
 export const describe = (label: string, fn:CB) => currentDescribe.subs.push([label, fn, 1]);
 export const it = (label: string, fn:CB) => currentDescribe.subs.push([label, fn, 0]);
 
-export function mock (valueToReturn?: any) {
+export function mock (valueToReturn?: any): Mock {
   const calls: any[] = [];
   const m = function () {
     calls.push(arguments);
@@ -154,12 +154,19 @@ export function mock (valueToReturn?: any) {
   m.andReturn = (newValueToReturn?: any) => valueToReturn = newValueToReturn;
   return m;
 }
+export interface Mock {
+  (): any,
+  calls: any[][],
+  andReturn: (newValueToReturn?: any) => void
+}
 
 const mocks = new Set<() => void>();
 export function spyOn(object: {[prop: string]: any}, methodName: string, valueToReturn?: any) {
   const originalValue = object[methodName];
   mocks.add(() => object[methodName] = originalValue);
-  object[methodName] = mock(valueToReturn);
+  const newMock = mock(valueToReturn);
+  object[methodName] = newMock;
+  return newMock;
 }
 export function resetAllMocks() {
   mocks.forEach(x => x());

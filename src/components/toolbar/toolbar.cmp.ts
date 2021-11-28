@@ -77,7 +77,7 @@ export class ToolbarComponent extends BaseComponent {
   }
 
   setThickness(value: number) {
-    const thickness: any = this.refs.get('thickness');
+    const thickness = this.refs.get('thickness') as HTMLSpanElement;
     thickness.innerText = `${value}`;
   }
 

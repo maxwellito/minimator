@@ -1,20 +1,19 @@
-import { describe, it, assert, mock, beforeEach, afterEach } from "../../tests/lib.js";
+import { describe, it, assert, mock, beforeEach, afterEach, Mock, spyOn, resetAllMocks } from "../../tests/lib.js";
 import { theme, ThemeMode } from '../../services/theme.js';
 import { ThemeSwitchComponent } from "./theme-switch.cmp.js";
 
 describe('ThemeSwitchComponent', () => {
 
   var initialTheme: string;
-  var originalToggleMode: () => void;
+  var mockToggleMode: Mock;
 
   beforeEach(() => {
     initialTheme = theme.currentMode;
-    originalToggleMode = theme.toggleMode;
-    theme.toggleMode = mock();
+    mockToggleMode = spyOn(theme, 'toggleMode');
   });
   afterEach(() => {
     theme.currentMode = initialTheme;
-    theme.toggleMode = originalToggleMode;
+    resetAllMocks();
   });
 
   it('should set the right style for dark mode', () => {
@@ -35,6 +34,6 @@ describe('ThemeSwitchComponent', () => {
     theme.currentMode = ThemeMode.Dark;
     cmp.button.dispatchEvent(new MouseEvent('click'));
     assert(cmp.button.classList.contains('on'), true);
-    assert((theme.toggleMode as any).calls.length, 1);
+    assert(mockToggleMode.calls.length, 1);
   });
 });

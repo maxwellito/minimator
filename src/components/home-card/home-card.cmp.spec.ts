@@ -1,4 +1,4 @@
-import { describe, it, assert, spyOn, resetAllMocks, beforeEach, afterEach } from "../../tests/lib.js";
+import { describe, it, assert, spyOn, resetAllMocks, beforeEach, afterEach, Mock } from "../../tests/lib.js";
 
 import { store } from '../../store.js';
 import { SurfaceComponent } from '../surface/surface.cmp.js';
@@ -9,8 +9,10 @@ import { ProjectItem } from "../../models/projectItem.js";
 
 describe('HomeCardComponent', () => {
   
-  var initialTheme: string;
-  var storeOriginal: {[methodName: string]: (...args: any[]) => void} = {};
+  var mockPrompt: Mock;
+  var mockConfitm: Mock;
+  var mockRenameItem: Mock;
+  var mockDeleteItem: Mock;
   var dummyProjectIndex: StorageIndex = {
     id: 2,
     title: 'hope',
@@ -26,11 +28,11 @@ describe('HomeCardComponent', () => {
 
   beforeEach(() => {
     spyOn(store, 'getItem', dummyProjectItem);
-    spyOn(store, 'renameItem');
-    spyOn(store, 'deleteItem');
+    mockRenameItem = spyOn(store, 'renameItem');
+    mockDeleteItem = spyOn(store, 'deleteItem');
 
-    spyOn(window, 'prompt');
-    spyOn(window, 'confirm');
+    mockPrompt = spyOn(window, 'prompt');
+    mockConfitm = spyOn(window, 'confirm');
 
     spyOn(SurfaceComponent, 'constructor');
   });
@@ -43,7 +45,7 @@ describe('HomeCardComponent', () => {
     assert(!!cmp.refs.get('editButton'), false);
     assert(!!cmp.refs.get('deleteButton'), false);
   });
-  
+
   it('should display the create card if no data is given', () => {
     const cmp = new HomeCardComponent(dummyProjectIndex);
     assert(!!cmp.refs.get('editButton'), true);
@@ -53,53 +55,54 @@ describe('HomeCardComponent', () => {
   it('should ask user for confirmation before renaming', () => {
     const cmp = new HomeCardComponent(dummyProjectIndex);
     cmp.refs.get('editButton')?.dispatchEvent(new MouseEvent('click'));
-    assert((window.prompt as any).calls.length, 1);
-    assert((window.prompt as any).calls[0][0], `Rename "${dummyProjectIndex.title}"`);
-    assert((window.prompt as any).calls[0][1], dummyProjectIndex.title);
+    assert(mockPrompt.calls.length, 1);
+    assert(mockPrompt.calls[0][0], `Rename "${dummyProjectIndex.title}"`);
+    assert(mockPrompt.calls[0][1], dummyProjectIndex.title);
   });
 
   it('should not rename if user enter an empty string', () => {
     const cmp = new HomeCardComponent(dummyProjectIndex);
-    (window.prompt as any).andReturn('');
+    mockPrompt.andReturn('');
     cmp.refs.get('editButton')?.dispatchEvent(new MouseEvent('click'));
     assert(cmp.refs.get('titleLabel')?.innerHTML, dummyProjectIndex.title);
-    assert((store.renameItem as any).calls.length, 0);
+    assert(mockRenameItem.calls.length, 0);
   });
 
   it('should rename if user enter a valid name', () => {
     const cmp = new HomeCardComponent(dummyProjectIndex);
-    (window.prompt as any).andReturn('fears');
+    mockPrompt.andReturn('fears');
     cmp.refs.get('editButton')?.dispatchEvent(new MouseEvent('click'));
     assert(cmp.refs.get('titleLabel')?.innerHTML, 'fears');
-    assert((store.renameItem as any).calls.length, 1);
-    assert((store.renameItem as any).calls[0][0], dummyProjectIndex.id);
-    assert((store.renameItem as any).calls[0][1], 'fears');
+    assert(mockRenameItem.calls.length, 1);
+    assert(mockRenameItem.calls[0][0], dummyProjectIndex.id);
+    assert(mockRenameItem.calls[0][1], 'fears');
   });
 
   it('should ask user for confirmation before deleting', () => {
     const cmp = new HomeCardComponent(dummyProjectIndex);
     cmp.refs.get('deleteButton')?.dispatchEvent(new MouseEvent('click'));
-    assert((window.confirm as any).calls.length, 1);
-    assert((window.confirm as any).calls[0][0], `Are you sure to delete "${dummyProjectIndex.title}"? There's no going back.`);
+    assert(mockConfitm.calls.length, 1);
+    assert(mockConfitm.calls[0][0], `Are you sure to delete "${dummyProjectIndex.title}"? There's no going back.`);
   });
 
   it('should delete the item when confirmed', () => {
     const cmp = new HomeCardComponent(dummyProjectIndex);
-    spyOn(cmp, 'remove');
-    (window.confirm as any).andReturn(true);
+    const mockRemove = spyOn(cmp, 'remove');
+    mockConfitm.andReturn(true);
     cmp.refs.get('deleteButton')?.dispatchEvent(new MouseEvent('click'));
-    assert((store.deleteItem as any).calls.length, 1);
-    assert((store.deleteItem as any).calls[0][0], dummyProjectIndex.id);
-    assert((cmp.remove as any).calls.length, 1);
+    assert(mockDeleteItem.calls.length, 1);
+    assert(mockDeleteItem.calls[0][0], dummyProjectIndex.id);
+    assert(mockRemove.calls.length, 1);
   });
 
   it('should not delete the item when declined', () => {
     const cmp = new HomeCardComponent(dummyProjectIndex);
+    const mockRemove = spyOn(cmp, 'remove');
     spyOn(cmp, 'remove');
-    (window.confirm as any).andReturn(false);
+    mockConfitm.andReturn(false);
     cmp.refs.get('deleteButton')?.dispatchEvent(new MouseEvent('click'));
-    assert((store.deleteItem as any).calls.length, 0);
-    assert((cmp.remove as any).calls.length, 0);
+    assert(mockDeleteItem.calls.length, 0);
+    assert(mockRemove.calls.length, 0);
   });
 
 });
