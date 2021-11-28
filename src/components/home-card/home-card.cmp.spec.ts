@@ -3,9 +3,8 @@ import { describe, it, assert, spyOn, resetAllMocks, beforeEach, afterEach, Mock
 import { store } from '../../store.js';
 import { SurfaceComponent } from '../surface/surface.cmp.js';
 import { StorageIndex } from '../../services/storage/storage.js';
-
-import { HomeCardComponent } from "./home-card.cmp.js";
 import { ProjectItem } from "../../models/projectItem.js";
+import { HomeCardComponent } from "./home-card.cmp.js";
 
 describe('HomeCardComponent', () => {
   
