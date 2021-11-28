@@ -52,13 +52,8 @@ describe('timeago', () => {
   });
 
   it('should display the duration in years if above a year', () => {
-
     assert(timeago(-year), '1 year ago');
     assert(timeago(-10 * year + 1), '9 years ago');
     assert(timeago(-10 * year), '10 years ago');
   });
-
-
-
-
 })

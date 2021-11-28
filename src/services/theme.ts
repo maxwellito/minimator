@@ -8,10 +8,10 @@ export const ThemeMode = {
 }
 
 export const theme = {
-  currentMode: store.getKey(themeKey) || ThemeMode.Light,
+  currentMode: ThemeMode.Light,
 
   initialisation() {
-    this.setMode(this.currentMode);
+    this.setMode(store.getKey(themeKey) || ThemeMode.Light);
   },
 
   setMode(mode: string) {

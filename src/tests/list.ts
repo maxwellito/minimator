@@ -9,6 +9,7 @@ import '../services/historyStack/historyStack.spec.js';
 import '../services/shortcut/shortcut.spec.js';
 import '../services/router/router.spec.js';
 import '../services/storage/storage.spec.js';
+import '../services/theme.spec.js';
 import '../services/utils.spec.js';
 
 build();
