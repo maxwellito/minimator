@@ -1,6 +1,7 @@
 import { build } from './lib.js';
 
 import '../components/base.cmp.spec.js';
+import '../components/about/about.cmp.spec.js';
 import '../components/home-card/home-card.cmp.spec.js';
 import '../components/theme-switch/theme-switch.cmp.spec.js';
 import '../components/toolbar/toolbar.cmp.spec.js';
