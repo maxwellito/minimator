@@ -4,6 +4,9 @@ svg.surface {
   width: 100%;
   height: 100%;
 }
+svg.surface.grab {
+  cursor: grab;
+}
 svg.surface .pending {
   stroke-dasharray: 1 10;
   animation: progress 2s linear 0s infinite;

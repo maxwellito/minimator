@@ -21,7 +21,7 @@ export class Shortcut {
    * @return function Executable to remove the listener
    */
   on(eventName: string, listener: listener) {
-    if (!EVENTS.find(x => x.name===eventName)) {
+    if (![...EVENTS, ...MODIFIERS].find(x => x.name===eventName)) {
       throw new Error('Ask to listen for a non existing shortcut');
     }
     let listeners = this.listeners.get(eventName);
@@ -47,6 +47,11 @@ export class Shortcut {
     if (event.keyCode === OPTION_KEYCODE) {
       this.isOptionPressed = false;
     }
+    for (let eventSpecs of MODIFIERS) {
+      if (event.keyCode === eventSpecs.keyCode) {
+        this.dispatch(eventSpecs.name, false);
+      }
+    }
   }
 
   /**
@@ -70,10 +75,7 @@ export class Shortcut {
         }
       }
       if (areSpecsPassing) {
-        let listeners = this.listeners.get(eventSpecs.name) || [];
-        for (let listenerIndex in listeners) {
-          listeners[listenerIndex]();
-        }
+        this.dispatch(eventSpecs.name);
         // Prevent default event behavior.
         // Except for the 'delete' on inputs/textareas
         if (
@@ -84,6 +86,18 @@ export class Shortcut {
         }
         return;
       }
+    }
+    for (eventSpecs of MODIFIERS) {
+      if (event.keyCode === eventSpecs.keyCode) {
+        this.dispatch(eventSpecs.name, true);
+      }
+    }
+  }
+
+  dispatch(eventName: string, isOn?: boolean) {
+    let listeners = this.listeners.get(eventName) || [];
+    for (let listenerIndex in listeners) {
+      listeners[listenerIndex](isOn);
     }
   }
 
@@ -135,8 +149,14 @@ export const EVENTS: EventDef[] = [
     ctrlKey: true,
   },
 ];
+const MODIFIERS: EventDef[] = [
+  {
+    name: 'move',
+    keyCode: 32,
+  }
+];
 
-type listener = () => void;
+type listener = (isOn?: boolean) => void;
 interface EventDef {
   name: string;
   keyCode: number;

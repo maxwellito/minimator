@@ -45,6 +45,7 @@ export class ProjectComponent extends PageComponent {
     const shortcutBindings = new Shortcut();
     shortcutBindings.on('undo', () => surface.undo());
     shortcutBindings.on('redo', () => surface.redo());
+    shortcutBindings.on('move', (isOn) => surface.setMove(isOn));
     this.shortcutBindings = shortcutBindings;
 
     const toolbar = new ToolbarComponent(projectData.thickness);

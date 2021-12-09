@@ -36,6 +36,9 @@ export class SurfaceComponent extends BaseComponent {
   fngPoint?: Coordinate;
   firstDeleted?: SVGElement;
 
+  isMoveKeyPressed = false;
+  isCurrentEventMove = false;
+
   currentElement?: SVGLineElement | SVGPathElement;
   changeThrottle: number = 0;
   onChange = () => {};
@@ -124,7 +127,11 @@ export class SurfaceComponent extends BaseComponent {
   }
 
   eventInput(type: GESTURE, state: STATE, data?: EventData) {
-    if (type === GESTURE.SCALE) {
+    if (state === STATE.START) {
+      this.isCurrentEventMove = this.isMoveKeyPressed;
+    }
+
+    if (type === GESTURE.SCALE || this.isCurrentEventMove) {
       if (!data) {
         return;
       }
@@ -293,6 +300,15 @@ export class SurfaceComponent extends BaseComponent {
         } else {
           this.content.insertBefore(action.element, this.content.children[action.position]);
         }
+    }
+  }
+
+  setMove(isOn?: boolean) {
+    this.isMoveKeyPressed = !!isOn;
+    if (isOn) {
+      this.el.classList.add('grab');
+    } else {
+      this.el.classList.remove('grab');
     }
   }
 
