@@ -246,13 +246,18 @@ export class SurfaceComponent extends BaseComponent {
         }
       } else if (state === STATE.END) {
         if (this.currentElement) {
-          this.currentElement.removeAttribute('class');
-          this.history.add({
-            type: HistoryActionType.ADD,
-            element: this.currentElement,
-            position: this.content.children.length
-          })
-          this.callToChange();
+          // Prohibit dots
+          if (data.drag.x === 0 && data.drag.y === 0) {
+            this.currentElement.remove();
+          } else {
+            this.currentElement.removeAttribute('class');
+            this.history.add({
+              type: HistoryActionType.ADD,
+              element: this.currentElement,
+              position: this.content.children.length
+            })
+            this.callToChange();
+          }
         }
         this.currentElement = undefined;
         this.drawingStartPoint = undefined;
@@ -306,9 +311,9 @@ export class SurfaceComponent extends BaseComponent {
   setMove(isOn?: boolean) {
     this.isMoveKeyPressed = !!isOn;
     if (isOn) {
-      this.el.classList.add('grab');
+      this.classList.add('grab');
     } else {
-      this.el.classList.remove('grab');
+      this.classList.remove('grab');
     }
   }
 
