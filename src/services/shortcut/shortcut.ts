@@ -1,6 +1,9 @@
 export class Shortcut {
   listeners: Map<string, listener[]> = new Map();
   isOptionPressed = false;
+
+  isCtrlMetaOn = false;
+
   keyupListener: (event: KeyboardEvent) => void;
   keydownListener: (event: KeyboardEvent) => void;
 
@@ -44,11 +47,9 @@ export class Shortcut {
    * @param event event Event object from window
    */
   onKeyUp(event: KeyboardEvent) {
-    if (event.keyCode === OPTION_KEYCODE) {
-      this.isOptionPressed = false;
-    }
+    this.updateMetaState(event);
     for (let eventSpecs of MODIFIERS) {
-      if (event.keyCode === eventSpecs.keyCode) {
+      if (event.key === eventSpecs.key) {
         this.dispatch(eventSpecs.name, false);
       }
     }
@@ -59,39 +60,36 @@ export class Shortcut {
    * @param event event Event object from window
    */
   onKeyDown(event: KeyboardEvent) {
-    if (event.keyCode === OPTION_KEYCODE) {
-      this.isOptionPressed = true;
-    }
-    let eventSpecs: any, areSpecsPassing;
-    for (eventSpecs of EVENTS) {
-      areSpecsPassing = true;
-      for (let prop in eventSpecs) {
-        if (
-          prop !== 'name' &&
-          (event as any)[prop] !== eventSpecs[prop] &&
-          !(prop === 'ctrlKey' && eventSpecs[prop] && this.isOptionPressed)
-        ) {
-          areSpecsPassing = false;
-        }
-      }
-      if (areSpecsPassing) {
+    this.updateMetaState(event);
+    const key = event.key.toLowerCase();
+    // let areSpecsPassing;
+    for (let eventSpecs of EVENTS) {
+      if (
+        eventSpecs.key === key &&
+        (eventSpecs.ctrlKey === undefined || eventSpecs.ctrlKey === this.isCtrlMetaOn) &&
+        (eventSpecs.shiftKey === undefined || eventSpecs.shiftKey === event.shiftKey)
+      ) {
         this.dispatch(eventSpecs.name);
-        // Prevent default event behavior.
-        // Except for the 'delete' on inputs/textareas
-        if (
-          eventSpecs.name !== 'delete' ||
-          !~['INPUT', 'TEXTAREA'].indexOf((event.target as any)?.nodeName)
-        ) {
-          event.preventDefault();
-        }
+        event.preventDefault();
         return;
-      }
+      } 
     }
-    for (eventSpecs of MODIFIERS) {
-      if (event.keyCode === eventSpecs.keyCode) {
+    for (let eventSpecs of MODIFIERS) {
+      if (event.key === eventSpecs.key) {
         this.dispatch(eventSpecs.name, true);
       }
     }
+  }
+
+  updateMetaState(event: KeyboardEvent) {
+    const isCtrlMetaOn = event.ctrlKey || event.metaKey;
+    if (this.isCtrlMetaOn === isCtrlMetaOn) {
+      return;
+    }
+
+    // Set the new state
+    this.isCtrlMetaOn = isCtrlMetaOn;
+    this.dispatch('ctrl', isCtrlMetaOn);
   }
 
   dispatch(eventName: string, isOn?: boolean) {
@@ -112,54 +110,64 @@ export class Shortcut {
 }
 
 export const OPTION_KEYCODE = 91;
+export const enum SHORTCUT_TYPES {
+  REDO,
+  UNDO,
+  DELETE,
+  CUT,
+  COPY,
+  PASTE,
+  MOVE,
+  META
+};
 export const EVENTS: EventDef[] = [
   {
     name: 'redo',
-    keyCode: 89,
+    key: 'y',
     ctrlKey: true,
   },
   {
     name: 'redo',
-    keyCode: 90,
+    key: 'z',
     ctrlKey: true,
     shiftKey: true,
   },
   {
     name: 'undo',
-    keyCode: 90,
+    key: 'z',
     ctrlKey: true,
   },
   {
     name: 'delete',
-    keyCode: 8,
+    key: 'backspace',
   },
   {
     name: 'cut',
-    keyCode: 88,
+    key: 'x',
     ctrlKey: true,
   },
   {
     name: 'copy',
-    keyCode: 67,
+    key: 'c',
     ctrlKey: true,
   },
   {
     name: 'paste',
-    keyCode: 86,
+    key: 'v',
     ctrlKey: true,
   },
 ];
 const MODIFIERS: EventDef[] = [
   {
     name: 'move',
-    keyCode: 32,
+    key: ' ',
   }
 ];
 
 type listener = (isOn?: boolean) => void;
 interface EventDef {
   name: string;
-  keyCode: number;
+  key: string;
   ctrlKey?: boolean;
   shiftKey?: boolean;
 }
