@@ -1,3 +1,8 @@
+/**
+ * Lucide icons : lucide.dev
+ * Fork of Feather Icons
+ */
+
 const ICON_CATALOG: {[id: string]: string} = {
   grid: `
     <line x1="6" y1="6" x2="6" y2="6"></line>
