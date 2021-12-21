@@ -131,6 +131,11 @@ export class SurfaceComponent extends BaseComponent {
       this.isCurrentEventMove = this.isMoveKeyPressed;
     }
 
+    if (data?.origin.x === -1) {
+      data.origin.x = this.rect.width / 2;
+      data.origin.y = this.rect.height / 2;
+    }
+
     if (type === GESTURE.SCALE || this.isCurrentEventMove) {
       if (!data) {
         return;

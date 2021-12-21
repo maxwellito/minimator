@@ -37,16 +37,16 @@ export class ProjectComponent extends PageComponent {
     }
     this.surface = surface;
 
-    const touchHandler = new TouchController(surface.el);
-    touchHandler.on(surface.eventInput);
-    window.addEventListener('resize', surface.onResize);
-    this.touchHandler = touchHandler;
-
     const shortcutBindings = new Shortcut();
     shortcutBindings.on('undo', () => surface.undo());
     shortcutBindings.on('redo', () => surface.redo());
     shortcutBindings.on('move', (isOn) => surface.setMove(isOn));
     this.shortcutBindings = shortcutBindings;
+
+    const touchHandler = new TouchController(surface.el, false, shortcutBindings);
+    touchHandler.on(surface.eventInput);
+    window.addEventListener('resize', surface.onResize);
+    this.touchHandler = touchHandler;
 
     const toolbar = new ToolbarComponent(projectData.thickness);
     this.shadowRoot?.appendChild(toolbar);

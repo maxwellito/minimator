@@ -9,7 +9,7 @@ import {
   spyOn,
   resetAllMocks
 } from '../../tests/lib.js';
-import { Shortcut, OPTION_KEYCODE } from './shortcut.js';
+import { Shortcut } from './shortcut.js';
 
 describe('Shortcut', () => {
   let aelMock: Mock;
@@ -46,7 +46,7 @@ describe('Shortcut', () => {
       let undoCalls = 0;
       shrct.on('undo', () => undoCalls++);
       shrct.onKeyDown({
-        keyCode: 90,
+        key: 'z',
         ctrlKey: true,
         preventDefault: () => {},
       } as KeyboardEvent);
@@ -57,10 +57,12 @@ describe('Shortcut', () => {
       let undoCalls = 0;
       shrct.on('undo', () => undoCalls++);
       shrct.onKeyDown({
-        keyCode: OPTION_KEYCODE,
+        key: 'Meta',
+        metaKey: true
       } as KeyboardEvent);
       shrct.onKeyDown({
-        keyCode: 90,
+        key: 'z',
+        metaKey: true,
         preventDefault: () => {},
       } as KeyboardEvent);
       assert(undoCalls, 1);
@@ -72,26 +74,30 @@ describe('Shortcut', () => {
 
       // Command key down
       shrct.onKeyDown({
-        keyCode: OPTION_KEYCODE,
+        key: 'Meta',
+        metaKey: true,
       } as KeyboardEvent);
-      assert(shrct.isOptionPressed, true);
+      assert(shrct.isCtrlMetaOn, true);
 
       // Trigger undo shortcut
       shrct.onKeyDown({
-        keyCode: 90,
+        key: 'z',
+        metaKey: true,
         preventDefault: () => {},
       } as KeyboardEvent);
       assert(undoCalls, 1);
 
       // Release command key
       shrct.onKeyUp({
-        keyCode: OPTION_KEYCODE,
+        key: 'Meta',
+        metaKey: false,
       } as KeyboardEvent);
-      assert(shrct.isOptionPressed, false);
+      assert(shrct.isCtrlMetaOn, false);
 
       // Shouldn't trigger undo shortcut
       shrct.onKeyDown({
-        keyCode: 90,
+        key: 'z',
+        metaKey: false,
         preventDefault: () => {},
       } as KeyboardEvent);
       assert(undoCalls, 1);
@@ -102,7 +108,7 @@ describe('Shortcut', () => {
       shrct.on('undo', () => undoCalls++);
       shrct.on('undo', () => undoCalls++);
       shrct.onKeyDown({
-        keyCode: 90,
+        key: 'z',
         ctrlKey: true,
         preventDefault: () => {},
       } as KeyboardEvent);

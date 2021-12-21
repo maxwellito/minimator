@@ -1,7 +1,5 @@
 export class Shortcut {
   listeners: Map<string, listener[]> = new Map();
-  isOptionPressed = false;
-
   isCtrlMetaOn = false;
 
   keyupListener: (event: KeyboardEvent) => void;
@@ -106,20 +104,10 @@ export class Shortcut {
   destroy() {
     window.removeEventListener('keyup', this.keyupListener);
     window.removeEventListener('keydown', this.keydownListener);
+    this.listeners.clear();
   }
 }
 
-export const OPTION_KEYCODE = 91;
-export const enum SHORTCUT_TYPES {
-  REDO,
-  UNDO,
-  DELETE,
-  CUT,
-  COPY,
-  PASTE,
-  MOVE,
-  META
-};
 export const EVENTS: EventDef[] = [
   {
     name: 'redo',
@@ -154,6 +142,21 @@ export const EVENTS: EventDef[] = [
   {
     name: 'paste',
     key: 'v',
+    ctrlKey: true,
+  },
+  {
+    name: 'zoomin',
+    key: '+',
+    ctrlKey: true,
+  },
+  {
+    name: 'zoomin',
+    key: '=',
+    ctrlKey: true,
+  },
+  {
+    name: 'zoomout',
+    key: '-',
     ctrlKey: true,
   },
 ];

@@ -17,6 +17,8 @@
  *     please zoidberg stop licking that screen
  */
 
+import { Shortcut } from "../shortcut/shortcut";
+
 // 100ms is the max time to start/end a gesture
 const gestureTransitionTime = 100;
 
@@ -56,24 +58,20 @@ export class TouchController {
   pointers: Map<number, any>;
   callbacks: eventCallback[];
   lastData?: EventData;
-  currentEvent: GESTURE;
+  currentEvent = GESTURE.NONE;
   gestureMaxTouches = 0;
-  deltaY = 0;
+  shortcutListeners = [];
 
-  constructor(public el: SVGElement, public touchOnly = false) {
+  constructor(public el: SVGElement, public touchOnly = false, public shortcut?: Shortcut) {
 
     // Internals
     this.pointers = new Map();
     this.callbacks = [];
 
-    // this.hasDigestPlanned = null;
-    this.currentEvent = GESTURE.NONE;
-
     // Bind listeners
     this.touchstart = this.touchstart.bind(this);
     this.touchmove = this.touchmove.bind(this);
     this.touchend = this.touchend.bind(this);
-    // this.eventRouterDigest = this.eventRouterDigest.bind(this);
 
     this.mousemove = this.mousemove.bind(this);
     this.mousedown = this.mousedown.bind(this);
@@ -92,6 +90,11 @@ export class TouchController {
       this.el.addEventListener('mousemove', this.mousemove);
       this.el.addEventListener('mouseup', this.mouseup);
       this.el.addEventListener('wheel', this.wheel);
+    }
+
+    if (shortcut) {
+      shortcut.on('zoomin', () => this.triggerZoom(1.25));
+      shortcut.on('zoomout', () => this.triggerZoom(.75));
     }
   }
 
@@ -236,30 +239,24 @@ export class TouchController {
   }
 
   wheel(e: WheelEvent) {
-    e.preventDefault();
-
-    const defaultData = {
-      origin: {
-        x: e.pageX,
-        y: e.pageY,
-      },
-      drag: {
-        x: 0,
-        y: 0,
-      },
-      scale: 1,
-    };
+    this.blockEvent(e);
 
     // Init gesture
     if (this.currentEvent !== GESTURE.SCALE) {
-      this.deltaY = 0;
-      this.setEventType(GESTURE.SCALE, defaultData);
+      this.setEventType(GESTURE.SCALE, {
+        origin: { x: e.pageX, y: e.pageY },
+        drag: { x: 0, y: 0 },
+        scale: 1,
+      });
     }
 
-    // Update event
-    this.deltaY += e.deltaY;
-    defaultData.scale = Math.pow(1.01, -this.deltaY);
-    this.triggerUpdate(defaultData);
+    const {lastData} = this;
+    if (!lastData?.drag) {
+      return;
+    }
+    lastData.drag.x -= e.deltaX;
+    lastData.drag.y -= e.deltaY;
+    this.triggerUpdate(lastData);
   }
 
   isCurrentEventDetected() {
@@ -336,6 +333,16 @@ export class TouchController {
     }
     this.lastData = eventData;
     this.callbacks.forEach((cb) => cb(type, eventStatus, eventData));
+  }
+
+  triggerZoom(scale: number) {
+    const data = {
+      origin: { x: -1, y: -1 },
+      drag: { x: 0, y: 0 },
+      scale,
+    };
+    this.setEventType(GESTURE.SCALE, data);
+    this.triggerUpdate(data);
   }
 
   destroy() {
