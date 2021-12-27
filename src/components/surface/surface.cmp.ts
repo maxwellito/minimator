@@ -182,15 +182,17 @@ export class SurfaceComponent extends BaseComponent {
         ) as SVGElement;
         if (!target || target?.parentNode !== this.content) {
           if (state === STATE.END && this.firstDeleted) {
-            this.firstDeleted.removeAttribute('stroke')
-            this.content.removeChild(this.firstDeleted);
+            this.firstDeleted.removeAttribute('stroke');
+            if (this.firstDeleted.parentNode === this.content) {
+              this.content.removeChild(this.firstDeleted);
+            }
             this.firstDeleted = undefined;
           }
           return;
         }
         if (state === STATE.START) {
           this.firstDeleted = target;
-          target.setAttribute('stroke', 'rgba(0,0,0,0)')
+          target.setAttribute('stroke', 'rgba(0,0,0,0)');
         } else if (state === STATE.UPDATE) {
           if (this.firstDeleted === target) {
             return;

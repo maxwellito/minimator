@@ -1,4 +1,5 @@
 import { BaseComponent, Component } from '../base.cmp.js';
+import '../helper-tooltip/helper-tooltip.cmp.js';
 import { icon } from '../../services/feather.icons.js';
 
 const template = `
@@ -20,6 +21,9 @@ const template = `
   ${icon('share', 'shareEvent', 'Share your actwork')}
   <span class="split"></span>
   ${icon('download', 'downloadEvent', 'Download your artwork')}
+  <span class="split"></span>
+  ${icon('info', 'toggleInfoTooltip', 'Toggle info')}
+  <helper-tooltip-cmp data-ref="infoTooltip"/>
 `;
 
 type listener = (type: string, data: any)=>void;
@@ -53,6 +57,14 @@ export class ToolbarComponent extends BaseComponent {
     this.penIcon.style.display = 'none';
     this.eraserIcon.style.display = 'inherit';
     this.refs.get('toggleEraser')?.addEventListener('click', this.toggleEraser.bind(this));
+
+    // Listen for click on the tooltip toggler
+    this.refs.get('toggleInfoTooltip')?.addEventListener('click', () => {
+      this.refs.get('toggleInfoTooltip')?.classList.toggle('enabled');
+    });
+    this.refs.get('infoTooltip')?.addEventListener('click', () => {
+      this.refs.get('toggleInfoTooltip')?.classList.remove('enabled');
+    });
 
     // Block double tap zoom
     this.shadowRoot?.addEventListener('dblclick', e => {

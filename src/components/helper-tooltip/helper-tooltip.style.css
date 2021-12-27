@@ -1,0 +1,41 @@
+@import '../../style.css';
+
+:host {
+  background: white;
+  color: black;
+  font-size: 14px;
+  padding: 1rem;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  box-shadow: 4px 4px currentColor;
+}
+
+ul {
+  margin-top: 0;
+  list-style-type: square;
+  padding-left: 1.5em;
+}
+
+li span {
+  padding: .25em 0;
+  display: inline-block;
+}
+
+.line {
+  display: block;
+  /* padding: .25em 0 .5em; */
+}
+
+.key {
+  background: white;
+  border: 1px solid currentColor;
+  padding: .125em .5em;
+  border-radius: 3px;
+  box-shadow: 0px 1px currentColor;
+  display: inline-block;
+  font-size: 0.75em;
+}
+
+.keyspace {
+  min-width: 50px;
+}

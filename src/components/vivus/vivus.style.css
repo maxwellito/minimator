@@ -25,12 +25,11 @@
   height: .75em;
 }
 
-p {
+span {
   position: absolute;
-  width: 100%;
-  left: 0;
+  right: 2%;
   bottom: 2%;
-  text-align: center;
+  font-size: 12px;
 }
 
 a {

@@ -7,11 +7,11 @@
   top: 1rem;
   right: 1rem;
   background: black;
-  padding: 0 .4em;
-  height: 1.7em;
+  padding: 0 .1em;
+  height: 1.65em;
   border-radius: .25em;
   color: #fff;
-  font-size: 24px;
+  font-size: 22px;
 }
 .count {
   display: inline-block;
@@ -20,15 +20,12 @@
 }
 .split {
   height: 100%;
-  width: 2px;
+  width: 1px;
   display: inline-block;
   background: currentColor;
-  opacity: .2;
-  margin: 0 .35em;
+  opacity: .25;
 }
-svg:hover {
-  background-color: #fff2;
-}
+
 svg.feather {
   fill: none;
   stroke: currentColor;
@@ -37,7 +34,23 @@ svg.feather {
   stroke-linejoin: round;
   width: 1em;
   height: 1em;
+  padding: 0.3em;
+}
+svg:hover {
+  background-color: #fff2;
 }
 a {
-  height: 1em;
+  height: 100%;
+}
+
+/* Tooltip */
+svg + helper-tooltip-cmp {
+  display: none;
+  position: absolute;
+  flex: none;
+  top: 3.5em;
+  right: 1px;
+}
+svg.enabled + helper-tooltip-cmp {
+  display: initial;
 }
