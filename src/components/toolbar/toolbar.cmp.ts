@@ -18,9 +18,9 @@ const template = `
   <span class="split"></span>
   ${icon('playCircle', 'vivusEvent', 'Play')}
   <span class="split"></span>
-  ${icon('share', 'shareEvent', 'Share your actwork')}
+  ${icon('share', 'shareEvent', 'Share artwork')}
   <span class="split"></span>
-  ${icon('download', 'downloadEvent', 'Download your artwork')}
+  ${icon('download', 'downloadEvent', 'Download artwork')}
   <span class="split"></span>
   ${icon('info', 'toggleInfoTooltip', 'Toggle info')}
   <helper-tooltip-cmp data-ref="infoTooltip"/>

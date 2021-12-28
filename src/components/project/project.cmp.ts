@@ -5,7 +5,7 @@ import { SurfaceComponent, SurfaceMode } from '../surface/surface.cmp.js';
 import { ToolbarComponent } from '../toolbar/toolbar.cmp.js';
 import { TouchController } from '../../services/touchController/touchController.js';
 import { VivusComponent } from '../vivus/vivus.cmp.js';
-import { downloader, share } from '../../services/features.js';
+import { downloader, share, buildPNG } from '../../services/features.js';
 import { Shortcut } from '../../services/shortcut/shortcut.js';
 import { store } from '../../store.js';
 
@@ -68,7 +68,7 @@ export class ProjectComponent extends PageComponent {
           break;
         case 'vivus':
           svgOutput = surface.extractSVG();
-          this.vivusScreen = new VivusComponent(svgOutput, () => {
+          this.vivusScreen = new VivusComponent(svgOutput.outerHTML, () => {
             this.vivusScreen?.exit().then(() => {
               if (this.vivusScreen) {
                 this.shadowRoot?.removeChild(this.vivusScreen);
@@ -83,16 +83,17 @@ export class ProjectComponent extends PageComponent {
           surface.setMode(newMode);
           break;
         case 'share':
-          svgOutput = surface.extractSVG();
-          share(
-            'minimator',
-            'https://maxwellito.github.io/minimator',
-            svgOutput
-          );
+          buildPNG(surface.extractSVG(2, 3000))
+            .then(file => share(
+                'minimator',
+                'https://minimator.app',
+                file
+              )
+            );
           break;
         case 'download':
           svgOutput = surface.extractSVG();
-          downloader(svgOutput, 'minimator_demo.svg');
+          downloader(svgOutput.outerHTML, 'minimator_demo.svg');
           break;
       }
     });

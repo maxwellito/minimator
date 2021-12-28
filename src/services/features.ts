@@ -5,25 +5,59 @@
  * @param url Share URL
  * @param svgContent SVG content to share as string
  */
-export function share(title: string, url: string, svgContent: string) {
-  const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+export function share(title: string, url: string, file: File) {
   const basicShare = {
     url,
     title,
   };
   const fullShare = {
     ...basicShare,
-    files: [
-      new File([blob], `minimator_demo.svg`, {
-        type: blob.type,
-      }),
-    ],
+    files: [file],
   };
   if ((navigator as any).canShare(fullShare)) {
     navigator.share(fullShare);
   } else if ((navigator as any).canShare(basicShare)) {
     navigator.share(basicShare);
+  } else {
+    window.alert(`The sharing feature isn't available in your browser`);
   }
+}
+
+/**
+ * Build a PNG from a SVG
+ * This function uses canvas to fill the content
+ * then will extract it to a PNG.
+ * Sadly, this won't work on Firefox until the user
+ * enable the canvas extraction permission.
+ * 
+ * @param svg SVG Element to transform to PNG
+ * @returns Promise<File>
+ */
+export function buildPNG(svg: SVGElement): Promise<File> {
+  const canvas = document.createElement('canvas');
+  canvas.width = parseInt(svg.getAttribute('width') || '0', 10);
+  canvas.height = parseInt(svg.getAttribute('height') || '0', 10);
+
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const blob = new Blob([svg.outerHTML], { type: 'image/svg+xml' });
+  const url = window.URL.createObjectURL(blob);
+
+  return new Promise((res, rej) => {
+    const baseimage = new Image();
+    baseimage.style.background = '#fff';
+    baseimage.onload = function() {
+      ctx.drawImage(baseimage,1,1, canvas.width, canvas.height);
+      canvas.toBlob((blob) => {
+        const file = new File([blob as Blob], 'minimator.png', { type: 'image/png' });
+        res(file);
+      });
+    }
+    baseimage.onerror = rej;
+    baseimage.src = url;
+  });
 }
 
 // Build the downloader anchor

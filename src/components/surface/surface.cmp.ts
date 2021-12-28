@@ -497,19 +497,22 @@ export class SurfaceComponent extends BaseComponent {
   }
 
   // Extract SVG
-  extractSVG(margin = 4) {
+  extractSVG(margin = 2, scaleTo?: number) {
     const doubleMargin = margin * 2;
     const offset = margin * this.gap;
     const width = (this.width + doubleMargin) * this.gap;
     const height = (this.height + doubleMargin) * this.gap;
+    const ratio = scaleTo ? (scaleTo / Math.max(width, height)) : 1;
     const newDotId = generateDotId();
 
     const svg = this.el.cloneNode(true) as SVGElement;
+    svg.setAttribute('width', `${Math.round(width * ratio)}`);
+    svg.setAttribute('height', `${Math.round(height * ratio)}`);
     svg.setAttribute('viewBox', `${-offset},${-offset},${width},${height}`);
     svg.querySelector(`pattern`)?.setAttribute('id', newDotId);
     svg.querySelector(`[data-ref="dots"]`)?.setAttribute('fill',`url('#${newDotId}')`);
 
-    return svg.outerHTML;
+    return svg;
   }
 
   destroy() {
