@@ -4,6 +4,7 @@
   display: block;
   width: 100%;
   height: 100%;
+  animation: fad .4s 1;
 }
 :host(.exit) {
   animation: daf 0.4s 1;

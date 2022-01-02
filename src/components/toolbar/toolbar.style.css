@@ -12,6 +12,7 @@
   border-radius: .25em;
   color: #fff;
   font-size: 22px;
+  animation: movedown .4s 1;
 }
 .count {
   display: inline-block;
@@ -53,4 +54,8 @@ svg + helper-tooltip-cmp {
 }
 svg.enabled + helper-tooltip-cmp {
   display: initial;
+}
+
+@keyframes movedown {
+  from { top: -2em; }
 }
