@@ -14,6 +14,7 @@ securityCheck();
 // Init things
 theme.initialisation();
 
+let appContainer: HTMLElement;
 let currentPage: PageComponent;
 
 const appRouter = new Router();
@@ -50,12 +51,14 @@ appRouter.onChange = (newPage) => {
     window.location.hash = '/home';
     return;
   }
+  appContainer = appContainer || document.body.querySelector('.app') as HTMLElement;
   const pending = currentPage?.exit() || Promise.resolve();
   pending.then(() => {
     // The current page is now ready to be removed
     currentPage?.remove();
     currentPage = newPage;
-    document.body.querySelector('.app')?.append(newPage);
+    appContainer.innerHTML = '';
+    appContainer.append(newPage);
     document.title = newPage.title;
     return newPage.enter();
   });

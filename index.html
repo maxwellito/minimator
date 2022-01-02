@@ -1,19 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>minimator</title>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="minimalist graphical editor">
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>minimator</title>
+
+    <link rel="shortcut icon" href="assets/visuals/favicon.ico" />
+    <meta name="theme-color" content="#14171b" />
+
+    <link rel="manifest" href="#@lang_code/manifest.json" />
+
+    <!-- Add to home screen for Safari on iOS -->
+    <link rel="apple-touch-icon" href="assets/visuals/minimator_icon_512.png" />
+    <meta name="apple-mobile-web-app-title" content="minimator" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="400" />
+    <meta
+      name="msapplication-TileImage"
+      content="assets/visuals/minimator_icon_512.png"
+    />
+    <meta name="msapplication-TileColor" content="#000000" />
+
     <link rel="stylesheet" href="./src/style.css" />
   </head>
   <body>
-    <div class="app"></div>
+    <div class="app">
+      <div style="position: fixed; display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; flex-direction: column; color:#444;">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 310 310" style="max-width: max(50px,15vw); max-height: max(50px,15vh);">
+        <g fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round">
+          <path d="M165,85c0-10-10-20-20-20"/><path d="M145,65c-10,0-20,10-20,20"/><line x1="125" y1="85" x2="125" y2="125"/><line x1="145" y1="45" x2="145" y2="65"/><path d="M145,45c-10,0-20-10-20-20"/><path d="M125,25c0,10-10,20-20,20"/><line x1="105" y1="45" x2="105" y2="105"/><path d="M105,85c-20,0-40,20-40,40"/><path d="M65,125c0,20,20,40,40,40"/><path d="M105,165c10,0,20-10,20-20"/>
+          <path d="M125,145c0-10-10-20-20-20"/><line x1="105" y1="105" x2="105" y2="125"/><line x1="65" y1="125" x2="65" y2="165"/><path d="M65,165c0,20,20,40,40,40"/><path d="M105,205c10,0,20-10,20-20"/><path d="M125,185c0-10-10-20-20-20"/><line x1="65" y1="165" x2="65" y2="205"/><path d="M105,245c10,0,20-10,20-20"/><path d="M125,225c0-10-10-20-20-20"/><line x1="145" y1="165" x2="145" y2="245"/>
+          <line x1="145" y1="45" x2="105" y2="45"/><line x1="125" y1="25" x2="125" y2="85"/><line x1="125" y1="145" x2="125" y2="225"/><line x1="125" y1="125" x2="125" y2="145"/><line x1="145" y1="165" x2="145" y2="145"/><line x1="245" y1="165" x2="245" y2="225"/><path d="M165,85c0,10,10,20,20,20"/><path d="M185,105c20,0,40,20,40,40"/><path d="M125,105c0,20,20,40,40,40"/><path d="M165,145c0,10,10,20,20,20"/><line x1="225" y1="145" x2="245" y2="145"/>
+          <line x1="245" y1="225" x2="225" y2="225"/><path d="M225,225c0,10-10,20-20,20"/><line x1="145" y1="245" x2="205" y2="245"/><line x1="245" y1="145" x2="245" y2="165"/><path d="M205,205c0,10-10,20-20,20"/><path d="M145,245c0,10-10,20-20,20"/><path d="M125,265c-10,0-20-10-20-20"/><path d="M65,205c0,20,20,40,40,40"/><line x1="225" y1="145" x2="225" y2="225"/><line x1="125" y1="165" x2="105" y2="165"/>
+          <line x1="125" y1="205" x2="105" y2="205"/><line x1="165" y1="145" x2="145" y2="145"/><path d="M165,145c-10,0-20,10-20,20"/><line x1="145" y1="225" x2="125" y2="225"/>
+        </g>
+      </svg>
+      <p style="max-width: 480px; margin: 1em;">
+        minimator is a minimal graphical editor<br/>
+      All drawings are mades of lines on a grid based canvas. The lines are limited to vertical and horizontal lines, and quarter of a circle.</p>
+      </div>
+    </div>
   </body>
   <script type="module">
     import './dist/main.js';
+  </script>
+  <script type="text/javascript">
+    // Set up service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
   </script>
 </html>

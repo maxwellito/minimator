@@ -1,0 +1,15 @@
+{
+  "name": "minimator",
+  "short_name": "minimator",
+  "lang": "en",
+  "icons": [{
+      "src": "./assets/visuals/minimator_icon_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }],
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#000000"
+}
