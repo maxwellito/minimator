@@ -84,6 +84,9 @@ export class CreateComponent extends PageComponent {
     // Listen for submit
     const form = this.refs.get('form') as HTMLFormElement;
     form.addEventListener('submit', e => {
+      // Prevent submitting the form
+      e.preventDefault();
+
       // Get item data
       const canvasWidth = parseInt(inputWidth.value, 10);
       const canvasHeight = parseInt(inputHeight.value, 10);
@@ -98,7 +101,8 @@ export class CreateComponent extends PageComponent {
       });
 
       // Redirect
-      window.location.hash = `/project/${storeItem.id}`;
+      window.location.hash = `#/project/${storeItem.id}`;
+      return false;
     })
   }
 }
