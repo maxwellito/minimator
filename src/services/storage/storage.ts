@@ -4,6 +4,7 @@ export class Storage<T> {
   indexNextId: string;
   indexBaseKey: string;
   mapBaseKey: string;
+  lastDate = +Date.now();
 
   constructor(prefixKey: string) {
     if (!prefixKey || prefixKey.length < 5) {
@@ -56,7 +57,7 @@ export class Storage<T> {
     if (!item) {
       throw new Error(`Storage: item ${id} not found.`);
     }
-    item.updated_at = +new Date();
+    item.updated_at = this.getDate();
     const contentJSON = JSON.stringify(content);
     localStorage.setItem(this.indexBaseKey + id, contentJSON);
     this.saveIndexes();
@@ -70,11 +71,12 @@ export class Storage<T> {
     let id = this.getNextIndex();
     localStorage.setItem(this.indexNextId, `${id + 1}`);
 
+    const now = this.getDate();
     var item: StorageIndex = {
       id,
       title,
-      created_at: +new Date(),
-      updated_at: +new Date(),
+      created_at: now,
+      updated_at: now,
     };
     this.loadIndexes().push(item);
     this.saveIndexes();
@@ -102,6 +104,11 @@ export class Storage<T> {
 
   setKey(key: string, value: string) {
     localStorage.setItem(`${this.mapBaseKey}_${key}`, value);
+  }
+
+  getDate() {
+    this.lastDate = Math.max(this.lastDate+1, +new Date());
+    return this.lastDate;
   }
 }
 
