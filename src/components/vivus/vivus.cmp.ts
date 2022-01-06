@@ -17,7 +17,7 @@ export class VivusComponent extends PageComponent {
     super(template);
 
     const script = document.createElement('script');
-    script.setAttribute('src', 'https://cdn.jsdelivr.net/npm/vivus@0.4.6/dist/vivus.min.js');
+    script.setAttribute('src', '/assets/vendor/vivus.0.4.6.min.js');
     script.setAttribute('integrity', 'sha256-DSPDv+rS5PAURHc6mTaH9/kBinkq/DA+KRuXganawp4=');
     script.setAttribute('crossorigin', 'anonymous');
     script.onload = () => {
