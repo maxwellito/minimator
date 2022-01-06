@@ -85,7 +85,7 @@ export class ProjectComponent extends PageComponent {
         case 'share':
           buildPNG(surface.extractSVG(2, 3000))
             .then(file => share(
-                'minimator',
+                'minimator, a minimalist graphical editor',
                 'https://minimator.app',
                 file
               )
@@ -93,7 +93,9 @@ export class ProjectComponent extends PageComponent {
           break;
         case 'download':
           svgOutput = surface.extractSVG();
-          downloader(svgOutput.outerHTML, 'minimator_demo.svg');
+          let filename = `minimator - ${item?.title || 'untitled'}`;
+          filename = filename.replace(/[^a-z0-9]/gi, '_');
+          downloader(svgOutput.outerHTML, `${filename}.svg`);
           break;
       }
     });
