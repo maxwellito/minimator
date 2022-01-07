@@ -14,7 +14,10 @@ export function share(title, url, file) {
         ...basicShare,
         files: [file],
     };
-    if (navigator.canShare(fullShare)) {
+    if (!navigator.canShare) {
+        window.alert(`The sharing feature isn't available in your browser`);
+    }
+    else if (navigator.canShare(fullShare)) {
         navigator.share(fullShare);
     }
     else if (navigator.canShare(basicShare)) {
