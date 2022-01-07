@@ -34,5 +34,5 @@ jobs:
         cp -rf dist www/
         cd www
         git add -f dist
-        git commit -m 'Autobuild'
+        git commit -am 'Autobuild'
         git push
