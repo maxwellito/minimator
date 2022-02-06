@@ -443,22 +443,18 @@ export class SurfaceComponent extends BaseComponent {
       x: drag.x - this.drawingStartPoint.x / this.width,
       y: drag.y - this.drawingStartPoint.y / this.height,
     };
-    // debugger;
     const isA = Math.abs(derivate.x) < Math.abs(derivate.y);
-    // M0,10C0,4.478,4.478,0,10,0
 
     const dA = [
-      `M${p1.x},${p1.y}C`,
-      `${p1.x},${p1.y + v.y / 2},`,
-      `${p1.x + v.x / 2},${p2.y},`,
-      `${p2.x},${p2.y}`,
+      `M${p1.x},${p1.y} `,
+      `a${Math.abs(v.x)},${Math.abs(v.y)} 0 0,0 `,
+      `${v.x},${v.y}`,
     ].join('');
 
     const dB = [
-      `M${p1.x},${p1.y}C`,
-      `${p1.x + v.x / 2},${p1.y},`,
-      `${p2.x},${p1.y + v.y / 2},`,
-      `${p2.x},${p2.y}`,
+      `M${p1.x},${p1.y} `,
+      `a${Math.abs(v.x)},${Math.abs(v.y)} 0 0,1 `,
+      `${v.x},${v.y}`,
     ].join('');
 
     const path = document.createElementNS(SVG_NAMESPACE, 'path');
