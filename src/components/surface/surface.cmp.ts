@@ -92,8 +92,8 @@ export class SurfaceComponent extends BaseComponent {
   onResize() {
     // const rect = this.getBoundingClientRect();
     this.rect = {
-      width: window.innerWidth,
-      height: window.innerHeight
+      width: (document as any).clientWidth || window.innerWidth,
+      height:(document as any).clientHeight ||  window.innerHeight
     } as DOMRect;
 
     const padding = 3;
