@@ -29,12 +29,13 @@ export class ProjectComponent extends PageComponent {
 
     const surface = new SurfaceComponent(projectData);
     (window as any).ma = surface; //# Debug purposes
-    this.shadowRoot?.appendChild(surface);
     surface.onResize();
     surface.onChange = () => {
       projectData.content = surface.content.innerHTML;
       store.updateItem(id, projectData);
     }
+    surface.style.opacity = '0';
+    this.shadowRoot?.appendChild(surface);
     this.surface = surface;
 
     const shortcutBindings = new Shortcut();

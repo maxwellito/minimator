@@ -12,6 +12,17 @@ const template = `
   <p>If you want to use it offline, add the page to your homescreen.<br/>On iPad, press the ${icon('share', 'shareEvent', 'Share artwork')} icon in the top right corner then tap on "Add to homescreen".</p>
   <p>The editor provides tools to save your work and share it easily, but also a feature to 'replay' the drawing. Please use the keyword 'minimator' while sharing your work on social media. I'm looking forward to seeing what you will draw.</p>
   <p>All data is stored locally on your device. No tracking and no data collection. There's nothing more GDPR compliant than this.</p>
+  <details>
+    <summary>Change log</summary>
+    <dl>
+      <dt>v1.1</dt>
+      <dd>Fix iPhone layout issue</dd>
+      <dd>Fix quarter circle precision</dd>
+      <dd>Fix navigation rendering glitches</dd>
+      <dt>v1.0</dt>
+      <dd>Initial release</dd>
+    </dl>
+  </details>
   <p>The code is open source and available on <a href="https://github.com/maxwellito/minimator/" target="_blank" ref="noopeener">GitHub</a>.</p>
   <p>I hope you will enjoy it as much as I do.</p>
   <p><a href="https://twitter.com/mxwllt" target="_blank" ref="noopeener">@mxwllt</a></p>

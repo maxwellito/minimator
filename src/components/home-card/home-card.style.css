@@ -43,12 +43,6 @@
   bottom: 0;
 }
 
-.fake-img {
-  background-color: #fff;
-  background-image: radial-gradient(#000 0.5px, #fff 0.5px);
-  background-size: 10px 10px;
-}
-
 :host .label {
   font-size: 28px;
   line-height: 2;

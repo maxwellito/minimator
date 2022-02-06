@@ -3,7 +3,7 @@ import { timeago } from '../../services/utils.js';
 import { icon } from '../../services/feather.icons.js';
 import { StorageIndex } from '../../services/storage/storage.js';
 import { store } from '../../store.js';
-import { SurfaceComponent } from '../surface/surface.cmp.js';
+import { generateBaseSVG } from '../surface/surface.cmp.js';
 
 @Component('home-card-cmp', './src/components/home-card/home-card.style.css')
 export class HomeCardComponent extends BaseComponent {
@@ -66,8 +66,10 @@ export class HomeCardComponent extends BaseComponent {
     });
 
     const projectData = store.getItem(data.id) || {};
-    const surface = new SurfaceComponent(projectData);
-    surface.setDefaultViewBox();
-    imageContainer.appendChild(surface)
+    const surface = new Image(600, 600);
+    surface.style.width = '100%';
+    surface.style.height = '100%';
+    surface.setAttribute('src', `data:image/svg+xml;base64,${btoa(generateBaseSVG(projectData))}`);
+    imageContainer.appendChild(surface);
   }
 }
