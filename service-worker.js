@@ -1,5 +1,5 @@
 var APP_NAME = 'minimator',
-  APP_VERSION = 4,
+  APP_VERSION = 5,
   CACHE_NAME = APP_NAME + '_' + APP_VERSION;
 
 //# Give up and set up a build system coz this list is ridiculous
