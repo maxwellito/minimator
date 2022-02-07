@@ -28,16 +28,27 @@ let HomeComponent = class HomeComponent extends PageComponent {
     title = 'minimator';
     constructor() {
         super(template);
+        const carousel = this.refs.get('carousel');
         //# Find a nicer way to import this component
         console.log(ThemeSwitchComponent);
         const createCard = new HomeCardComponent();
-        this.refs.get('carousel')?.append(createCard);
+        carousel.append(createCard);
         createCard.onclick = () => (location.hash = '#/create');
         store.loadIndexes().forEach((d) => {
             const card = new HomeCardComponent(d);
-            this.refs.get('carousel')?.appendChild(card);
+            carousel.appendChild(card);
             card.onclick = () => (location.hash = `#/project/${d.id}`);
         });
+        store.onCreate = (newItem) => {
+            const card = new HomeCardComponent(newItem);
+            carousel.insertBefore(card, carousel.children[1]);
+            card.onclick = () => (location.hash = `#/project/${newItem.id}`);
+            card.scrollIntoView({ behavior: "smooth" });
+        };
+    }
+    exit() {
+        store.onCreate = undefined;
+        return super.exit();
     }
 };
 HomeComponent = __decorate([

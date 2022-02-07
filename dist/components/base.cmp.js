@@ -39,6 +39,7 @@ let BaseComponent = class BaseComponent extends HTMLElement {
         // Create some CSS to apply to the shadow dom
         const { cssLink } = this.constructor.prototype;
         if (cssLink) {
+            this.style.visibility = 'hidden';
             const link = document.createElement('link');
             link.setAttribute('rel', 'stylesheet');
             link.setAttribute('href', cssLink);
@@ -68,8 +69,6 @@ let BaseComponent = class BaseComponent extends HTMLElement {
         });
         // Append child
         this.shadowRoot?.append(...container.children);
-        this.style.visibility = 'hidden';
-        ;
     }
 };
 BaseComponent = __decorate([

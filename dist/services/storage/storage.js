@@ -5,6 +5,7 @@ export class Storage {
     indexBaseKey;
     mapBaseKey;
     lastDate = +Date.now();
+    onCreate;
     constructor(prefixKey) {
         if (!prefixKey || prefixKey.length < 5) {
             throw new Error('Storage: prefixKey too short');
@@ -72,6 +73,9 @@ export class Storage {
         this.saveIndexes();
         if (content) {
             this.updateItem(id, content);
+        }
+        if (this.onCreate) {
+            this.onCreate(item);
         }
         return item;
     }
