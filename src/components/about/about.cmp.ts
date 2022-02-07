@@ -17,6 +17,7 @@ const template = `
     <dl>
       <dt>v1.1</dt>
       <dd>Fix iPhone layout issue</dd>
+      <dd>Add 'duplicate project' feature</dd>
       <dd>Fix quarter circle precision</dd>
       <dd>Fix navigation rendering glitches</dd>
       <dt>v1.0</dt>

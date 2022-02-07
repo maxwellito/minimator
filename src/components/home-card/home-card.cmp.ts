@@ -19,6 +19,7 @@ export class HomeCardComponent extends BaseComponent {
           <div class="date">${timeago(data.updated_at)}</div>
           <div class="actions">
             <button data-ref="editButton" alt="Rename artwork">${icon('edit')}</button>
+            <button data-ref="duplicateButton" alt="Duplicate artwork">${icon('copy')}</button>
             <button data-ref="deleteButton" alt="Delete artwork">${icon('trash')}</button>
           </div>
         </div>
@@ -39,6 +40,7 @@ export class HomeCardComponent extends BaseComponent {
     }
 
     const editButton = this.refs.get('editButton');
+    const duplicateButton = this.refs.get('duplicateButton');
     const deleteButton = this.refs.get('deleteButton');
     const titleLabel = this.refs.get('titleLabel') as HTMLDivElement;
     const imageContainer = this.refs.get('imageContainer') as HTMLDivElement;
@@ -53,6 +55,16 @@ export class HomeCardComponent extends BaseComponent {
       } 
       store.renameItem(data.id, newName);
       titleLabel.innerText = newName;
+    });
+
+    duplicateButton?.addEventListener('click', (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!window.confirm(`Do you want to duplicate "${data.title}"?`)) {
+        return;
+      }
+      store.createItem(`${data.title} copy`, projectData);
     });
 
     deleteButton?.addEventListener('click', (e: Event) => {

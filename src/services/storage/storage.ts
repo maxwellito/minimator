@@ -5,6 +5,7 @@ export class Storage<T> {
   indexBaseKey: string;
   mapBaseKey: string;
   lastDate = +Date.now();
+  onCreate?: (newItem: StorageIndex)=>void;
 
   constructor(prefixKey: string) {
     if (!prefixKey || prefixKey.length < 5) {
@@ -82,6 +83,9 @@ export class Storage<T> {
     this.saveIndexes();
     if (content) {
       this.updateItem(id, content);
+    }
+    if (this.onCreate) {
+      this.onCreate(item);
     }
     return item;
   }
