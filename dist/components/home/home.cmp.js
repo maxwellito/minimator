@@ -43,7 +43,9 @@ let HomeComponent = class HomeComponent extends PageComponent {
             const card = new HomeCardComponent(newItem);
             carousel.insertBefore(card, carousel.children[1]);
             card.onclick = () => (location.hash = `#/project/${newItem.id}`);
-            card.scrollIntoView({ behavior: "smooth" });
+            setTimeout(() => card.scrollIntoView({
+                behavior: "smooth",
+            }), 120);
         };
     }
     exit() {
