@@ -31,6 +31,7 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         cp *.* www/
+        cp -rf src www/
         cp -rf dist www/
         cd www
         git add -f dist
