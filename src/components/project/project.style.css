@@ -6,6 +6,10 @@
   height: 100%;
   animation: fad .4s 1;
 }
+:host > surface-cmp {
+  animation: fad .8s 1;
+  animation-fill-mode: forwards;
+}
 :host(.exit) {
   animation: daf 0.4s 1;
 }

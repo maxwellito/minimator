@@ -6,15 +6,15 @@ const template = `
   <ul>
     <li>
       <span>Undo: </span>
-      <span>2 fingers drag</span>
+      <span>2 fingers tap</span>
     </li>
     <li>
       <span>Redo: </span>
-      <span>3 fingers drag</span>
+      <span>3 fingers tap</span>
     </li>
     <li>
       <span>Move/Scale: </span>
-      <span>2 fingers pinch</span>
+      <span>2 fingers drag/pinch</span>
     </li>
   </ul>
 

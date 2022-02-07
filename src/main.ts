@@ -47,20 +47,17 @@ appRouter.addRoute({
   },
 });
 appRouter.onChange = (newPage) => {
-  if (!newPage) {
-    window.location.hash = '/home';
-    return;
-  }
+  const page = newPage || new HomeComponent();
   appContainer = appContainer || document.body.querySelector('.app') as HTMLElement;
   const pending = currentPage?.exit() || Promise.resolve();
   pending.then(() => {
     // The current page is now ready to be removed
     currentPage?.remove();
-    currentPage = newPage;
+    currentPage = page;
     appContainer.innerHTML = '';
-    appContainer.append(newPage);
-    document.title = newPage.title;
-    return newPage.enter();
+    appContainer.append(page);
+    document.title = page.title;
+    return page.enter();
   });
 };
 

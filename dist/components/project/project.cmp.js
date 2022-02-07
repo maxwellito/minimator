@@ -32,7 +32,6 @@ let ProjectComponent = class ProjectComponent extends PageComponent {
             projectData.content = surface.content.innerHTML;
             store.updateItem(id, projectData);
         };
-        surface.style.opacity = '0';
         this.shadowRoot?.appendChild(surface);
         this.surface = surface;
         const shortcutBindings = new Shortcut();

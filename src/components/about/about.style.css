@@ -6,6 +6,7 @@
   padding: 5% 0;
   max-width: 480px;
   animation: fad .4s 1;
+  overflow-y: scroll;
 }
 :host(.exit) {
   animation: daf 0.4s 1;

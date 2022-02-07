@@ -3,7 +3,7 @@ import { timeago } from '../../services/utils.js';
 import { icon } from '../../services/feather.icons.js';
 import { StorageIndex } from '../../services/storage/storage.js';
 import { store } from '../../store.js';
-import { SurfaceComponent } from '../surface/surface.cmp.js';
+import { generateBaseSVG } from '../surface/surface.cmp.js';
 
 @Component('home-card-cmp', './src/components/home-card/home-card.style.css')
 export class HomeCardComponent extends BaseComponent {
@@ -19,6 +19,7 @@ export class HomeCardComponent extends BaseComponent {
           <div class="date">${timeago(data.updated_at)}</div>
           <div class="actions">
             <button data-ref="editButton" alt="Rename artwork">${icon('edit')}</button>
+            <button data-ref="duplicateButton" alt="Duplicate artwork">${icon('copy')}</button>
             <button data-ref="deleteButton" alt="Delete artwork">${icon('trash')}</button>
           </div>
         </div>
@@ -39,6 +40,7 @@ export class HomeCardComponent extends BaseComponent {
     }
 
     const editButton = this.refs.get('editButton');
+    const duplicateButton = this.refs.get('duplicateButton');
     const deleteButton = this.refs.get('deleteButton');
     const titleLabel = this.refs.get('titleLabel') as HTMLDivElement;
     const imageContainer = this.refs.get('imageContainer') as HTMLDivElement;
@@ -55,6 +57,16 @@ export class HomeCardComponent extends BaseComponent {
       titleLabel.innerText = newName;
     });
 
+    duplicateButton?.addEventListener('click', (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!window.confirm(`Do you want to duplicate "${data.title}"?`)) {
+        return;
+      }
+      store.createItem(`${data.title} copy`, projectData);
+    });
+
     deleteButton?.addEventListener('click', (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
@@ -66,8 +78,10 @@ export class HomeCardComponent extends BaseComponent {
     });
 
     const projectData = store.getItem(data.id) || {};
-    const surface = new SurfaceComponent(projectData);
-    surface.setDefaultViewBox();
-    imageContainer.appendChild(surface)
+    const surface = new Image(600, 600);
+    surface.style.width = '100%';
+    surface.style.height = '100%';
+    surface.setAttribute('src', `data:image/svg+xml;base64,${btoa(generateBaseSVG(projectData))}`);
+    imageContainer.appendChild(surface);
   }
 }

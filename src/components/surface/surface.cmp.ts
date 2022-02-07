@@ -19,7 +19,6 @@ export enum SurfaceMode {
 export class SurfaceComponent extends BaseComponent {
   history = new HistoryStack;
   mode: SurfaceMode = SurfaceMode.PEN_MODE;
-  dotId: string;
   el: SVGElement;
   dots: SVGGElement;
   content: SVGGElement;
@@ -43,36 +42,18 @@ export class SurfaceComponent extends BaseComponent {
   changeThrottle: number = 0;
   onChange = () => {};
 
-  constructor({width, height, thickness, content}:ProjectItem) {
-    const gap = 20;
-    const id = generateDotId();
-    const template = `
-      <svg data-ref="svg" xmlns="http://www.w3.org/2000/svg" class="surface">
-        <defs>
-          <pattern width="${100 / width}%" height="${100 / height}%" viewBox="0,0,${gap},${gap}" id="${id}">
-            <circle cx="${0.5 * gap}" cy="${0.5 * gap}" r="1" fill="#000"></circle>
-          </pattern>
-        </defs>
-        <rect data-ref="dots" x="0" y="0" width="${width * gap}" height="${height * gap}" fill="url('#${id}')"></rect>
-        <g data-ref="content" stroke="black" stroke-linecap="round" fill="none" stroke-width="3"></g>
-      </svg>
-    `;
-
-    super(template);
-
-    
+  constructor(projectData:ProjectItem) {
+    super(generateBaseSVG(projectData));
+ 
     // Save referenced elements
     this.el = this.refs.get('svg') as SVGElement;
     this.dots = this.refs.get('dots') as SVGGElement;
     this.content = this.refs.get('content') as SVGGElement;
-    
-    this.content.innerHTML = content;
-    
+        
     // Set params
-    this.width = width;
-    this.height = height;
-    this.setThickness(thickness);
-    this.dotId = id;
+    this.width = projectData.width;
+    this.height = projectData.height;
+    this.setThickness(projectData.thickness);
 
     // Bind listener
     this.eventInput = this.eventInput.bind(this);
@@ -92,8 +73,8 @@ export class SurfaceComponent extends BaseComponent {
   onResize() {
     // const rect = this.getBoundingClientRect();
     this.rect = {
-      width: window.innerWidth,
-      height: window.innerHeight
+      width: (document as any).clientWidth || window.innerWidth,
+      height: (document as any).clientHeight || window.innerHeight
     } as DOMRect;
 
     const padding = 3;
@@ -443,22 +424,21 @@ export class SurfaceComponent extends BaseComponent {
       x: drag.x - this.drawingStartPoint.x / this.width,
       y: drag.y - this.drawingStartPoint.y / this.height,
     };
-    // debugger;
-    const isA = Math.abs(derivate.x) < Math.abs(derivate.y);
-    // M0,10C0,4.478,4.478,0,10,0
+    let isA = Math.abs(derivate.x) < Math.abs(derivate.y);
+    if (derivate.x * derivate.y < 0) {
+      isA = !isA;
+    }
 
     const dA = [
-      `M${p1.x},${p1.y}C`,
-      `${p1.x},${p1.y + v.y / 2},`,
-      `${p1.x + v.x / 2},${p2.y},`,
-      `${p2.x},${p2.y}`,
+      `M${p1.x},${p1.y} `,
+      `a${Math.abs(v.x)},${Math.abs(v.y)} 0 0,0 `,
+      `${v.x},${v.y}`,
     ].join('');
 
     const dB = [
-      `M${p1.x},${p1.y}C`,
-      `${p1.x + v.x / 2},${p1.y},`,
-      `${p2.x},${p1.y + v.y / 2},`,
-      `${p2.x},${p2.y}`,
+      `M${p1.x},${p1.y} `,
+      `a${Math.abs(v.x)},${Math.abs(v.y)} 0 0,1 `,
+      `${v.x},${v.y}`,
     ].join('');
 
     const path = document.createElementNS(SVG_NAMESPACE, 'path');
@@ -525,4 +505,26 @@ export class SurfaceComponent extends BaseComponent {
 
 function generateDotId() {
   return 'dot-'+btoa(`${Math.random()*(2**53)}`);
+}
+
+export function generateBaseSVG(data: ProjectItem) {
+  const gap = 20;
+  const id = generateDotId();
+  const viewBox = [
+    0,
+    0,
+    gap * data.width,
+    gap * data.height
+  ];
+  return `
+    <svg data-ref="svg" xmlns="http://www.w3.org/2000/svg" class="surface" viewBox="${viewBox.join(' ')}">
+      <defs>
+        <pattern width="${100 / data.width}%" height="${100 / data.height}%" viewBox="0,0,${gap},${gap}" id="${id}">
+          <circle cx="${0.5 * gap}" cy="${0.5 * gap}" r="1" fill="#000"></circle>
+        </pattern>
+      </defs>
+      <rect data-ref="dots" x="0" y="0" width="${data.width * gap}" height="${data.height * gap}" fill="url('#${id}')"></rect>
+      <g data-ref="content" stroke="black" stroke-linecap="round" fill="none" stroke-width="${data.thickness}">${data.content}</g>
+    </svg>
+  `;
 }
