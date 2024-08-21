@@ -520,11 +520,11 @@ export function generateBaseSVG(data: ProjectItem) {
     <svg data-ref="svg" xmlns="http://www.w3.org/2000/svg" class="surface" viewBox="${viewBox.join(' ')}">
       <defs>
         <pattern width="${100 / data.width}%" height="${100 / data.height}%" viewBox="0,0,${gap},${gap}" id="${id}">
-          <circle cx="${0.5 * gap}" cy="${0.5 * gap}" r="1" fill="#000"></circle>
+          <circle cx="${0.5 * gap}" cy="${0.5 * gap}" r="1" fill="currentColor"></circle>
         </pattern>
       </defs>
       <rect data-ref="dots" x="0" y="0" width="${data.width * gap}" height="${data.height * gap}" fill="url('#${id}')"></rect>
-      <g data-ref="content" stroke="black" stroke-linecap="round" fill="none" stroke-width="${data.thickness}">${data.content}</g>
+      <g data-ref="content" stroke="currentColor" stroke-linecap="round" fill="none" stroke-width="${data.thickness}">${data.content}</g>
     </svg>
   `;
 }
