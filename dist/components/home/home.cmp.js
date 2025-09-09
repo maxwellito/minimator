@@ -20,6 +20,9 @@ const template = `
       <a class="action-button title" href="#/about">i</a>
     </div>
   </div>
+  <div class="top important">
+    Save your drawings, the platform will migrate in December 2025.
+  </div>
   <div class="home-carousel">
     <div data-ref="carousel" class="home-carousel-wrap"></div>
   </div>
