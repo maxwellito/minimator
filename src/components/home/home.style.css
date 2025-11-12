@@ -20,14 +20,6 @@
   margin: 16px var(--left-space);
 }
 
-.important {
-  color: white;
-  background-color: #ca3838;
-  font-weight: bold;
-  padding: 8px 12px;
-  border-radius: 8px;
-}
-
 .header {
   flex-grow: 1;
   margin: 8px 30px 8px 0;
