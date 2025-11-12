@@ -2,7 +2,7 @@
 
 _**minima**~~list graphical edi~~**tor**_[^1]
 
-_Horizontal lines, vertical lines, quarter circles and that's it. Try [minimator.app](https://minimator.app)_
+_Horizontal lines, vertical lines, quarter circles and that's it. Try [minimator](https://minimator.maxwellito.com)_
 
 
 ## Development
