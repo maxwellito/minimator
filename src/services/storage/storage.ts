@@ -114,6 +114,25 @@ export class Storage<T> {
     this.lastDate = Math.max(this.lastDate+1, +new Date());
     return this.lastDate;
   }
+
+  export(): string{
+    const output:{[key:string]:string|null} = {};
+    for(let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key) {
+        output[key] = localStorage.getItem(key);
+      }
+    }
+    return JSON.stringify(output);
+  }
+
+  import(dump: string){
+    let input:{[key:string]:string} = JSON.parse(dump);
+    localStorage.clear();
+    for (let key in input) {
+      localStorage.setItem(key, input[key]);
+    }
+  }
 }
 
 export interface StorageIndex {
