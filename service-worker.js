@@ -1,5 +1,5 @@
 var APP_NAME = 'minimator',
-  APP_VERSION = 8,
+  APP_VERSION = 9,
   CACHE_NAME = APP_NAME + '_' + APP_VERSION;
 
 //# Give up and set up a build system coz this list is ridiculous
@@ -13,6 +13,7 @@ var filesToCache = [
   './dist/components/helper-tooltip/helper-tooltip.cmp.js',
   './dist/components/home/home.cmp.js',
   './dist/components/home-card/home-card.cmp.js',
+  './dist/components/migrate/migrate.cmp.js',
   './dist/components/project/project.cmp.js',
   './dist/components/surface/surface.cmp.js',
   './dist/components/theme-switch/theme-switch.cmp.js',
