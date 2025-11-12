@@ -99,4 +99,21 @@ export class Storage {
         this.lastDate = Math.max(this.lastDate + 1, +new Date());
         return this.lastDate;
     }
+    export() {
+        const output = {};
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key) {
+                output[key] = localStorage.getItem(key);
+            }
+        }
+        return JSON.stringify(output);
+    }
+    import(dump) {
+        let input = JSON.parse(dump);
+        localStorage.clear();
+        for (let key in input) {
+            localStorage.setItem(key, input[key]);
+        }
+    }
 }

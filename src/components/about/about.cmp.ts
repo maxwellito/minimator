@@ -1,6 +1,8 @@
 import { Component } from '../base.cmp.js';
 import { PageComponent } from '../page.cmp.js';
 import { icon } from '../../services/feather.icons.js';
+import { store } from '../../store.js';
+import { downloader } from '../../services/features.js';
 
 const template = `
   <a class="breadcrumb" href="#/home">☜ homepage</a>
@@ -27,6 +29,18 @@ const template = `
   <p>The code is open source and available on <a href="https://github.com/maxwellito/minimator/" target="_blank" ref="noopeener">GitHub</a>.</p>
   <p>I hope you will enjoy it as much as I do.</p>
   <p><a href="https://twitter.com/mxwllt" target="_blank" ref="noopeener">@mxwllt</a></p>
+  <hr/>
+  <p>
+    Your data : 
+    <button data-ref="exportButton">Download</button>
+    <button data-ref="importButton">Upload</button>
+    <input
+      type="file"
+      style="display:none;"
+      accept=".json"
+      data-ref="fileField"
+    />
+  </p>
 `;
 
 @Component('about-page', './src/components/about/about.style.css')
@@ -34,5 +48,44 @@ export class AboutComponent extends PageComponent {
   title = 'About minimator';
   constructor() {
     super(template);
+
+    // Export feature
+    const exportButton = this.refs.get('exportButton') as HTMLButtonElement;
+    const now = new Date();
+    const filename = `minimator_export_${now.toISOString().substring(0,10)}.json`;
+    exportButton.addEventListener('click', () => {
+      downloader(store.export(), filename);
+    });
+
+    // Import feature
+    const importButton = this.refs.get('importButton') as HTMLButtonElement;
+    const fileField = this.refs.get('fileField') as HTMLInputElement;
+    importButton.addEventListener('click', () => {
+      fileField.click();
+    });
+
+    fileField.addEventListener('change', () => {
+      const file = fileField.files && fileField.files[0];
+      if (!file) {
+        return;
+      }
+      console.log("File selected: ", file);
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const content = e.target?.result;
+        if (
+          typeof content === 'string' 
+          && window.confirm('Are you sure? This will override your existing data.')
+        ) {
+          store.import(content);
+          window.location.reload();
+        }
+      };
+      reader.onerror = function (e) {
+        window.alert('Error reading file:' + e);
+      };
+      reader.readAsText(file);
+    })
   }
 }
